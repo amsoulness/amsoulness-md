@@ -8,3 +8,9 @@ FAIL: npm install --ignore-scripts --package-lock=false reports ERESOLVE: Bailey
 NOT RUN: WhatsApp pairing, commands against live accounts, provider API integration, Docker build and cloud deployment.
 No account was connected and no messages were sent.
 The tests validate packaging only, not all retained features.
+
+Independent pairing update:
+PASS: 149 JavaScript syntax checks, 6 root tests, 4 pairing API tests.
+PASS: Railway Docker deployment and live WhatsApp QR generation, browser cancellation and invalid-phone validation.
+PASS: Portfolio TypeScript and production build; desktop, mobile and theme browser review.
+NOT RUN: Completing a real WhatsApp link or logging the bot in using a real exported ASLNS session; the account owner must approve linking.

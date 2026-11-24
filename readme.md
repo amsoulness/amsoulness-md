@@ -8,7 +8,7 @@ A lightweight WhatsApp bot framework with multi-session support and extensive co
 
 #### 1. Get Your Session String
 
-[Get an upstream-compatible session](https://raganork.site). This is a third-party provider; Amsoulness does not operate a separate pairing service.
+[Get your Amsoulness session](https://aslns.online/session). Choose a QR code or phone pairing code, then copy the complete `ASLNS~` session into your private `SESSION` setting. The pairing server is independent of the upstream session provider.
 
 
 
@@ -150,7 +150,7 @@ docker run --env-file config.env -p 3000:3000 amsoulness-md
 
 Persist database storage separately for container deployments. The included Dockerfile builds your local source.
 
-144 JavaScript files passed syntax checks; three packaging checks passed. Yarn dependency linking was checked with native scripts skipped. Live WhatsApp login, media commands and Docker deployment remain unverified. See [test results](TEST-RESULTS.txt) and [source review](REVIEW.txt).
+149 JavaScript files passed syntax checks; six root tests and four pairing API tests passed. Yarn dependency linking was checked with native scripts skipped. Live QR generation was verified against the Railway deployment. Full account login, exported-session login and media commands still require an account-owner test. See [test results](TEST-RESULTS.txt) and [source review](REVIEW.txt).
 
 ## Health and status
 
@@ -217,3 +217,7 @@ GPL-3.0-or-later. See [LICENSE](LICENSE) and [CREDITS.txt](CREDITS.txt). Based o
 **Note:** `core/private.js` is obfuscated because it contains the maintainer's private backend endpoints and keys. Everything else is regular source.
 
 Session examples are placeholders. Never commit your session string or config.env. The obfuscated upstream private service module remains unchanged for compatibility and its internals have not been audited.
+
+## Independent pairing service
+
+The session page lives in the portfolio at [aslns.online/session](https://aslns.online/session). Its Node backend uses `Dockerfile.session` and the `session-service/` directory. See [service setup](session-service/README.md). Run its API tests with `node --test session-service/test/*.test.js`. New ASLNS sessions import locally; legacy upstream session strings retain their original provider behavior.
