@@ -1,8 +1,10 @@
 const http = require('node:http');
 const { randomBytes } = require('node:crypto');
 const { startPairing } = require('./whatsapp');
+const { createRenderDeployer } = require('./render-deployer');
 
-function createApp({ adapter = startPairing, ttl = 5 * 60 * 1000, maxSessions = 8 } = {}) {
+function createApp({ adapter = startPairing, ttl = 5 * 60 * 1000, maxSessions = 8, deployerOptions } = {}) {
+  const deployer = createRenderDeployer(deployerOptions);
   const sessions = new Map(), rate = new Map();
   const allowed = new Set((process.env.ALLOWED_ORIGINS || 'https://aslns.online,https://www.aslns.online,http://localhost:5173,http://127.0.0.1:5173').split(',').map(s => s.trim()));
   const remove = id => { const r = sessions.get(id); if (r) { r.cancelled = true; r.dispose?.(); sessions.delete(id); } };
@@ -24,6 +26,7 @@ function createApp({ adapter = startPairing, ttl = 5 * 60 * 1000, maxSessions = 
     if (path === '/health' && req.method === 'GET') return send(200, { ok: true, service: 'aslns-pairing' });
     if (origin && !allowed.has(origin)) return send(403, { error: 'This website is not allowed to use pairing.' });
     if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
+    if (await deployer.handle(req, res, send)) return;
     if (path !== '/api/session') return send(404, { error: 'Not found' });
     if (req.method === 'POST') {
       const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
@@ -56,7 +59,7 @@ function createApp({ adapter = startPairing, ttl = 5 * 60 * 1000, maxSessions = 
     return send(200, { state: r.state, qr: r.qr, code: r.code, session: r.session, error: r.error, expiresAt: r.expiresAt });
   });
   server.requestTimeout = 15000; server.headersTimeout = 10000;
-  return { server, close: () => { clearInterval(sweep); for (const id of sessions.keys()) remove(id); server.close(); } };
+  return { server, close: () => { deployer.close(); clearInterval(sweep); for (const id of sessions.keys()) remove(id); server.close(); } };
 }
 
 if (require.main === module) {
