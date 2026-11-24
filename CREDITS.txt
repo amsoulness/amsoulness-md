@@ -1,0 +1,7 @@
+Amsoulness / ASLNS is a modified distribution of Raganork-MD by Sourav K.
+Upstream: https://github.com/souravkl11/raganork-md
+Commit: 80acc7b342d65a66d174528b3feb977ad6458df1 (7.3.35).
+Original copyright and GPL-3.0-or-later license remain applicable; see LICENSE.
+Modified 2026-11-24: branding, standalone startup, local Docker build and checks.
+Upstream private service module and external provider URLs remain unchanged for compatibility.
+No upstream Git history is included.

@@ -1,0 +1,19 @@
+SOURCE REVIEW — 2026-11-24
+Reviewed upstream commit 80acc7b342d65a66d174528b3feb977ad6458df1, version 7.3.35.
+
+Architecture: CommonJS Node application using Baileys, Sequelize, PostgreSQL or SQLite. app -> session manager -> socket events -> normalization/middleware -> dispatcher -> plugins. AsyncLocalStorage carries session context. Auth keys are buffered and transactionally persisted. Middleware handles receipts, blocklists, storage, spam and filters.
+
+Confirmed concerns, preserved in this branding-only copy:
+1. core/identity.js:54 compares owner identity using substring matching. An unrelated synthetic JID containing the bot LID passed isOwner in an isolated reproduction. Use exact normalized identifiers. Real exploitability depends on actual WhatsApp identifiers and routing.
+2. core/db/index.js:144 disables PostgreSQL TLS certificate verification. Use trusted certificate validation.
+3. core/services/updater.js:109 excludes tracked plugins from dirty-file protection, but :143 resets all tracked changes. Updating can discard plugin edits. Automatic updates are now off by default.
+4. core/pipeline/queue.js:29 releases queue slots on timeout without cancelling work. Reproduced same-chat overlap. No waiting-job size bound exists. Resource caps therefore do not bound all actual work.
+5. core/auth.js uses an obfuscated provider module to retrieve initial session credentials. Its internals were not audited or executed. Obfuscation is a transparency limitation, not evidence of malware. External plugins also execute unrestricted JavaScript; owner-only installation is a trust boundary, not sandboxing.
+6. core/app.js:62-63 logs session strings. Treat deployment logs as sensitive.
+7. core/db/scoped.js allows shared accountId=NULL rows and defaults to unrestricted operations when session context is absent. This needs stronger isolation for untrusted multi-tenant hosting.
+8. core/auth.js deleteGarbageSessions deletes stored sessions not in the current configuration on startup. Removing a session setting can permanently remove its persisted credentials.
+9. Upstream test scripts referenced a missing test directory and missing shell script. Added limited packaging checks and a portable syntax checker here; they do not cover WhatsApp integration.
+
+Positive aspects: clear middleware boundaries; central identity helpers; session-context propagation into queued commands; transactional auth writes; reconnect backoff; bounded plugin downloads; external plugin filename validation; shutdown hooks; health and status endpoints that omit session identifiers.
+
+This distribution is a copied and rebranded codebase, not an independently rewritten system. Original artwork, provider URLs and private module remain for compatibility. No production safety certification or vulnerability-free claim is made.

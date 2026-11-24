@@ -1,0 +1,10 @@
+Verification — 2026-11-24, Node v24.22.3
+PASS: 144 JavaScript files pass node --check.
+PASS: 3 packaging/configuration checks using node --test.
+PASS: Yarn 1.22.22 frozen lockfile dependency resolution, download and linking, with --ignore-scripts.
+WARNING: Native dependency installation scripts were not run. sqlite3 runtime binding and full startup were not verified.
+WARNING: Yarn reports optional sharp peer dependency missing.
+FAIL: npm install --ignore-scripts --package-lock=false reports ERESOLVE: Baileys rc14 optionally expects Jimp ^1.6.1 while upstream pins Jimp 0.16.0. Use upstream Yarn workflow; compatibility still needs runtime testing.
+NOT RUN: WhatsApp pairing, commands against live accounts, provider API integration, Docker build and cloud deployment.
+No account was connected and no messages were sent.
+The tests validate packaging only, not all retained features.

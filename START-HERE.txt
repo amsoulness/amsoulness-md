@@ -1,0 +1,7 @@
+AMSOULNESS / ASLNS
+Install Node.js compatible with package.json engines, FFmpeg and Yarn.
+Run yarn install --frozen-lockfile. Copy config.env.example to config.env and supply your valid WhatsApp session and owner number. Run npm start.
+Use .list for commands and .settings for configuration.
+This retains upstream session/provider services. A new independent pairing backend is not included.
+Automatic upstream updates default off. Do not enable them for this standalone copy.
+See CREDITS.txt and LICENSE for attribution.
