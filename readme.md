@@ -1,6 +1,8 @@
 # Amsoulness-MD / ASLNS
 
-
+<p align="center">
+  <a href="https://aslns.online/session"><img src="assets/readme/banner.svg" alt="Amsoulness bot — ASLNS WhatsApp framework" width="420" /></a>
+</p>
 
 A lightweight WhatsApp bot framework with multi-session support and extensive configuration options. Amsoulness / ASLNS is a standalone, rebranded distribution based on Raganork-MD. See CREDITS.txt for attribution.
 
@@ -8,17 +10,21 @@ A lightweight WhatsApp bot framework with multi-session support and extensive co
 
 #### 1. Get Your Session String
 
+<p align="center">
+  <a href="https://aslns.online/session"><img src="assets/readme/get-session.svg" alt="Get Session" width="240" /></a>
+</p>
+
 [Get your Amsoulness session](https://aslns.online/session). Choose a QR code or phone pairing code, then copy the complete `ASLNS~` session into your private `SESSION` setting. The pairing server is independent of the upstream session provider.
-
-
 
 **Important for Cloud Deployments:** If you're deploying on platforms like Render, Koyeb, Railway, or similar cloud services, you'll need a `DATABASE_URL` (PostgreSQL) for persistent storage. VPS deployments can use local file storage.
 
 #### 2. Deploy and setup your bot
 
-Follow the installation instructions below. [View your repository](https://github.com/amsoulness/amsoulness-md).
+<p align="center">
+  <a href="https://aslns.online/session#deploy"><img src="assets/readme/deploy-bot.svg" alt="Deploy bot" width="240" /></a>
+</p>
 
-
+Use the [guided Render deployer](https://aslns.online/session/deploy/render), or choose Koyeb, VPS or a hosting panel in the [deployment hub](https://aslns.online/session#deploy). Manual installation is documented below.
 
 ## Features
 
@@ -90,6 +96,79 @@ DATABASE_URL=your_database_url
 LANGUAGE=english
 TZ=Asia/Kolkata
 ```
+
+#### All Variables
+
+Set these in `config.env`, or from WhatsApp with `.setvar KEY=VALUE` (no restart needed except for `LANGUAGE`). `.settings` shows most of them as a menu. Booleans take `true` or `false`.
+
+**General**
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `MODE` | `private` | `public` lets everyone use commands; `private` limits them to you and sudo users |
+| `HANDLERS` | `.,` | characters that start a command |
+| `MULTI_HANDLERS` | `false` | commands work with or without a prefix |
+| `SUDO` | | numbers allowed to use the bot like the owner (manage with `.setsudo`) |
+| `LANGUAGE` | `english` | `english`, `manglish` or `turkish` (restart needed) |
+| `BOT_NAME` | `amsoulness` | bot name |
+| `BOT_INFO` | `Amsoulness;𝖱𝗒𝗓𝖾𝗇;default` | `name;owner;image url`, also set with `.setinfo` |
+| `ALIVE` | | reply for `.alive` (see `.setalive help`) |
+| `BUTTONS` | `false` | interactive buttons, experimental |
+| `DISABLED_COMMANDS` | | comma-separated commands to turn off |
+| `BLOCK_CHAT` | | comma-separated chat ids the bot ignores |
+
+**Presence and reading**
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `ALWAYS_ONLINE` | `false` | always show online |
+| `READ_MESSAGES` | `false` | mark every message as read |
+| `READ_COMMAND` | `true` | mark commands as read |
+| `CMD_REACTION` | `false` | react to commands while they run |
+| `AUTO_READ_STATUS` | `false` | view statuses automatically |
+| `AUTO_LIKE_STATUS` | `false` | like statuses automatically |
+
+**Private chats and calls**
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `DIS_PM` | `false` | ignore private messages from people who aren't you or sudo |
+| `PMB_VAR` | `false` | block people (except sudo) who message you privately |
+| `PMB` | `_Personal messages not allowed, BLOCKED!_` | message sent before blocking |
+| `PM_ANTISPAM` | `false` | block people who spam you privately |
+| `ANTISPAM_COUNT` | `6/10` | spam limit as messages/seconds |
+| `REJECT_CALLS` | `false` | reject incoming calls |
+| `CALL_REJECT_MESSAGE` | | message sent after rejecting a call |
+| `ALLOWED_CALLS` | | comma-separated numbers whose calls are never rejected |
+
+**Groups**
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `ADMIN_ACCESS` | `false` | group admins can use group commands |
+| `ANTI_DELETE` | `off` | resend deleted messages: `chat` (same chat) or `sudo` (to you); `.antidelete <jid>` for another chat |
+| `WARN` | `4` | warnings before a user is removed |
+| `ALLOWED` | `91,94,2` | country codes antifake lets in |
+| `AUTOMUTE_MSG` | `_Group automuted!_` | message when a group is auto muted |
+| `AUTOUNMUTE_MSG` | `_Group auto unmuted!_` | message when a group is auto unmuted |
+
+**Media**
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `STICKER_DATA` | `amsoulness` | `packname;author;emoji` for stickers (`.sticker` uses the sender's name as pack name) |
+| `AUDIO_DATA` | `default` | `title;artist;image url` for `.take` on audio |
+
+**System**
+
+| Variable | Default | What it does |
+| --- | --- | --- |
+| `AUTO_UPDATE` | `false` | update automatically |
+| `DISABLE_START_MESSAGE` | `false` | don't send the message on start |
+| `NOLOG` | `false` | don't log command errors or reply with them |
+| `SUPPORT_GROUP` | — | link shown in update notices |
+
+Some variables are changed through their commands rather than by hand: `CHATBOT` (`.chatbot`), `ANTIWORD_WARN` (`.antiword`) and `ANTI_DELETE_JID` (`.antidelete`). Performance and hosting variables are listed below; they only work in `config.env` or your platform's environment settings, as do `SESSION` and `DATABASE_URL`.
 
 ## Running the Bot
 
@@ -196,6 +275,8 @@ amsoulness-md/
 
 ## Support
 
+- [Official website and session generator](https://aslns.online/session)
+- [Plugin catalog](https://aslns.online/session#plugins)
 - [Repository](https://github.com/amsoulness/amsoulness-md)
 - [Issues](https://github.com/amsoulness/amsoulness-md/issues)
 
@@ -234,4 +315,3 @@ Open [aslns.online/session#deploy](https://aslns.online/session#deploy) for all 
 The [plugin browser](https://aslns.online/session#plugins) includes six optional owner-only plugins. They live in extras/plugins and are installed into plugins by the bot's .install command. Do not run them directly from the extras directory. Contributions can be submitted through GitHub issues and appear after review.
 
 Deployment verification: the Render Blueprint passes its official JSON Schema; shell syntax, panel generation and restart behavior, and plugin command behavior have automated checks. No real Render/Koyeb bot deployment or VPS/panel installation was performed during these checks.
-
