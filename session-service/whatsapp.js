@@ -63,7 +63,7 @@ async function startPairing(record, changed) {
           readyTimer = setTimeout(() => {
             try {
               const files = { 'creds.json': JSON.stringify(creds, wa.BufferJSON.replacer) };
-              for (const [key, value] of keys) files[`${key.replace(/\//g, '__').replace(/:/g, '-')}.json`] = JSON.stringify(value, wa.BufferJSON.replacer);
+              for (const [key, value] of keys) files[`${key}.json`] = JSON.stringify(value, wa.BufferJSON.replacer);
               record.session = encodeSession(files); record.state = 'ready'; record.phone = undefined; changed(); dispose();
             } catch { fail(); }
           }, 1500);

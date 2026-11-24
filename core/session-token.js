@@ -17,7 +17,9 @@ function decodeSession(token) {
   const creds = JSON.parse(data.files['creds.json']);
   if (!creds.me?.id) throw new Error('Session has no linked account');
   for (const [name, value] of Object.entries(data.files)) {
-    if (!name.endsWith('.json') || name.includes('/') || name.includes('\\') || typeof value !== 'string') throw new Error('Invalid session key');
+    // Key identifiers can contain base64 slashes. These names are never used as
+    // filesystem paths; retain them exactly for the bot's in-memory/SQL store.
+    if ((name !== 'creds.json' && !/^[a-z][a-z0-9-]*-.+\.json$/i.test(name)) || name.includes('\\') || name.includes('\0') || typeof value !== 'string') throw new Error('Invalid session key');
   }
   return data.files;
 }

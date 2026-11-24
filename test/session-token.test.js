@@ -2,7 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { gzipSync } = require('node:zlib');
 const { encodeSession, decodeSession, parseSessions, importedSession } = require('../core/session-token');
-const fixture = { 'creds.json': JSON.stringify({ me: { id: '0000000000@s.whatsapp.net' }, noiseKey: { type: 'Buffer', data: 'dGVzdA==' } }), 'test-key.json': '{"test":true}' };
+const fixture = { 'creds.json': JSON.stringify({ me: { id: '0000000000@s.whatsapp.net' }, noiseKey: { type: 'Buffer', data: 'dGVzdA==' } }), 'test-key.json': '{"test":true}', 'app-state-sync-key-base64/key=.json': '{"test":true}' };
 
 test('portable session round-trips and imports under a short database id', () => {
   const token = encodeSession(fixture);
