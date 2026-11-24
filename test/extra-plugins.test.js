@@ -16,6 +16,9 @@ test('every optional plugin registers with a unique name and owner access', () =
   const names = [];
   for (const file of fs.readdirSync(path.join(__dirname, '../extras/plugins'))) {
     const { command } = plugin(file); assert.equal(command.fromMe, true); names.push(command.name);
+    const source = fs.readFileSync(path.join(__dirname, '../extras/plugins', file), 'utf8');
+    const installerName = /^[ \t]*name:[ \t]*(["'])([^"'\r\n]*)\1[ \t]*,/m.exec(source)?.[2];
+    assert.equal(installerName, command.name, 'installer must recognize the declared plugin filename');
   }
   assert.equal(new Set(names).size, 6);
 });

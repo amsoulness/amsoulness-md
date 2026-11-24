@@ -1,6 +1,8 @@
 const { Module } = require('../main');
 const { randomInt } = require('node:crypto');
-Module({ name: 'aslns-choose', pattern: 'choose(?: |$)(.*)', fromMe: true, desc: 'Pick an option: .choose tea, coffee', use: 'games' }, async (message, match) => {
+Module({
+  name: 'aslns-choose',
+  pattern: 'choose(?: |$)(.*)', fromMe: true, desc: 'Pick an option: .choose tea, coffee', use: 'games' }, async (message, match) => {
   const text = String(match?.[1] || '');
   if (text.length > 2000) return message.send('Keep options under 2000 characters.');
   const options = text.split(',').map(s => s.trim()).filter(Boolean);
