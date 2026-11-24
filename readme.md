@@ -21,10 +21,10 @@ A lightweight WhatsApp bot framework with multi-session support and extensive co
 #### 2. Deploy and setup your bot
 
 <p align="center">
-  <a href="https://aslns.online/session#deploy"><img src="assets/readme/deploy-bot.svg" alt="Deploy bot" width="240" /></a>
+  <a href="https://aslns.online/session/deploy"><img src="assets/readme/deploy-bot.svg" alt="Deploy bot" width="240" /></a>
 </p>
 
-Use the [guided Render deployer](https://aslns.online/session/deploy/render), or choose Koyeb, VPS or a hosting panel in the [deployment hub](https://aslns.online/session#deploy). Manual installation is documented below.
+Use the [guided Render deployer](https://aslns.online/session/deploy/render), or choose Koyeb, VPS or a hosting panel in the [deployment hub](https://aslns.online/session/deploy). Manual installation is documented below.
 
 ## Features
 
@@ -276,7 +276,7 @@ amsoulness-md/
 ## Support
 
 - [Official website and session generator](https://aslns.online/session)
-- [Plugin catalog](https://aslns.online/session#plugins)
+- [Plugin catalog](https://aslns.online/session/plugins)
 - [Repository](https://github.com/amsoulness/amsoulness-md)
 - [Issues](https://github.com/amsoulness/amsoulness-md/issues)
 
@@ -305,13 +305,13 @@ The session page lives in the portfolio at [aslns.online/session](https://aslns.
 
 ## Deployment hub
 
-Open [aslns.online/session#deploy](https://aslns.online/session#deploy) for all hosting options:
+Open [aslns.online/session/deploy](https://aslns.online/session/deploy) for all hosting options:
 
 - **Render:** [the guided deployer](https://aslns.online/session/deploy/render) connects GitHub, verifies your Render key, creates a public deployment repository, provisions PostgreSQL (or uses your existing database), creates the bot service and tracks deployment status. An official Blueprint is also available. Free PostgreSQL expires after 30 days; review Render plans before approving.
 - **Koyeb:** a prefilled deployment link builds this repository using its Dockerfile. Supply SESSION, DATABASE_URL, and SUDO in Koyeb.
 - **VPS:** the Debian/Ubuntu installer at [deploy/install.sh](deploy/install.sh) uses Docker and a persistent SQLite volume. It refuses to overwrite an existing installation, container, or data volume.
 - **Panel:** download a start.js launcher from the hub, or use [deploy/start.cjs](deploy/start.cjs) as a template. Use a supported Node.js egg with Git and FFmpeg. SESSION can be supplied as a panel variable or optionally embedded in the generated file; keep that file private.
 
-The [plugin browser](https://aslns.online/session#plugins) includes six optional owner-only plugins. They live in extras/plugins and are installed into plugins by the bot's .install command. Do not run them directly from the extras directory. Contributions can be submitted through GitHub issues and appear after review.
+The [plugin browser](https://aslns.online/session/plugins) includes six optional owner-only plugins. They live in extras/plugins and are installed into plugins by the bot's .install command. Do not run them directly from the extras directory. Contributions can be submitted through GitHub issues and appear after review.
 
 Deployment verification: the Render Blueprint passes its official JSON Schema; shell syntax, panel generation and restart behavior, and plugin command behavior have automated checks. No real Render/Koyeb bot deployment or VPS/panel installation was performed during these checks.
