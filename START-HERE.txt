@@ -1,7 +1,10 @@
 AMSOULNESS / ASLNS
-Install Node.js compatible with package.json engines, FFmpeg and Yarn.
-Run yarn install --frozen-lockfile. Copy config.env.example to config.env and supply your valid WhatsApp session and owner number. Run npm start.
-Use .list for commands and .settings for configuration.
-This retains upstream session/provider services. A new independent pairing backend is not included.
-Automatic upstream updates default off. Do not enable them for this standalone copy.
-See CREDITS.txt and LICENSE for attribution.
+
+Get your session and choose your host at https://aslns.online/session
+The page includes QR/phone pairing, Render setup, Koyeb deployment, a VPS installer, panel start.js generation and optional plugins.
+
+Manual bot setup: install a supported Node.js version, Git, FFmpeg and Yarn. Run yarn install --frozen-lockfile. Copy config.env.example to config.env and supply a valid SESSION and your SUDO number. Run npm start.
+
+ASLNS sessions are imported directly by this bot; legacy sessions retain their upstream provider behavior. Automatic upstream updates default off.
+Keep sessions, config.env, and launchers containing embedded sessions private.
+See readme.md, TEST-RESULTS.txt, CREDITS.txt and LICENSE.
