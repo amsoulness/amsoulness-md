@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: amsoulness-md
+    runtime: docker
+    repo: https://github.com/amsoulness/amsoulness-md
+    branch: main
+    region: oregon
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeployTrigger: "off"
+    envVars:
+      - key: SESSION
+        sync: false
+      - key: SUDO
+        sync: false
+      - key: BOT_NAME
+        value: Amsoulness
+      - key: AUTO_UPDATE
+        value: "false"
+      - key: TZ
+        value: Asia/Kolkata
+      - key: PORT
+        value: "3000"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: amsoulness-db
+          property: connectionString
+databases:
+  - name: amsoulness-db
+    region: oregon
+    plan: free
+    databaseName: amsoulness
+    user: amsoulness
+    ipAllowList: []

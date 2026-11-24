@@ -14,3 +14,10 @@ PASS: 149 JavaScript syntax checks, 6 root tests, 4 pairing API tests.
 PASS: Railway Docker deployment and live WhatsApp QR generation, browser cancellation and invalid-phone validation.
 PASS: Portfolio TypeScript and production build; desktop, mobile and theme browser review.
 NOT RUN: Completing a real WhatsApp link or logging the bot in using a real exported ASLNS session; the account owner must approve linking.
+
+Deployment hub update:
+PASS: 12 root tests, 4 pairing API tests, 5 deployment-generator tests; 157 JavaScript syntax checks.
+PASS: Render Blueprint validates against https://render.com/schema/render.yaml.json.
+PASS: VPS installer Bash syntax; generated panel script parsing and mocked first-boot/restart checks.
+PASS: Portfolio production build; browser checks of Render steps, host tabs, plugin search, categories and copy confirmation.
+NOT RUN: Actual VPS/panel installation, real Render/Koyeb bot provisioning, and completed real-account linking. Docker is unavailable on this workstation. Browser download completion was not verified.
