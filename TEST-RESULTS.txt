@@ -21,3 +21,9 @@ PASS: Render Blueprint validates against https://render.com/schema/render.yaml.j
 PASS: VPS installer Bash syntax; generated panel script parsing and mocked first-boot/restart checks.
 PASS: Portfolio production build; browser checks of Render steps, host tabs, plugin search, categories and copy confirmation.
 NOT RUN: Actual VPS/panel installation, real Render/Koyeb bot provisioning, and completed real-account linking. Docker is unavailable on this workstation. Browser download completion was not verified.
+
+Guided Render deployer update:
+PASS: 11 pairing/deployer API tests, including simulated provider provisioning, OAuth state/cookie verification, one-use ticket exchange, expiry and secret redaction.
+PASS: Simulated browser journey through GitHub, Configure, Deploy and Done; no real provider resources created by this test.
+PASS: Portfolio production build and 5 deployment helper tests. Railway OAuth configuration enabled.
+NOT RUN: Real Render provisioning with a visitor's credentials or completed WhatsApp linking.
