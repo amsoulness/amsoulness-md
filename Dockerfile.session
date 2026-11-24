@@ -1,0 +1,10 @@
+FROM node:24-alpine
+RUN apk add --no-cache git
+WORKDIR /app/session-service
+COPY session-service/package*.json ./
+RUN npm ci --omit=dev
+COPY session-service/ ./
+COPY core/session-token.js /app/core/session-token.js
+ENV NODE_ENV=production
+USER node
+CMD ["node", "server.js"]

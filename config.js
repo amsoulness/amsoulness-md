@@ -25,9 +25,7 @@ const { sequelize, DATABASE_URL } = require("./core/db");
 
 const SESSION_STRING = process.env.SESSION || process.env.SESSION_ID;
 
-const SESSION = SESSION_STRING
-  ? SESSION_STRING.split(",").map((s) => s.split("~")[1].trim())
-  : [];
+const SESSION = require('./core/session-token').parseSessions(SESSION_STRING);
 
 const settingsMenu = require("./core/config/catalog").legacySettingsMenu();
 

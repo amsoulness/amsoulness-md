@@ -445,6 +445,13 @@ class CustomAuthState {
       );
     }
 
+    const localSession = require('./session-token').importedSession(this.sessionId);
+    if (localSession && this._parseLegacyFileMap(localSession, 'aslns-session')) {
+      this._validateAndCleanKeys();
+      await this._migrateToV3('aslns-session');
+      return;
+    }
+
     try {
       console.log(`- Fetching initial data for session ${this.sessionId}...`);
       const fileMap = await fetchInitialSession(this.sessionId);

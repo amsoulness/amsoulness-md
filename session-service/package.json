@@ -1,0 +1,8 @@
+{
+  "name": "aslns-session-service",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "start": "node server.js", "test": "node --test test/*.test.js" },
+  "engines": { "node": ">=24.15.0" },
+  "dependencies": { "baileys": "7.0.0-rc14", "pino": "^9.0.0", "qrcode": "^1.5.4" }
+}
