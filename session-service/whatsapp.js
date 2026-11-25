@@ -1,3 +1,4 @@
+const { sendSessionToSelf } = require('./self-session');
 const { requestConfirmedCode } = require('./pairing-code');
 const { encodeSession } = require('../core/session-token');
 
@@ -7,7 +8,7 @@ async function startPairing(record, changed) {
   const QRCode = require('qrcode');
   const creds = wa.initAuthCreds();
   const keys = new Map();
-  let socket, stopped = false, restarts = 0, pairRequested = false, readyTimer;
+  let socket, stopped = false, restarts = 0, pairRequested = false, finishing = false, readyTimer;
   const auth = {
     creds,
     keys: {
@@ -26,6 +27,7 @@ async function startPairing(record, changed) {
   };
   const fail = () => {
     if (stopped) return;
+    if (record.session) { record.state = 'ready'; changed(); dispose(); return; }
     record.state = 'error'; record.qr = undefined; record.code = undefined;
     record.error = record.method === 'code' ? 'WhatsApp rejected or expired this pairing request. Check the phone number matches your WhatsApp account, then request a fresh code. You can also connect using QR.' : 'WhatsApp could not complete this request. Start a new connection and try again.';
     changed(); dispose();
@@ -62,13 +64,17 @@ async function startPairing(record, changed) {
           if (stopped) return;
           record.state = 'waiting'; changed();
         }
-        if (update.connection === 'open') {
+        if (update.connection === 'open' && !finishing) {
+          finishing = true;
           record.state = 'finishing'; record.qr = undefined; record.code = undefined; changed();
-          readyTimer = setTimeout(() => {
+          readyTimer = setTimeout(async () => {
             try {
               const files = { 'creds.json': JSON.stringify(creds, wa.BufferJSON.replacer) };
               for (const [key, value] of keys) files[`${key}.json`] = JSON.stringify(value, wa.BufferJSON.replacer);
-              record.session = encodeSession(files); record.state = 'ready'; record.phone = undefined; changed(); dispose();
+              record.session = encodeSession(files); record.state = 'ready'; record.phone = undefined; changed();
+              // Website success is independent of best-effort WhatsApp delivery.
+              if (!stopped && !record.cancelled) await sendSessionToSelf(socket, record.session);
+              dispose();
             } catch { fail(); }
           }, 1500);
         }
