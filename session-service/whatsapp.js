@@ -1,3 +1,4 @@
+const { requestConfirmedCode } = require('./pairing-code');
 const { encodeSession } = require('../core/session-token');
 
 async function startPairing(record, changed) {
@@ -25,7 +26,8 @@ async function startPairing(record, changed) {
   };
   const fail = () => {
     if (stopped) return;
-    record.state = 'error'; record.error = 'WhatsApp could not complete this request. Start a new connection and try again.';
+    record.state = 'error'; record.qr = undefined; record.code = undefined;
+    record.error = record.method === 'code' ? 'WhatsApp rejected or expired this pairing request. Check the phone number matches your WhatsApp account, then request a fresh code. You can also connect using QR.' : 'WhatsApp could not complete this request. Start a new connection and try again.';
     changed(); dispose();
   };
   function dispose() {
@@ -38,9 +40,10 @@ async function startPairing(record, changed) {
   record.dispose = dispose;
   // The caller may have cancelled while dependencies loaded.
   if (record.cancelled) { dispose(); return; }
+  const browser = record.method === 'code' ? wa.Browsers.windows('Chrome') : ['Amsoulness', 'Chrome', '1.0.0'];
   const connect = () => {
     if (stopped) return;
-    socket = wa.default({ auth, logger: pino({ level: 'silent' }), browser: ['Amsoulness', 'Chrome', '1.0.0'], syncFullHistory: false, shouldSyncHistoryMessage: () => false, markOnlineOnConnect: false, connectTimeoutMs: 30000, defaultQueryTimeoutMs: 30000 });
+    socket = wa.default({ auth, logger: pino({ level: 'silent' }), browser, syncFullHistory: false, shouldSyncHistoryMessage: () => false, markOnlineOnConnect: false, connectTimeoutMs: 30000, defaultQueryTimeoutMs: 30000 });
     socket.ev.on('creds.update', update => Object.assign(creds, update));
     socket.ev.on('connection.update', update => {
       void (async () => {
@@ -54,7 +57,8 @@ async function startPairing(record, changed) {
           pairRequested = true;
           // Wait for the initial QR stanza so the socket is ready for code requests.
           if (!update.qr) { pairRequested = false; return; }
-          record.code = await socket.requestPairingCode(record.phone);
+          record.code = await requestConfirmedCode(socket, record.phone, wa, browser);
+          record.expiresAt = Math.min(record.expiresAt, Date.now() + 180000);
           if (stopped) return;
           record.state = 'waiting'; changed();
         }
