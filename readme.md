@@ -18,6 +18,8 @@ Inspired by and based on [Raganork-MD](https://github.com/souravkl11/raganork-md
 | Understand the session service | [Service source](session-service/) · [Service Dockerfile](Dockerfile.session) |
 | Review deployment settings | [Render blueprint](render.yaml) · [Bot Dockerfile](Dockerfile) |
 
+[Read the Amsoulness Wiki](https://github.com/amsoulness/amsoulness-md/wiki) — plugin development, advanced commands and AI plugin guides.
+
 ## Updated to 7.4.1
 
 Synced with upstream commit `0aa5750644a890189371583af428ce6fa8e5b73b` on 26 November 2026. Amsoulness keeps its own menu artwork, owner defaults, portable `ASLNS~` sessions, Render updater and project links. LICENSE is unchanged. Upstream notices are in [NOTICE](NOTICE).
