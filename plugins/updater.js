@@ -131,7 +131,7 @@ Module(
       }
     } catch (error) {
       console.error("Update error:", error);
-      return await edit("_An error occurred while checking for updates._");
+      return await edit("_The update could not finish. On Render, open your service, choose Manual Deploy, then Clear build cache & deploy. This rebuilds the bot from GitHub._");
     }
   }
 );
