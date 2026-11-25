@@ -1,3 +1,10 @@
+// Upgrade inherited stock branding while preserving custom names and images.
+function normalizeBotInfo(value) {
+  const parts = value.split(';');
+  if (/^raganork(?:-md)?$/i.test((parts[0] || '').trim())) parts[0] = 'Amsoulness';
+  if (/^ryzen$/i.test((parts[1] || '').normalize('NFKC').trim())) parts[1] = 'Amsoulness';
+  return parts.join(';');
+}
 // typed registry of known config keys; unknown keys are treated as session-scoped strings.
 // only keys already used as booleans/numbers are typed; the rest stay raw strings because
 // their readers (and gist plugins) compare or split them as strings.
@@ -38,7 +45,7 @@ const entries = {
   PMB: { type: "string", default: "_Personal messages not allowed, BLOCKED!_" },
   READ_COMMAND: { type: "bool", default: true },
   RG: { type: "string", default: "919074309534-1632403322@g.us,120363116963909366@g.us" },
-  BOT_INFO: { type: "string", default: "Amsoulness;𝖱𝗒𝗓𝖾𝗇;default" },
+  BOT_INFO: { type: "string", default: "Amsoulness;Amsoulness;default", normalize: normalizeBotInfo },
   RBG_KEY: { type: "string", default: "" },
   ALLOWED: { type: "string", default: "91,94,2" },
   NOT_ALLOWED: { type: "string", default: "852" },

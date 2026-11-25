@@ -84,7 +84,7 @@ SESSION=YOUR_FIRST_VALID_SESSION,YOUR_SECOND_VALID_SESSION
 # Bot Configuration
 BOT_NAME=Amsoulness
 STICKER_DATA=Amsoulness ASLNS
-BOT_INFO=Amsoulness;ASLNS;default
+BOT_INFO=Amsoulness;Amsoulness;default
 AUTO_UPDATE=false
 HANDLERS=.,!
 SUDO=919876543210
@@ -111,7 +111,7 @@ Set these in `config.env`, or from WhatsApp with `.setvar KEY=VALUE` (no restart
 | `SUDO` | | numbers allowed to use the bot like the owner (manage with `.setsudo`) |
 | `LANGUAGE` | `english` | `english`, `manglish` or `turkish` (restart needed) |
 | `BOT_NAME` | `amsoulness` | bot name |
-| `BOT_INFO` | `Amsoulness;𝖱𝗒𝗓𝖾𝗇;default` | `name;owner;image url`, also set with `.setinfo` |
+| `BOT_INFO` | `Amsoulness;Amsoulness;default` | `name;owner;image url`, also set with `.setinfo` |
 | `ALIVE` | | reply for `.alive` (see `.setalive help`) |
 | `BUTTONS` | `false` | interactive buttons, experimental |
 | `DISABLED_COMMANDS` | | comma-separated commands to turn off |

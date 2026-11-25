@@ -98,11 +98,11 @@ function get(key) {
   const accountId = sessionAccount(key);
   if (accountId) {
     const values = sessionOverrides.get(accountId);
-    if (values?.has(key)) return values.get(key);
+    if (values?.has(key)) return key === "BOT_INFO" ? coerce(key, values.get(key)) : values.get(key);
   }
-  if (overrides.has(key)) return overrides.get(key);
-  if (key in base) return base[key];
-  if (typeof key === "string" && process.env[key] !== undefined) return process.env[key];
+  if (overrides.has(key)) return key === "BOT_INFO" ? coerce(key, overrides.get(key)) : overrides.get(key);
+  if (key in base) return key === "BOT_INFO" ? coerce(key, base[key]) : base[key];
+  if (typeof key === "string" && process.env[key] !== undefined) return key === "BOT_INFO" ? coerce(key, process.env[key]) : process.env[key];
   return undefined;
 }
 
