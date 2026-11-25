@@ -4,7 +4,9 @@
   <a href="https://aslns.online/session"><img src="assets/readme/banner.svg" alt="Amsoulness bot — ASLNS WhatsApp framework" width="420" /></a>
 </p>
 
-A lightweight WhatsApp bot framework with multi-session support and extensive configuration options. Amsoulness / ASLNS is a standalone, rebranded distribution based on Raganork-MD. See CREDITS.txt for attribution.
+A lightweight WhatsApp bot framework with multi-session support and extensive configuration options.
+
+Inspired by and based on [Raganork-MD](https://github.com/souravkl11/raganork-md) by Sourav K.
 
 ## Where to start
 
@@ -316,7 +318,7 @@ amsoulness-md/
 
 ## License
 
-GPL-3.0-or-later. See [LICENSE](LICENSE) and [CREDITS.txt](CREDITS.txt). Based on [Raganork-MD](https://github.com/souravkl11/raganork-md) by Sourav K.
+GPL-3.0-or-later. See [LICENSE](LICENSE), [NOTICE](NOTICE), and [CREDITS.txt](CREDITS.txt).
 
 ---
 
