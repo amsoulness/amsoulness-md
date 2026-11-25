@@ -1,4 +1,5 @@
 const config = require("../../config");
+const { isRevoked } = require("./features/revoke-guard");
 
 const { logger, baileysLogger } = config;
 
@@ -6,7 +7,15 @@ const { logger, baileysLogger } = config;
 // WA_BROWSER=chrome keeps the old identity.
 const CHROME_VALUES = new Set(["chrome", "web", "browser"]);
 const isAndroidBrowser = () => !CHROME_VALUES.has(String(config.WA_BROWSER || "").trim().toLowerCase());
-const browserFor = () => (isAndroidBrowser() ? ["13", "Android", ""] : ["amsoulness", "Chrome", "1.0.0"]);
+const CHROME_BROWSER = ["Amsoulness", "Chrome", "1.0.0"];
+const browserFor = () => (isAndroidBrowser() ? ["13", "Android", ""] : CHROME_BROWSER);
+
+// whatsapp refuses a code link from an unknown os
+const PAIRING_BROWSER = ["Windows", "Chrome", "Chrome 114.0.5735.198"];
+const linkingBrowser = (bot) => {
+  if (bot.authState.isLinked?.() !== false) return null;
+  return bot.loginMethod?.type === "pairing" ? PAIRING_BROWSER : CHROME_BROWSER;
+};
 
 function buildSocketOptions(bot, version) {
   return {
@@ -17,7 +26,7 @@ function buildSocketOptions(bot, version) {
     ...(version ? { version } : {}),
     logger: baileysLogger.child({ session: bot.sessionId }),
     // read inside the session: a .setvar value is only visible there
-    browser: bot.inSession(browserFor),
+    browser: linkingBrowser(bot) || bot.inSession(browserFor),
     cachedGroupMetadata: (jid) => {
       const cached = bot.groupCache.get(jid);
       if (cached) {
@@ -29,7 +38,7 @@ function buildSocketOptions(bot, version) {
       return cached;
     },
     getMessage: async (key) => {
-      if (!key || !key.remoteJid || !key.id) {
+      if (!key || !key.remoteJid || !key.id || isRevoked(bot, key.id)) {
         return undefined;
       }
       const cacheKey = `${key.remoteJid}_${key.id}`;
@@ -62,7 +71,7 @@ function buildSocketOptions(bot, version) {
         messageTimestamp: timestamp,
       };
     },
-  
+
   };
 }
 

@@ -2,9 +2,12 @@ const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const { spawn } = require("child_process");
 // jimp is heavy: required inside the functions that use it
 const webp = require("node-webpmux");
 const { getBuffer } = require("./misc");
+const { getString } = require("./lang");
+const Lang = getString("utils");
 const axios = require("axios");
 const {
   getTempSubdir,
@@ -17,7 +20,7 @@ async function addExif(media, metadata) {
 
   const img = new webp.Image();
   const json = {
-    "sticker-pack-id": `github.com/souravkl11/amsoulness`,
+    "sticker-pack-id": `github.com/amsoulness/amsoulness-md`,
     "sticker-pack-name": metadata.packname,
     "sticker-pack-publisher": metadata.author,
     emojis: metadata.categories || [""],
@@ -76,7 +79,7 @@ const STICKER_FILTER =
 
 async function circle(message) {
   if (!message.reply_message) {
-    return await message.sendReply("Reply to a sticker or photo");
+    return await message.sendReply(Lang.CIRCLE_NEED);
   }
 
   await withDownload(message.reply_message, async (savedFile) => {
@@ -123,41 +126,70 @@ async function blur(file, count = 5) {
 const attp = (text) => require("../../core/private").attp(text);
 
 // wa freezes animated stickers past ~500kb
-const MAX_ANIMATED_STICKER = 490 * 1024;
+const MAX_ANIMATED_STICKER = (Number(process.env.STICKER_MAX_KB) || 490) * 1024;
 const VIDEO_STICKER_STEPS = [
-  { q: 65, fps: 15, secs: 10, size: 512 },
-  { q: 50, fps: 12, secs: 8, size: 512 },
-  { q: 35, fps: 10, secs: 6, size: 512 },
-  { q: 25, fps: 10, secs: 5, size: 384 },
-  { q: 15, fps: 8, secs: 4, size: 320 },
+  { q: 50, fps: 20, secs: 10, size: 512 },
+  { q: 35, fps: 20, secs: 10, size: 512 },
+  { q: 30, fps: 20, secs: 10, size: 448 },
+  { q: 25, fps: 20, secs: 8, size: 384 },
+  { q: 20, fps: 15, secs: 6, size: 384 },
+  { q: 15, fps: 15, secs: 5, size: 320 },
 ];
 
 const MAX_STICKER_SECS = 30;
 const FULL_LENGTH_STEPS = [
-  { q: 50, fps: 12, size: 512 },
-  { q: 40, fps: 10, size: 512 },
-  { q: 30, fps: 8, size: 448 },
-  { q: 20, fps: 6, size: 384 },
-  { q: 15, fps: 5, size: 320 },
+  { q: 50, fps: 20, size: 512 },
+  { q: 35, fps: 20, size: 448 },
+  { q: 25, fps: 20, size: 384 },
+  { q: 20, fps: 15, size: 384 },
+  { q: 15, fps: 15, size: 320 },
+  { q: 10, fps: 12, size: 288 },
+  { q: 5, fps: 10, size: 224 },
+  { q: 5, fps: 8, size: 192 },
 ].map((step) => ({ ...step, secs: MAX_STICKER_SECS }));
 
 const fitFilter = (size) =>
-  `scale=${size}:${size}:flags=lanczos:force_original_aspect_ratio=decrease,format=rgba,pad=512:512:(ow-iw)/2:(oh-ih)/2:color=#00000000,setsar=1`;
+  `scale=${size}:${size}:flags=lanczos:force_original_aspect_ratio=decrease,format=rgba,pad=${size}:${size}:(ow-iw)/2:(oh-ih)/2:color=#00000000,setsar=1`;
 
-function encodeVideoSticker(file, { q, fps, secs, size }) {
+const SAMPLE_SECS = 2;
+
+function encodeVideoSticker(file, { q, fps, secs, size }, start = 0) {
+  const command = ffmpeg(file);
+  if (start) command.seekInput(start);
   return runFfmpeg(
-    ffmpeg(file)
+    command
       .duration(secs)
       .noAudio()
       .videoFilters(`fps=${fps},${fitFilter(size)}`)
-      .outputOptions(["-y", "-vcodec libwebp", "-lossless 0", `-q:v ${q}`, "-compression_level 4", "-loop 0"]),
+      .outputOptions(["-y", "-vcodec libwebp", "-lossless 0", `-q:v ${q}`, "-compression_level 2", "-loop 0"]),
     uniqueTempPath("st.webp"),
   );
 }
 
+// predicts each step's full size from a short sample so only one full encode is usually needed
+async function predictStep(file, steps, duration) {
+  const start = Math.max(0, duration / 2 - SAMPLE_SECS / 2);
+  const fits = async (step) => {
+    const path = await encodeVideoSticker(file, { ...step, secs: SAMPLE_SECS }, start);
+    const size = fs.statSync(path).size;
+    fs.unlink(path, () => {});
+    return (size / SAMPLE_SECS) * Math.min(duration, step.secs) <= MAX_ANIMATED_STICKER * 0.9;
+  };
+  let lo = 0, hi = steps.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (await fits(steps[mid])) hi = mid;
+    else lo = mid + 1;
+  }
+  return lo;
+}
+
 async function fitSteps(file, steps) {
+  const duration = await probeDuration(file).catch(() => 0);
+  const predicted = duration > SAMPLE_SECS * 3 ? await predictStep(file, steps, duration) : 0;
   let best = null;
-  for (let i = 0; i < steps.length; ) {
+  let i = predicted;
+  for (; i < steps.length; i++) {
     const path = await encodeVideoSticker(file, steps[i]);
     const size = fs.statSync(path).size;
     if (!best || size < best.size) {
@@ -167,7 +199,16 @@ async function fitSteps(file, steps) {
       fs.unlink(path, () => {});
     }
     if (size <= MAX_ANIMATED_STICKER) break;
-    i += size > MAX_ANIMATED_STICKER * 2 ? 2 : 1;
+  }
+  if (i === predicted && i > 0 && best.size < MAX_ANIMATED_STICKER * 0.75) {
+    const path = await encodeVideoSticker(file, steps[i - 1]);
+    const size = fs.statSync(path).size;
+    if (size <= MAX_ANIMATED_STICKER) {
+      fs.unlink(best.path, () => {});
+      best = { path, size, secs: steps[i - 1].secs };
+    } else {
+      fs.unlink(path, () => {});
+    }
   }
   return best;
 }
@@ -181,14 +222,42 @@ async function videoSticker(file, { fullLength = false } = {}) {
   return fitSteps(file, VIDEO_STICKER_STEPS);
 }
 
+function isWebpFile(file) {
+  const fd = fs.openSync(file, "r");
+  try {
+    const head = Buffer.alloc(12);
+    const read = fs.readSync(fd, head, 0, 12, 0);
+    return read === 12 && head.toString("ascii", 0, 4) === "RIFF" && head.toString("ascii", 8, 12) === "WEBP";
+  } finally {
+    fs.closeSync(fd);
+  }
+}
+
 async function sticker(file, type = "image") {
+  // ffmpeg can't decode animated WebP (exit 69, frame=0)
+  if (isWebpFile(file)) {
+    await webp.Image.initLib();
+    const img = new webp.Image();
+    await img.load(file);
+    if (!img.hasAnim) {
+      type = "image";
+    } else {
+      const mp4 = uniqueTempPath("st.mp4");
+      try {
+        await webp2mp4(file, mp4);
+        return (await videoSticker(mp4, { fullLength: true })).path;
+      } finally {
+        fs.unlink(mp4, () => {});
+      }
+    }
+  }
   if (type !== "video") {
     return runFfmpeg(
       ffmpeg(file).outputOptions(["-y", "-vcodec libwebp"]).videoFilters(STICKER_FILTER),
       uniqueTempPath("st.webp"),
     );
   }
-  return (await videoSticker(file)).path;
+  return (await videoSticker(file, { fullLength: true })).path;
 }
 
 async function rotate(video, angle) {
@@ -288,9 +357,9 @@ const MAX_INTERP_SECONDS = 30;
 
 async function interpolationLimit(file) {
   const seconds = await probeDuration(file).catch(() => null);
-  if (seconds === null) return "_Could not read this video_";
+  if (seconds === null) return Lang.CANT_READ_VIDEO;
   if (seconds > MAX_INTERP_SECONDS)
-    return `_Video is ${Math.round(seconds)}s long. Motion interpolation is limited to ${MAX_INTERP_SECONDS}s because it needs a lot of CPU. Trim the video first._`;
+    return Lang.INTERP_TOO_LONG.format(Math.round(seconds), MAX_INTERP_SECONDS);
   return null;
 }
 
@@ -326,6 +395,67 @@ async function stagingDir(kind, key) {
   return dir;
 }
 
+function compositeFrame(canvas, width, rgba, fr) {
+  const x0 = fr.x * 2, y0 = fr.y * 2;
+  for (let y = 0; y < fr.height; y++) {
+    for (let x = 0; x < fr.width; x++) {
+      const s = (y * fr.width + x) * 4, d = ((y0 + y) * width + x0 + x) * 4;
+      const a = rgba[s + 3];
+      if (!fr.blend || a === 255) {
+        canvas[d] = rgba[s]; canvas[d + 1] = rgba[s + 1]; canvas[d + 2] = rgba[s + 2]; canvas[d + 3] = a;
+      } else if (a) {
+        const k = a / 255;
+        for (let c = 0; c < 3; c++) canvas[d + c] = rgba[s + c] * k + canvas[d + c] * (1 - k);
+        canvas[d + 3] = a + canvas[d + 3] * (1 - k);
+      }
+    }
+  }
+}
+
+function clearRect(canvas, width, fr) {
+  const x0 = fr.x * 2, y0 = fr.y * 2;
+  for (let y = 0; y < fr.height; y++) canvas.fill(0, ((y0 + y) * width + x0) * 4, ((y0 + y) * width + x0 + fr.width) * 4);
+}
+
+function webpFrameRate(frames) {
+  const avg = frames.reduce((sum, f) => sum + (f.delay || 100), 0) / frames.length;
+  return Math.min(30, Math.max(1, Math.round(1000 / avg)));
+}
+
+async function webpToMp4Local(inputPath, outputPath) {
+  await webp.Image.initLib();
+  const img = new webp.Image();
+  await img.load(inputPath);
+  if (!img.hasAnim) throw new Error("not an animated webp");
+  const { width, height, frames } = img;
+  const fps = webpFrameRate(frames);
+  const canvas = Buffer.alloc(width * height * 4);
+  const proc = spawn(process.env.FFMPEG_PATH || "ffmpeg", [
+    "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", `${width}x${height}`, "-r", String(fps), "-i", "pipe:0",
+    "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2", "-c:v", "libx264", "-preset", "veryfast", "-threads", "1",
+    "-pix_fmt", "yuv420p", "-movflags", "+faststart", outputPath,
+  ], { stdio: ["pipe", "ignore", "pipe"] });
+  let stderr = "";
+  proc.stderr.on("data", (d) => (stderr = (stderr + d).slice(-500)));
+  const exited = new Promise((resolve, reject) => {
+    proc.on("error", reject);
+    proc.on("close", (code) => (code === 0 ? resolve() : reject(new Error(`ffmpeg exited ${code}: ${stderr}`))));
+  });
+  const write = (buf) => new Promise((resolve, reject) => proc.stdin.write(buf, (err) => (err ? reject(err) : resolve())));
+  try {
+    for (let i = 0; i < frames.length; i++) {
+      const fr = frames[i];
+      compositeFrame(canvas, width, await img.getFrameData(i), fr);
+      const repeat = Math.max(1, Math.round(((fr.delay || 100) * fps) / 1000));
+      for (let r = 0; r < repeat; r++) await write(canvas);
+      if (fr.dispose) clearRect(canvas, width, fr);
+    }
+  } finally {
+    proc.stdin.end();
+  }
+  await exited;
+}
+
 async function webp2mp4(inputPath, outputPath, options = {}) {
   if (!inputPath || !outputPath) {
     throw new Error("Input path and output path are required.");
@@ -336,6 +466,16 @@ async function webp2mp4(inputPath, outputPath, options = {}) {
   const outputDir = path.dirname(outputPath);
   if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
+  try {
+    return await webpToMp4Local(inputPath, outputPath).then(() => true);
+  } catch (err) {
+    console.error("local webp to mp4 failed, using api:", err.message);
+  }
+  if (!options.framerate) {
+    const img = new webp.Image();
+    await img.load(inputPath);
+    if (img.hasAnim) options = { ...options, framerate: webpFrameRate(img.frames) };
+  }
   const mp4 = await require("../../core/private").webpToMp4(inputPath, options);
   await fs.promises.writeFile(outputPath, mp4);
   return true;

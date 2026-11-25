@@ -24,7 +24,9 @@ const entries = {
   ANTI_SPAM: { type: "string", default: "919074309534-1632403322@g.us" },
   MULTI_HANDLERS: { type: "bool", default: false },
   AUTO_LIKE_STATUS: { type: "bool", default: false },
+  STATUS_LIKE_EMOJI: { type: "string", default: "❤️" },
   DISABLE_START_MESSAGE: { type: "bool", default: false },
+  DISABLE_EVAL: { type: "bool", default: "" },
   BUTTONS: { type: "bool", default: false },
   NOLOG: { type: "string", default: false, scope: "global" },
   DISABLED_COMMANDS: {
@@ -32,6 +34,7 @@ const entries = {
     default: [],
     env: (raw) => (raw ? raw.split(",") : []),
   },
+  ALIASES: { type: "string", default: "" },
   ANTI_BOT: { type: "string", default: "" },
   ANTISPAM_COUNT: { type: "string", default: "6/10" },
   AUTOUNMUTE_MSG: { type: "string", default: "_Group auto unmuted!_\n_(edit AUTOUNMUTE_MSG)_" },
@@ -53,6 +56,8 @@ const entries = {
   HANDLERS: { type: "string", default: ".," },
   STICKER_DATA: { type: "string", default: "amsoulness" },
   BOT_NAME: { type: "string", default: "amsoulness" },
+  FORCE_STICKER_DATA: { type: "bool", default: false },
+
   AUDIO_DATA: {
     type: "string",
     default: "default",

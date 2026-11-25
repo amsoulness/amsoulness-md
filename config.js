@@ -25,7 +25,7 @@ const { sequelize, DATABASE_URL } = require("./core/db");
 
 const SESSION_STRING = process.env.SESSION || process.env.SESSION_ID;
 
-const SESSION = require('./core/session-token').parseSessions(SESSION_STRING);
+const { SESSION, LOCAL_SESSIONS, LOGIN_METHODS } = require('./core/session-config').parseSessionConfig(SESSION_STRING);
 
 const settingsMenu = require("./core/config/catalog").legacySettingsMenu();
 
@@ -45,6 +45,8 @@ const baseConfig = {
   settingsMenu,
 
   SESSION,
+  LOCAL_SESSIONS,
+  LOGIN_METHODS,
   logger,
   baileysLogger,
   sequelize,

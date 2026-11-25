@@ -47,7 +47,7 @@ function createServer(manager) {
       res.end(JSON.stringify(buildStatus(manager)));
     } else {
       res.writeHead(200, { "Content-Type": "text/plain" });
-      res.end("amsoulness Bot is running!");
+      res.end("Amsoulness Bot is running!");
     }
   });
 }
@@ -58,7 +58,7 @@ async function boot() {
   ensureTempDir();
   startTempSweeper();
   logger.info(`Created temporary directory at ${TEMP_DIR}`);
-  console.log(`amsoulness v${require("../package.json").version}`);
+  console.log(`Amsoulness v${require("../package.json").version}`);
   console.log(`- Configured sessions: ${SESSION.join(", ")}\n- For multiple sessions, set SESSION=session1,session2,session3`);
   logger.info(`Configured sessions: ${SESSION.join(", ")}`);
   if (SESSION.length === 0) {

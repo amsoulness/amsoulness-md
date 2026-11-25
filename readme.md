@@ -6,6 +6,21 @@
 
 A lightweight WhatsApp bot framework with multi-session support and extensive configuration options. Amsoulness / ASLNS is a standalone, rebranded distribution based on Raganork-MD. See CREDITS.txt for attribution.
 
+## Updated to 7.4.1
+
+Synced with upstream commit `0aa5750644a890189371583af428ce6fa8e5b73b` on 26 November 2026. Amsoulness keeps its own menu artwork, owner defaults, portable `ASLNS~` sessions, Render updater and project links. LICENSE is unchanged. Upstream notices are in [NOTICE](NOTICE).
+
+New features and fixes:
+- `.hatch` adds another bot by QR or pairing code from chat; `.hatch list` and `.hatch remove <n>` manage saved bots.
+- `.alias` manages command aliases; use the command without arguments for its help.
+- Local logins support `SESSION=qr:personal,pair:work` and `PAIRING_NUMBER` for pair logins. Existing ASLNS session strings still work and can be mixed with local sessions.
+- Added Indonesian, Brazilian Portuguese, Hinglish, Chinese and Spanish, alongside English, Manglish and Turkish.
+- Channel support, custom status-reaction emoji and `DISABLE_EVAL` configuration.
+- `FORCE_STICKER_DATA` applies your configured sticker pack consistently.
+- Audio/video sticker conversion, YouTube/media processing, ghost-message and hatch pairing fixes.
+
+To apply this release on Render, use **Manual Deploy → Clear build cache & deploy**. After it is live, `.menu` should display `7.4.1`.
+
 ## Get Started
 
 #### 1. Get Your Session String

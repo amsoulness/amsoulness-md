@@ -1,557 +1,917 @@
 const { commands, Module } = require("../main");
+
 const { VERSION } = require("../config");
+
 const config = require("../config");
+
 const { helpPrefix, commandName } = require("../core/plugins/registry");
+
 const os = require("os");
+
 const path = require("path");
+
 const fs = require("fs");
+
 const { uploadToImgbb } = require("./utils/upload");
+
 const { bytesToSize } = require("./utils/misc");
+
 const { setVar } = require("./manage");
+
 const { getTotalUserCount } = require("../core/store");
+
 const { parseAliveMessage, sendAliveMessage } = require("./utils/alive-parser");
+
+const { getString } = require("./utils/lang");
+
+const Lang = getString("commands");
+
+// optional CAT_<USE> keys translate category names in .menu/.list
+
+const category = (use) => Lang[`CAT_${use.toUpperCase()}`] || use;
+
+
+
 
 
 const retrieveCommandDetails = (name) => {
+
   const foundCommand = commands.find(
+
     (cmd) => cmd.pattern && commandName(cmd) === name.toLowerCase()
+
   );
+
   if (!foundCommand) return null;
+
   return {
+
     name: name.toLowerCase(),
+
     ...foundCommand,
+
   };
+
 };
 
+
+
 Module(
+
   {
+
     pattern: "info ?(.*)",
-    desc: "Gives command information",
+
+    desc: Lang.INFO_DESC,
+
   },
+
   async (message, args) => {
+
     const requested = args[1]?.trim();
+
     if (!requested) {
+
       return await message.sendReply(
-        `_Please provide a command name. Example: ${helpPrefix()}info insta_`
+
+        Lang.INFO_NEED.format(helpPrefix())
+
       );
+
     }
+
+
 
     const commandDetails = retrieveCommandDetails(requested);
+
     if (!commandDetails) {
+
       return await message.sendReply(
-        `_Command '${requested}' not found. Please check the spelling._`
+
+        Lang.INFO_NOT_FOUND.format(requested)
+
       );
+
     }
 
-    let infoMessage = `*───「 Command Details 」───*\n\n`;
-    infoMessage += `• *Command:* \`${commandDetails.name}\`\n`;
-    infoMessage += `• *Description:* ${commandDetails.desc || "N/A"}\n`;
-    infoMessage += `• *Owner Command:* ${
-      commandDetails.fromMe ? "Yes" : "No"
-    }\n`;
-    if (commandDetails.use) infoMessage += `• *Type:* ${commandDetails.use}\n`;
+
+
+    let infoMessage = Lang.INFO_HEADER;
+
+    infoMessage += Lang.INFO_COMMAND.format(commandDetails.name);
+
+    infoMessage += Lang.INFO_DESCRIPTION.format(commandDetails.desc || Lang.NA);
+
+    infoMessage += Lang.INFO_OWNER.format(commandDetails.fromMe ? Lang.YES : Lang.NO);
+
+    if (commandDetails.use) infoMessage += Lang.INFO_TYPE.format(category(commandDetails.use));
+
     if (commandDetails.usage)
-      infoMessage += `• *Usage:* ${helpPrefix()}${commandDetails.name} ${commandDetails.usage}\n`;
+
+      infoMessage += Lang.INFO_USAGE.format(`${helpPrefix()}${commandDetails.name} ${commandDetails.usage}`);
+
     if (commandDetails.warn)
-      infoMessage += `• *Warning:* ${commandDetails.warn}\n`;
+
+      infoMessage += Lang.INFO_WARNING.format(commandDetails.warn);
+
+
 
     await message.sendReply(infoMessage);
+
   }
+
 );
 
+
+
 Module(
+
   {
+
     pattern: "list ?(.*)",
+
     excludeFromCommands: true,
+
   },
+
   async (message, args) => {
+
     const availableCommands = commands.filter(
+
       (cmd) => !cmd.excludeFromCommands && cmd.pattern
+
     );
+
     const totalCommandCount = availableCommands.length;
 
+
+
     const categorizedCommands = {};
+
     availableCommands.forEach((cmd) => {
-      const category = cmd.use || "General";
+
+      const category = cmd.use || "general";
+
       if (!categorizedCommands[category]) {
+
         categorizedCommands[category] = [];
+
       }
+
       const name = commandName(cmd);
+
       if (name) {
+
         categorizedCommands[category].push({
+
           name,
+
           desc: cmd.desc,
+
           usage: cmd.usage,
+
           warn: cmd.warn,
+
         });
+
       }
+
     });
 
-    let responseMessage = `*Total Available Commands: ${totalCommandCount}*\n\n`;
+
+
+    let responseMessage = Lang.LIST_TOTAL.format(totalCommandCount);
+
     const handlerPrefix = helpPrefix();
 
-    for (const category in categorizedCommands) {
-      responseMessage += `*───「 ${category.toUpperCase()} 」───*\n\n`;
-      categorizedCommands[category].forEach((cmd) => {
+
+
+    for (const use in categorizedCommands) {
+
+      responseMessage += Lang.LIST_CATEGORY.format(category(use).toUpperCase());
+
+      categorizedCommands[use].forEach((cmd) => {
+
         responseMessage += `• \`${handlerPrefix}${cmd.name}\`\n`;
-        if (cmd.desc) responseMessage += `  _Description:_ ${cmd.desc}\n`;
-        if (cmd.usage) responseMessage += `  _Usage:_ ${cmd.usage}\n`;
-        if (cmd.warn) responseMessage += `  _Warning:_ ${cmd.warn}\n`;
+
+        if (cmd.desc) responseMessage += Lang.LIST_DESC.format(cmd.desc);
+
+        if (cmd.usage) responseMessage += Lang.LIST_USAGE.format(cmd.usage);
+
+        if (cmd.warn) responseMessage += Lang.LIST_WARNING.format(cmd.warn);
+
         responseMessage += "\n";
+
       });
+
     }
+
     await message.sendReply(responseMessage);
+
   }
+
 );
+
+
 
 async function parseAlive(message, aliveMessage) {
+
   if (!aliveMessage) {
-    const defaultAliveMessage = "I'm alive!";
+
+    const defaultAliveMessage = Lang.DEFAULT_ALIVE;
+
     return await message.sendReply(defaultAliveMessage);
+
   }
+
+
 
   if (aliveMessage.includes("$")) {
+
     const parsedMessage = await parseAliveMessage(aliveMessage, message);
+
     if (parsedMessage) {
+
       await sendAliveMessage(message, parsedMessage);
+
     } else {
+
       await message.sendReply(aliveMessage);
+
     }
+
   } else {
+
     await message.sendReply(aliveMessage);
+
   }
+
 }
 
+
+
 Module(
+
   {
+
     pattern: "alive",
-    desc: "Checks if the bot is alive.",
+
+    desc: Lang.ALIVE_DESC,
+
   },
+
   async (message, match) => {
+
     await parseAlive(message, config.ALIVE);
+
   }
+
 );
 
+
+
 Module(
+
   {
+
     pattern: "setalive ?(.*)",
+
     fromMe: true,
-    desc: "Sets the alive message for the bot with formatting options.",
-    usage:
-      ".setalive <message> (with placeholders)\n.setalive help (show formatting help)",
+
+    desc: Lang.SETALIVE_DESC,
+
+    usage: Lang.SETALIVE_USAGE,
+
     excludeFromCommands: true,
+
   },
+
   async (message, match) => {
+
     if (!match[1]) {
-      return await message.sendReply(`*Alive Message Setup*
 
-*Usage:*
-• \`${helpPrefix()}setalive <message>\` - Set alive message
-• \`${helpPrefix()}setalive help\` - Show detailed formatting help
-• \`${helpPrefix()}setalive get\` - View current alive message
-• \`${helpPrefix()}setalive del\` - Delete custom alive message
-• \`${helpPrefix()}testalive\` - Test current alive message
+      return await message.sendReply(Lang.SETALIVE_SETUP.replaceAll("{p}", helpPrefix()));
 
-*Quick Example:*
-\`${helpPrefix()}setalive Hey $user! $botname is online!
-_Version: $version_
-_Uptime: $uptime_
-_Users: $users_ $pp\`
-
-*Use \`${helpPrefix()}setalive help\` for all available placeholders.*`);
     }
+
+
 
     const input = match[1].toLowerCase();
 
+
+
     if (input === "help") {
-      const helpText = `*Alive Message Formatting Help*
 
-*Available Placeholders:*
+      const helpText = Lang.SETALIVE_HELP;
 
-*Bot Stats:*
-• \`$botname\` - Bot's display name
-• \`$owner\` - Bot owner name
-• \`$version\` - Bot version
-• \`$mode\` - Bot mode (private/public)
-• \`$server\` - Server OS
-• \`$uptime\` - Bot uptime
 
-*System Stats:*
-• \`$ram\` - Available RAM
-• \`$totalram\` - Total RAM
-• \`$users\` - Total users in database
-
-*User Info:*
-• \`$user\` - Sender's name
-• \`$number\` - Sender's number
-• \`$date\` - Current date
-• \`$time\` - Current time
-
-*Media Options:*
-• \`$pp\` - Sender's profile picture
-• \`$media:url\` - Custom image/video URL
-
-*Example Messages:*
-
-*Simple:*
-\`Hey $user! $botname is alive!\`
-
-*Detailed:*
-\`*$botname Status*
-_Hi $user!_
-*Stats:*
-• _Version: $version_
-• _Mode: $mode_
-• _Uptime: $uptime_
-• _Users: $users_
-• _RAM: $ram/$totalram_
-*Date:* _$date at $time_ $pp\`
-
-*With Custom Media:*
-\`$botname is online! $media:https://example.com/image.jpg\`
-
-*With Video (auto gif playback):*
-\`Bot status: Active! $media:https://example.com/video.mp4\`
-
-*Notes:*
-• Messages limited to 2000 characters
-• Videos auto-play as GIFs
-• \`$pp\` includes sender's profile picture
-• URLs in \`$media:\` must be direct links
-• Use quotes for multi-word messages`;
 
       return await message.sendReply(helpText);
+
     }
+
+
 
     if (input === "get") {
+
       const current = config.ALIVE;
+
       if (!current) {
+
         return await message.sendReply(
-          "_No custom alive message set! Using default message._"
+
+          Lang.ALIVE_NONE
+
         );
+
       }
+
       return await message.sendReply(
-        `*Current Alive Message:*\n\n${current}\n\n_Tip: Use_ \`${helpPrefix()}testalive\` _to test your message!_`
+
+        Lang.ALIVE_CURRENT.format(current).replaceAll("{p}", helpPrefix())
+
       );
+
     }
+
+
 
     if (input === "del" || input === "delete") {
+
       await setVar("ALIVE", "");
+
       return await message.sendReply(
-        "_Custom alive message deleted! Bot will use default message._"
+
+        Lang.ALIVE_DELETED
+
       );
+
     }
+
+
 
     const aliveMessage = match[1];
+
     if (aliveMessage.length > 2000) {
+
       return await message.sendReply(
-        "_Alive message is too long! Please keep it under 2000 characters._"
+
+        Lang.ALIVE_TOO_LONG
+
       );
+
     }
+
+
 
     await setVar("ALIVE", aliveMessage);
+
     return await message.sendReply(
-      `_Alive message set successfully!_\n\n*Preview:*\n${aliveMessage}\n\n_Tip: Use_ \`${helpPrefix()}testalive\` _to test your message!_`
+
+      Lang.ALIVE_SET.format(aliveMessage).replaceAll("{p}", helpPrefix())
+
     );
+
   }
+
 );
 
+
+
 Module(
+
   {
+
     pattern: "menu",
+
     use: "utility",
-    desc: "Displays the bot command menu.",
+
+    desc: Lang.MENU_DESC,
+
   },
+
   async (message, match) => {
+
     const stars = ["✦", "✯", "✯", "✰", "◬"];
+
     const star = stars[Math.floor(Math.random() * stars.length)];
 
+
+
     let types = [
+
       ...new Set(
-        commands.filter((e) => e.pattern).map((e) => e.use || "General")
+
+        commands.filter((e) => e.pattern).map((e) => e.use || "general")
+
       ),
+
     ];
 
+
+
     let cmd_obj = {};
+
     for (const command of commands) {
-      let type_det = command.use || "General";
+
+      let type_det = command.use || "general";
+
       if (!cmd_obj[type_det]?.length) cmd_obj[type_det] = [];
+
       let cmd_name = commandName(command);
+
       if (cmd_name) cmd_obj[type_det].push(cmd_name);
+
     }
+
+
 
     let final = "";
+
     let i = 0;
+
     const handlerPrefix = helpPrefix();
+
     for (const n of types) {
+
       for (const x of cmd_obj[n]) {
+
         i = i + 1;
-        const newn = n.charAt(0).toUpperCase() + n.slice(1);
+
+        const label = category(n);
+
+        const newn = label.charAt(0).toUpperCase() + label.slice(1);
+
         final += `${
+
           final.includes(newn) ? "" : "\n\n╭════〘 *_`" + newn + "`_* 〙════⊷❍"
+
         }\n┃${star}│ _\`${i}.\` ${handlerPrefix}${x.trim()}_${
+
           cmd_obj[n]?.indexOf(x) === cmd_obj[n]?.length - 1
+
             ? `\n┃${star}╰─────────────────❍\n╰══════════════════⊷❍`
+
             : ""
+
         }`;
+
       }
+
     }
+
+
 
     let cmdmenu = final.trim();
+
     const used = bytesToSize(os.freemem());
+
     const total = bytesToSize(os.totalmem());
+
     const totalUsers = await getTotalUserCount();
+
     const infoParts = config.BOT_INFO.split(";");
-    const botName = infoParts[0] || "My Bot";
-    const botOwner = infoParts[1] || "N/A";
+
+    const botName = infoParts[0] || Lang.MY_BOT;
+
+    const botOwner = infoParts[1] || Lang.NA;
+
     const botVersion = VERSION;
+
     let botImageLink = infoParts[2] || "";
+
     if (botImageLink === "default") {
+
       botImageLink = path.join(__dirname, "utils", "images", "default.png");
+
     }
 
-    const menu = `╭═══〘 \`${botName}\` 〙═══⊷❍
-┃${star}╭──────────────
-┃${star}│
-┃${star}│ _*\`Owner\`*_ : ${botOwner}
-┃${star}│ _*\`User\`*_ : ${(message.senderName || "").replace(/[\r\n]+/gm, "")}
-┃${star}│ _*\`Mode\`*_ : ${config.MODE}
-┃${star}│ _*\`Server\`*_ : ${os.platform() === "linux" ? "Linux" : "Unknown OS"}
-┃${star}│ _*\`Available RAM\`*_ : ${used} of ${total}
-┃${star}│ _*\`Total Users\`*_ : ${totalUsers}
-┃${star}│ _*\`Version\`*_ : ${botVersion}
-┃${star}│
-┃${star}│
-┃${star}│  ▎▍▌▌▉▏▎▌▉▐▏▌▎
-┃${star}│  ▎▍▌▌▉▏▎▌▉▐▏▌▎
-┃${star}│   ${botName}
-┃${star}│
-┃${star}╰───────────────
-╰═════════════════⊷
 
-${cmdmenu}`;
+
+    const fill = {
+
+      name: botName,
+
+      star,
+
+      owner: botOwner,
+
+      user: (message.senderName || "").replace(/[\r\n]+/gm, ""),
+
+      mode: config.MODE,
+
+      server: os.platform() === "linux" ? "Linux" : Lang.UNKNOWN_OS,
+
+      used,
+
+      total,
+
+      users: totalUsers,
+
+      version: botVersion,
+
+      commands: cmdmenu,
+
+    };
+
+    const menu = Lang.MENU.replace(/\{(\w+)\}/g, (all, key) => (key in fill ? fill[key] : all));
+
     try {
+
       if (
+
         botImageLink === path.join(__dirname, "utils", "images", "default.png")
+
       ) {
+
         await message.client.sendMessage(message.jid, {
+
           image: fs.readFileSync(botImageLink),
+
           caption: menu,
+
         });
+
       } else {
+
         await message.client.sendMessage(message.jid, {
+
           image: { url: botImageLink },
+
           caption: menu,
+
         });
+
       }
+
     } catch (error) {
+
       console.error("Error sending menu:", error);
+
       await message.client.sendMessage(message.jid, {
+
         text: menu,
+
       });
+
     }
+
   }
+
 );
+
 Module(
+
   {
+
     pattern: "games ?(.*)",
-    desc: "Lists all available games",
+
+    desc: Lang.GAMES_DESC,
+
   },
+
   async (message, args) => {
+
     const gameCommands = commands.filter(
+
       (cmd) => cmd.use === "game" && cmd.pattern
+
     );
+
     if (!gameCommands.length) {
-      return await message.sendReply("_No games are installed._");
+
+      return await message.sendReply(Lang.NO_GAMES);
+
     }
+
     const handlerPrefix = helpPrefix();
-    let response = `*───「 Available Games 」───*\n\n`;
+
+    let response = Lang.GAMES_HEADER;
+
     gameCommands.forEach((cmd) => {
+
       const name = commandName(cmd);
+
       if (name) {
-        response += `• *Command:* \`${handlerPrefix}${name}\`\n`;
-        response += `• *Description:* ${cmd.desc || "N/A"}\n`;
-        if (cmd.use) response += `• *Type:* ${cmd.use}\n`;
-        if (cmd.usage) response += `• *Usage:* ${cmd.usage}\n`;
-        if (cmd.warn) response += `• *Warning:* ${cmd.warn}\n`;
+
+        response += Lang.INFO_COMMAND.format(handlerPrefix + name);
+
+        response += Lang.INFO_DESCRIPTION.format(cmd.desc || Lang.NA);
+
+        if (cmd.use) response += Lang.INFO_TYPE.format(category(cmd.use));
+
+        if (cmd.usage) response += Lang.INFO_USAGE.format(cmd.usage);
+
+        if (cmd.warn) response += Lang.INFO_WARNING.format(cmd.warn);
+
         response += "\n";
+
       }
+
     });
+
     await message.sendReply(response);
+
   }
+
 );
 
+
+
 Module(
+
   {
+
     pattern: "setinfo ?(.*)",
+
     fromMe: true,
-    desc: "Shows info about bot configuration commands.",
+
+    desc: Lang.SETINFO_DESC,
+
     use: "settings",
+
   },
+
   async (message, match) => {
-    const infoText = `*───「 Bot Info Configuration 」───*
 
-_Instead of using \`${helpPrefix()}setinfo\`, use these individual commands:_
+    const infoText = Lang.SETINFO.replaceAll("{p}", helpPrefix());
 
-*Bot Name:*
-- Command: \`${helpPrefix()}setname <name>\`
-- Example: \`${helpPrefix()}setname amsoulness\`
-- Description: _Sets the bot's display name_
 
-*Bot Owner:*
-- Command: \`${helpPrefix()}setowner <owner>\`
-- Example: \`${helpPrefix()}setowner John\`
-- Description: _Sets the bot owner name_
-
-*Bot Image:*
-- Command: \`${helpPrefix()}setimage\`
-- Usage: _Reply to an image with \`${helpPrefix()}setimage\`_
-- Description: _Sets the bot's profile image_
-
-*Current Format:*
-_Bot info is stored as: \`name;owner;imagelink\`_
-
-*Tips:*
-- _Use \`default\` as image to use local default image_
-- _Changes are saved automatically_
-- _Use \`${helpPrefix()}menu\` to see the updated info_`;
 
     return await message.sendReply(infoText);
+
   }
+
 );
 
+
+
 Module(
+
   {
+
     pattern: "setname ?(.*)",
+
     fromMe: true,
-    desc: "Sets the bot name",
+
+    desc: Lang.SETNAME_DESC,
+
     use: "settings",
+
   },
+
   async (message, match) => {
+
     const name = match[1]?.trim();
+
     if (!name)
-      return await message.sendReply(`_Provide a name: ${helpPrefix()}setname amsoulness_`);
+
+      return await message.sendReply(Lang.SETNAME_NEED.format(helpPrefix()));
+
     const parts = config.BOT_INFO.split(";");
+
     parts[0] = name;
+
     await setVar("BOT_INFO", parts.join(";"));
+
     return await message.sendReply(
-      `_Bot name updated successfully!_\n\n*New Name:* ${name}`
+
+      Lang.SETNAME_DONE.format(name)
+
     );
+
   }
+
 );
 
+
+
 Module(
+
   {
+
     pattern: "setowner ?(.*)",
+
     fromMe: true,
-    desc: "Sets the bot owner",
+
+    desc: Lang.SETOWNER_DESC,
+
     use: "settings",
+
   },
+
   async (message, match) => {
+
     const owner = match[1]?.trim();
+
     if (!owner)
-      return await message.sendReply(`_Provide owner: ${helpPrefix()}setowner OwnerName_`);
+
+      return await message.sendReply(Lang.SETOWNER_NEED.format(helpPrefix()));
+
     const parts = config.BOT_INFO.split(";");
+
     parts[1] = owner;
+
     await setVar("BOT_INFO", parts.join(";"));
+
     return await message.sendReply(
-      `_Bot owner updated successfully!_\n\n*New Owner:* ${owner}`
+
+      Lang.SETOWNER_DONE.format(owner)
+
     );
+
   }
+
 );
 
+
+
 Module(
+
   {
+
     pattern: "setimage",
+
     fromMe: true,
-    desc: "Sets the bot image (reply to image)",
+
+    desc: Lang.SETIMAGE_DESC,
+
     use: "settings",
+
   },
+
   async (message, match) => {
+
     if (!message.reply_message || !message.reply_message.image) {
-      return await message.sendReply(`_Reply to an image with ${helpPrefix()}setimage_`);
+
+      return await message.sendReply(Lang.SETIMAGE_NEED.format(helpPrefix()));
+
     }
 
+
+
     try {
+
       const downloadedFile = await message.reply_message.download();
+
+
 
       const uploadRes = await uploadToImgbb(downloadedFile);
 
+
+
       try {
+
         fs.unlinkSync(downloadedFile);
+
       } catch (e) {
+
         console.log("Failed to delete temp file:", downloadedFile);
+
       }
+
+
 
       const url = uploadRes.url || uploadRes.display_url;
+
       if (!url) {
-        return await message.sendReply("_Image upload failed._");
+
+        return await message.sendReply(Lang.UPLOAD_FAILED);
+
       }
 
+
+
       const parts = config.BOT_INFO.split(";");
+
       parts[2] = url;
+
       await setVar("BOT_INFO", parts.join(";"));
+
       return await message.sendReply(
-        `_Bot image updated successfully!_\n\n*New Image URL:* ${url}`
+
+        Lang.SETIMAGE_DONE.format(url)
+
       );
+
     } catch (error) {
+
       console.error("Error setting image:", error);
+
       return await message.sendReply(
-        "_Failed to set image. Please try again._"
+
+        Lang.SETIMAGE_FAILED
+
       );
+
     }
+
   }
+
 );
+
 Module(
+
   {
+
     pattern: "testalive",
+
     fromMe: true,
-    desc: "Test the current alive message with formatting.",
+
+    desc: Lang.TESTALIVE_DESC,
+
     usage: ".testalive",
+
     use: "utility",
+
   },
+
   async (message, match) => {
+
     const aliveMessage = config.ALIVE;
 
+
+
     if (!aliveMessage) {
+
       return await message.sendReply(
-        "*Testing Default Alive Message:*\nI'm alive!"
+
+        Lang.TEST_DEFAULT
+
       );
+
     }
 
-    await message.sendReply("*Testing Alive Message:*");
+
+
+    await message.sendReply(Lang.TESTING);
+
     await parseAlive(message, aliveMessage);
+
   }
+
 );
 
+
+
 Module(
+
   {
+
     pattern: "mem",
+
     fromMe: true,
-    desc: "Show memory usage of the bot process",
+
+    desc: Lang.MEM_DESC,
+
     use: "system",
+
   },
+
   async (message) => {
+
     const mb = (n) => (n / 1024 / 1024).toFixed(1) + " MB";
+
     const m = process.memoryUsage();
+
     const { CustomAuthState } = require("../core/auth");
+
     const sessions = Object.entries(CustomAuthState.getStats())
+
       .map(([, s], i) => `  session ${i + 1}: ${s.keys} keys, ${s.pendingWrites} pending`)
+
       .join("\n");
+
     const handles =
+
       typeof process._getActiveHandles === "function"
+
         ? process._getActiveHandles().length
+
         : "n/a";
+
     await message.sendReply(
+
       "```" +
+
         `rss        : ${mb(m.rss)}\n` +
+
         `heap used  : ${mb(m.heapUsed)} / ${mb(m.heapTotal)}\n` +
+
         `external   : ${mb(m.external)}\n` +
+
         `buffers    : ${mb(m.arrayBuffers)}\n` +
+
         `uptime     : ${Math.round(process.uptime() / 60)} min\n` +
+
         `handles    : ${handles}\n` +
+
         `sessions   :\n${sessions || "  none"}` +
+
         "```",
+
     );
+
   },
+
 );
