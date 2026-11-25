@@ -5,6 +5,11 @@ const lifecycle = require("./lifecycle");
 const platform = require("./platform");
 const { ownerTarget } = require("./identity");
 const cron = require("node-cron");
+const configStore = require('./config/store');
+const sendPromotion = require('./services/promotions').createPromotionSender({
+  get: key => config[key],
+  save: (key, value) => configStore.set(key, value, { persist: true }),
+});
 
 const {
   automute,
@@ -382,6 +387,7 @@ function startUpdateChecker() {
 const Schedule = async (client, sessionId = client?.user?.id || "default") => {
   const existing = sessions.get(sessionId);
   if (existing?.presenceTimer) clearInterval(existing.presenceTimer);
+  if (existing?.promotionTimer) clearInterval(existing.promotionTimer);
 
   const session = context.current();
   const presenceTimer = setInterval(
@@ -389,7 +395,13 @@ const Schedule = async (client, sessionId = client?.user?.id || "default") => {
     PRESENCE_INTERVAL,
   );
   presenceTimer.unref?.();
-  sessions.set(sessionId, { client, presenceTimer, session });
+  const promotionTimer = setInterval(() => {
+    if (!session?.accountId) return;
+    context.run(session, () => sendPromotion(client, session.accountId))
+      .catch(() => console.error('Amsoulness private reminder could not be sent.'));
+  }, 30000);
+  promotionTimer.unref?.();
+  sessions.set(sessionId, { client, presenceTimer, promotionTimer, session });
 
   await rebuild(sessionId, { force: true });
 
@@ -400,6 +412,7 @@ Schedule.cleanup = async (sessionId) => {
   if (sessionId !== undefined) {
     const entry = sessions.get(sessionId);
     if (entry?.presenceTimer) clearInterval(entry.presenceTimer);
+    if (entry?.promotionTimer) clearInterval(entry.promotionTimer);
     sessions.delete(sessionId);
     signatures.delete(sessionId);
     destroyTasks(sessionId);
@@ -407,6 +420,7 @@ Schedule.cleanup = async (sessionId) => {
   }
   for (const entry of sessions.values()) {
     if (entry.presenceTimer) clearInterval(entry.presenceTimer);
+    if (entry.promotionTimer) clearInterval(entry.promotionTimer);
   }
   sessions.clear();
   signatures.clear();

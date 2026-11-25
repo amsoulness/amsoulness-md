@@ -330,3 +330,9 @@ Open [aslns.online/session/deploy](https://aslns.online/session/deploy) for all 
 The [plugin browser](https://aslns.online/session/plugins) includes six optional owner-only plugins. They live in extras/plugins and are installed into plugins by the bot's .install command. Do not run them directly from the extras directory. Contributions can be submitted through GitHub issues and appear after review.
 
 Deployment verification: the Render Blueprint passes its official JSON Schema; shell syntax, panel generation and restart behavior, and plugin command behavior have automated checks. No real Render/Koyeb bot deployment or VPS/panel installation was performed during these checks.
+
+### Private Amsoulness reminders
+
+Each linked bot sends its own account two private website/bot promotions daily at **10:00 AM and 6:00 PM Asia/Kolkata (IST)** while online. They never target groups, contacts or the SUDO list. Slot claims are saved in the database before sending to prevent duplicates on reconnect/restart; missed times are not replayed. Sending is best effort, so a failed request is not retried for that slot.
+
+Disable per account with `.setvar PROMO_MESSAGES=false`; enable with `.setvar PROMO_MESSAGES=true`. This also appears in `.settings`.
