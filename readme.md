@@ -6,6 +6,16 @@
 
 A lightweight WhatsApp bot framework with multi-session support and extensive configuration options. Amsoulness / ASLNS is a standalone, rebranded distribution based on Raganork-MD. See CREDITS.txt for attribution.
 
+## Where to start
+
+| Your task | Open |
+| --- | --- |
+| Configure a first installation | [Configuration template](config.env.example) |
+| Explore a command before changing it | [Command plugins](plugins/) |
+| Trace how messages reach plugins | [Processing pipeline](core/pipeline/) |
+| Understand the session service | [Service source](session-service/) · [Service Dockerfile](Dockerfile.session) |
+| Review deployment settings | [Render blueprint](render.yaml) · [Bot Dockerfile](Dockerfile) |
+
 ## Updated to 7.4.1
 
 Synced with upstream commit `0aa5750644a890189371583af428ce6fa8e5b73b` on 26 November 2026. Amsoulness keeps its own menu artwork, owner defaults, portable `ASLNS~` sessions, Render updater and project links. LICENSE is unchanged. Upstream notices are in [NOTICE](NOTICE).
