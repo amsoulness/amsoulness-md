@@ -313,7 +313,7 @@ async function checkUpdates() {
       const platform = detectPlatform();
       const autoUpdateSupported = supportsAutoUpdate();
 
-      let changelog = `*_UPDATE AVAILABLE_*\n\nYour current version: *${localVersion}*\nNew version: *${remoteVersion}*\n\n`;
+      let changelog = `*_AMSOULNESS UPDATE AVAILABLE_*\n\nYour current version: *${localVersion}*\nNew version: *${remoteVersion}*\n\n`;
 
       let fetchedGitChangelog = false;
       try {
@@ -350,7 +350,7 @@ async function checkUpdates() {
       } else {
         const platformName =
           platform.charAt(0).toUpperCase() + platform.slice(1);
-        changelog += `\n\n_⚠️ Auto-update not supported on ${platformName}. Please update manually._\n_For help, join: ${config.SUPPORT_GROUP}_`;
+        changelog += `\n\n_⚠️ Auto-update not supported on ${platformName}. Please update manually._\n_Help: https://github.com/amsoulness/amsoulness-md/issues_`;
       }
 
       // mark first so a failing socket cannot loop git fetch forever

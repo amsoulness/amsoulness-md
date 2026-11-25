@@ -5,8 +5,6 @@ const { CustomAuthState } = require("../auth");
 const configStore = require("../config/store");
 const { flushQueueOnShutdown, stopFlushTimer } = require("../store");
 const { ownerTarget } = require("../identity");
-const { createAnnouncementFeed } = require("../private");
-const { version } = require("../../package.json");
 
 const RECENT_ANNOUNCEMENTS = 50;
 
@@ -22,17 +20,8 @@ class BotManager {
     }
 
     onSessionStateChange() {
-        if (!this.feed) {
-            if (this.connectedBots().length === 0) return;
-            this.feed = createAnnouncementFeed({
-                version,
-                getSessionCount: () => this.connectedBots().length,
-                onAnnouncement: (text, id) => this.broadcastAnnouncement(text, id),
-                onError: (err) => logger.debug({ err: err?.message || err }, 'announcement feed error'),
-            });
-            return;
-        }
-        this.feed.refresh();
+        // Amsoulness does not subscribe to upstream promotional announcements.
+        // Project links are delivered by our local startup message instead.
     }
 
     async broadcastAnnouncement(text, id) {

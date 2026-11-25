@@ -17,12 +17,13 @@ const prefixOf = (cfg) =>
 function buildStartMessage(config) {
   const p = prefixOf(config);
   return (
-    `*_amsoulness started!_*\n\n` +
+    `*_Amsoulness started!_*\n\n` +
     `_Version:_ *v${version}*\n` +
     `_Mode:_ *${capitalizeFirstLetter(config.MODE || "private")}*\n` +
     `_Language:_ *${capitalizeFirstLetter(config.LANGUAGE || "english")}*\n` +
     `_Handlers:_ *${config.HANDLERS || "none"}*\n\n` +
-    `_Use_ \`${p}settings\` _to view and change all options._`
+    `_Use_ \`${p}settings\` _to view and change all options._` +
+    `\n\n_Plugins:_ https://aslns.online/session/plugins\n_Website:_ https://aslns.online\n_Support:_ https://github.com/amsoulness/amsoulness-md/issues`
   );
 }
 
