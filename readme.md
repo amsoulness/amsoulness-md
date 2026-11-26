@@ -350,3 +350,7 @@ Deployment verification: the Render Blueprint passes its official JSON Schema; s
 Each linked bot sends its own account two private website/bot promotions daily at **10:00 AM and 6:00 PM Asia/Kolkata (IST)** while online. They never target groups, contacts or the SUDO list. Slot claims are saved in the database before sending to prevent duplicates on reconnect/restart; missed times are not replayed. Sending is best effort, so a failed request is not retried for that slot.
 
 Disable per account with `.setvar PROMO_MESSAGES=false`; enable with `.setvar PROMO_MESSAGES=true`. This also appears in `.settings`.
+
+### Amsoulness command centre
+
+`.menu` shows a compact Amsoulness dashboard with account details, shortcuts and category previews. `.list` opens the detailed command directory; `.list media` filters it by category. Descriptions, usage and warnings remain available, and long directories are split into readable messages. Hidden commands are omitted. Installed plugins appear automatically.

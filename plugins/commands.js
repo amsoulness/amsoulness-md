@@ -1,3 +1,4 @@
+const { commandGroups, formatMenu, formatList } = require('../core/menu-design');
 const { commands, Module } = require("../main");
 
 const { VERSION } = require("../config");
@@ -136,77 +137,9 @@ Module(
 
   async (message, args) => {
 
-    const availableCommands = commands.filter(
-
-      (cmd) => !cmd.excludeFromCommands && cmd.pattern
-
-    );
-
-    const totalCommandCount = availableCommands.length;
-
-
-
-    const categorizedCommands = {};
-
-    availableCommands.forEach((cmd) => {
-
-      const category = cmd.use || "general";
-
-      if (!categorizedCommands[category]) {
-
-        categorizedCommands[category] = [];
-
-      }
-
-      const name = commandName(cmd);
-
-      if (name) {
-
-        categorizedCommands[category].push({
-
-          name,
-
-          desc: cmd.desc,
-
-          usage: cmd.usage,
-
-          warn: cmd.warn,
-
-        });
-
-      }
-
-    });
-
-
-
-    let responseMessage = Lang.LIST_TOTAL.format(totalCommandCount);
-
-    const handlerPrefix = helpPrefix();
-
-
-
-    for (const use in categorizedCommands) {
-
-      responseMessage += Lang.LIST_CATEGORY.format(category(use).toUpperCase());
-
-      categorizedCommands[use].forEach((cmd) => {
-
-        responseMessage += `• \`${handlerPrefix}${cmd.name}\`\n`;
-
-        if (cmd.desc) responseMessage += Lang.LIST_DESC.format(cmd.desc);
-
-        if (cmd.usage) responseMessage += Lang.LIST_USAGE.format(cmd.usage);
-
-        if (cmd.warn) responseMessage += Lang.LIST_WARNING.format(cmd.warn);
-
-        responseMessage += "\n";
-
-      });
-
-    }
-
-    await message.sendReply(responseMessage);
+    const groups = commandGroups(commands, commandName, category);
+    const pages = formatList(groups, helpPrefix(), args[1] || '');
+    for (const page of pages) await message.sendReply(page);
 
   }
 
@@ -392,78 +325,8 @@ Module(
 
   async (message, match) => {
 
-    const stars = ["✦", "✯", "✯", "✰", "◬"];
-
-    const star = stars[Math.floor(Math.random() * stars.length)];
-
-
-
-    let types = [
-
-      ...new Set(
-
-        commands.filter((e) => e.pattern).map((e) => e.use || "general")
-
-      ),
-
-    ];
-
-
-
-    let cmd_obj = {};
-
-    for (const command of commands) {
-
-      let type_det = command.use || "general";
-
-      if (!cmd_obj[type_det]?.length) cmd_obj[type_det] = [];
-
-      let cmd_name = commandName(command);
-
-      if (cmd_name) cmd_obj[type_det].push(cmd_name);
-
-    }
-
-
-
-    let final = "";
-
-    let i = 0;
-
+    const groups = commandGroups(commands, commandName, category);
     const handlerPrefix = helpPrefix();
-
-    for (const n of types) {
-
-      for (const x of cmd_obj[n]) {
-
-        i = i + 1;
-
-        const label = category(n);
-
-        const newn = label.charAt(0).toUpperCase() + label.slice(1);
-
-        final += `${
-
-          final.includes(newn) ? "" : "\n\n╭════〘 *_`" + newn + "`_* 〙════⊷❍"
-
-        }\n┃${star}│ _\`${i}.\` ${handlerPrefix}${x.trim()}_${
-
-          cmd_obj[n]?.indexOf(x) === cmd_obj[n]?.length - 1
-
-            ? `\n┃${star}╰─────────────────❍\n╰══════════════════⊷❍`
-
-            : ""
-
-        }`;
-
-      }
-
-    }
-
-
-
-    let cmdmenu = final.trim();
-
     const used = bytesToSize(os.freemem());
 
     const total = bytesToSize(os.totalmem());
@@ -488,34 +351,11 @@ Module(
 
 
 
-    const fill = {
-
-      name: botName,
-
-      star,
-
-      owner: botOwner,
-
-      user: (message.senderName || "").replace(/[\r\n]+/gm, ""),
-
-      mode: config.MODE,
-
-      server: os.platform() === "linux" ? "Linux" : Lang.UNKNOWN_OS,
-
-      used,
-
-      total,
-
-      users: totalUsers,
-
-      version: botVersion,
-
-      commands: cmdmenu,
-
-    };
-
-    const menu = Lang.MENU.replace(/\{(\w+)\}/g, (all, key) => (key in fill ? fill[key] : all));
-
+    const seconds = Math.floor(process.uptime());
+    const uptime = `${Math.floor(seconds / 3600)}h ${Math.floor(seconds % 3600 / 60)}m`;
+    const menu = formatMenu({ groups, prefix: handlerPrefix, name: botName, owner: botOwner,
+      user: message.senderName, mode: config.MODE, version: botVersion, uptime,
+      ram: `${used} / ${total}`, users: totalUsers });
     try {
 
       if (
