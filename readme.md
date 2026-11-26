@@ -354,3 +354,5 @@ Disable per account with `.setvar PROMO_MESSAGES=false`; enable with `.setvar PR
 ### Amsoulness command centre
 
 `.menu` shows a compact Amsoulness dashboard with account details, shortcuts and category previews. `.list` opens the detailed command directory; `.list media` filters it by category. Descriptions, usage and warnings remain available, and long directories are split into readable messages. Hidden commands are omitted. Installed plugins appear automatically.
+
+`.menu` and `.list` include a lightweight four-second looping Amsoulness header with violet/cyan waves and drifting particles. Command text is sent separately so it remains selectable. Custom menu images keep their existing behavior. Disable the animation through `.settings` or `.setvar MENU_ANIMATIONS=false`. If video delivery fails, the commands retain their image/text fallback.

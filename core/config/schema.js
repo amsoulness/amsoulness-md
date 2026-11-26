@@ -72,6 +72,7 @@ const entries = {
   SUDO: { type: "string", default: "" },
   LANGUAGE: { type: "string", default: "english", scope: "global", restart: true },
   AUTO_UPDATE: { type: "bool", default: false, scope: "global" },
+  MENU_ANIMATIONS: { type: "bool", default: true },
   PROMO_MESSAGES: { type: "bool", default: true },
   SUPPORT_GROUP: { type: "string", default: "" },
   MAX_RECONNECT_ATTEMPTS: { type: "int", default: 10, scope: "global" },

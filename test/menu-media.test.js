@@ -1,0 +1,4 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const {sendAnimatedHeader}=require('../core/menu-media');
+test('menu header is a looping MP4 with a short caption',async()=>{let payload;assert.equal(await sendAnimatedHeader({sendMessage:async(jid,body)=>{assert.equal(jid,'test-chat');payload=body}},'test-chat','Amsoulness'),true);assert.equal(payload.gifPlayback,true);assert.equal(payload.mimetype,'video/mp4');assert.equal(payload.caption,'Amsoulness');assert.ok(Buffer.isBuffer(payload.video));assert.ok(payload.video.length<300000)});
+test('disabled animation makes no send request',async()=>{let sent=false;assert.equal(await sendAnimatedHeader({sendMessage:async()=>sent=true},'chat','caption',false),false);assert.equal(sent,false)});
+test('media failure returns fallback without throwing',async()=>{assert.equal(await sendAnimatedHeader({sendMessage:async()=>{throw new Error('media failed')}},'chat','caption'),false)});

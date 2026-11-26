@@ -1,4 +1,5 @@
-const { commandGroups, formatMenu, formatList } = require('../core/menu-design');
+const { sendAnimatedHeader } = require('../core/menu-media');
+const { commandGroups, formatMenu, formatList, paginate } = require('../core/menu-design');
 const { commands, Module } = require("../main");
 
 const { VERSION } = require("../config");
@@ -139,6 +140,7 @@ Module(
 
     const groups = commandGroups(commands, commandName, category);
     const pages = formatList(groups, helpPrefix(), args[1] || '');
+    await sendAnimatedHeader(message.client, message.jid, '*AMSOULNESS / COMMAND DIRECTORY*\nFind your next shortcut.', config.MENU_ANIMATIONS);
     for (const page of pages) await message.sendReply(page);
 
   }
@@ -356,6 +358,12 @@ Module(
     const menu = formatMenu({ groups, prefix: handlerPrefix, name: botName, owner: botOwner,
       user: message.senderName, mode: config.MODE, version: botVersion, uptime,
       ram: `${used} / ${total}`, users: totalUsers });
+    if (botImageLink === path.join(__dirname, "utils", "images", "default.png") &&
+        await sendAnimatedHeader(message.client, message.jid, '*AMSOULNESS / ASLNS*\nYour WhatsApp command centre.', config.MENU_ANIMATIONS)) {
+      for (const page of paginate(menu)) await message.sendReply(page);
+      return;
+    }
+
     try {
 
       if (
