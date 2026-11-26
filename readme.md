@@ -356,3 +356,11 @@ Disable per account with `.setvar PROMO_MESSAGES=false`; enable with `.setvar PR
 `.menu` shows a compact Amsoulness dashboard with account details, shortcuts and category previews. `.list` opens the detailed command directory; `.list media` filters it by category. Descriptions, usage and warnings remain available, and long directories are split into readable messages. Hidden commands are omitted. Installed plugins appear automatically.
 
 `.menu` and `.list` include a lightweight four-second looping Amsoulness header with violet/cyan waves and drifting particles. Command text is sent separately so it remains selectable. Custom menu images keep their existing behavior. Disable the animation through `.settings` or `.setvar MENU_ANIMATIONS=false`. If video delivery fails, the commands retain their image/text fallback.
+
+### Interactive arcade commands
+
+- `.mariorun` — play the bundled three-world Amsoulness runner directly in compatible WhatsApp chats.
+- `.beatstudio` — open the bundled drum-pad and sequencer app. `.beststuido` and `.beatstuido` also work.
+- `.mariorun file` / `.beatstudio file` — get the HTML document for browser use.
+
+Commands use the bot's normal public/private permissions and send only to the chat where they were invoked. Interactive HTML uses an experimental WhatsApp rich-response format; support varies by recipient client. If sending fails, the bot sends the HTML document instead. A successful send cannot confirm that the recipient rendered it. These apps are bundled locally; they do not download external scripts or audio.
