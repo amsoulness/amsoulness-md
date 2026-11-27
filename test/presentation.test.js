@@ -54,3 +54,7 @@ test('styled native messages survive the actual Baileys protobuf codec',async()=
  const styled=styleRelayMessage(original,{category:'utility',command:'menu'});const wire=proto.Message.encode(proto.Message.fromObject(styled)).finish();const decoded=proto.Message.decode(wire);const card=decoded.viewOnceMessage.message.interactiveMessage;
  assert.match(card.body.text,/ASLNS \/ QUICK TOOLS/);assert.match(card.footer.text,/Existing warning/);assert.equal(card.nativeFlowMessage.buttons[0].buttonParamsJson,params);
 });
+
+test('every translated update announcement uses Amsoulness identity',()=>{
+ for(const file of fs.readdirSync('plugins/utils/lang').filter(f=>f.endsWith('.json'))){const strings=JSON.parse(fs.readFileSync('plugins/utils/lang/'+file,'utf8')).STRINGS;assert.doesNotMatch(JSON.stringify(strings),/Raganork|raganork\.site/,file);}
+});

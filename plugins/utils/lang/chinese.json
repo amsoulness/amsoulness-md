@@ -1479,7 +1479,7 @@
       "ONWA_TOTAL": "_*=== 已注册号码总数 ===*_\n{}\n{}"
     },
     "start_message": {
-      "UPDATED": "*_Raganork 已更新到 v{}！_*",
+      "UPDATED": "*_Amsoulness 已更新到 v{}！_*",
       "BUTTONS_TIP": "\n\n💡 *新功能：交互按钮！*\n_无需输入，点一点就能浏览菜单和设置。发送_ `{p}settings BUTTONS on` _试试_\n_实验性功能。不需要？发送_ `{p}settings BUTTONS off` _此提示将不再显示。_"
     },
     "hatch": {

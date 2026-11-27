@@ -1479,7 +1479,7 @@
       "ONWA_TOTAL": "_*=== Total nomor terdaftar ===*_\n{}\n{}"
     },
     "start_message": {
-      "UPDATED": "*_Raganork diperbarui ke v{}!_*",
+      "UPDATED": "*_Amsoulness diperbarui ke v{}!_*",
       "BUTTONS_TIP": "\n\n💡 *Baru: tombol interaktif!*\n_Cukup ketuk menu dan pengaturan, tanpa mengetik. Coba dengan_ `{p}settings BUTTONS on`\n_Masih eksperimental. Tidak suka? Kirim_ `{p}settings BUTTONS off` _dan tips ini tidak muncul lagi._"
     },
     "hatch": {

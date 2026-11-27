@@ -1480,7 +1480,7 @@
       "ONWA_TOTAL": "_*=== Ella register cheytha numbers ===*_\n{}\n{}"
     },
     "start_message": {
-      "UPDATED": "*_Raganork v{} -lekku update aayi!_*",
+      "UPDATED": "*_Amsoulness v{} -lekku update aayi!_*",
       "BUTTONS_TIP": "\n\n💡 *Puthiya feature: interactive buttons!*\n_Type cheyyathe menus um settings um tap cheythu use cheyyam. Try cheyyan_ `{p}settings BUTTONS on`\n_Experimental aanu. Venda enkil_ `{p}settings BUTTONS off` _ayakku, pinne ee tip varilla._"
     },
     "hatch": {

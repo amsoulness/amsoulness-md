@@ -1484,7 +1484,7 @@
       "ONWA_TOTAL": "_*=== Toplam kayıtlı numara ===*_\n{}\n{}"
     },
     "start_message": {
-      "UPDATED": "*_Raganork v{} sürümüne güncellendi!_*",
+      "UPDATED": "*_Amsoulness v{} sürümüne güncellendi!_*",
       "BUTTONS_TIP": "\n\n💡 *Yeni: etkileşimli butonlar!*\n_Yazmak yerine menülerde ve ayarlarda dokunarak gezin. Denemek için:_ `{p}settings BUTTONS on`\n_Deneysel bir özellik. Sana göre değil mi? Gönder:_ `{p}settings BUTTONS off` _ve bu ipucu kaybolur._"
     },
     "hatch": {

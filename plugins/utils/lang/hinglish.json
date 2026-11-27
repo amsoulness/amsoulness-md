@@ -1479,7 +1479,7 @@
       "ONWA_TOTAL": "_*=== Kul registered numbers ===*_\n{}\n{}"
     },
     "start_message": {
-      "UPDATED": "*_Raganork v{} par update ho gaya!_*",
+      "UPDATED": "*_Amsoulness v{} par update ho gaya!_*",
       "BUTTONS_TIP": "\n\n💡 *Naya: interactive buttons!*\n_Type karne ki jagah menus aur settings mein tap karo. Try karo_ `{p}settings BUTTONS on`\n_Experimental hai. Pasand nahi? Bhejo_ `{p}settings BUTTONS off` _aur ye tip phir nahi dikhega._"
     },
     "hatch": {

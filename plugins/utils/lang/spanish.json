@@ -1479,7 +1479,7 @@
       "ONWA_TOTAL": "_*=== Total de números registrados ===*_\n{}\n{}"
     },
     "start_message": {
-      "UPDATED": "*_¡Raganork actualizado a v{}!_*",
+      "UPDATED": "*_¡Amsoulness actualizado a v{}!_*",
       "BUTTONS_TIP": "\n\n💡 *Nuevo: ¡botones interactivos!*\n_Navega por menús y ajustes con toques, sin escribir. Pruébalos con_ `{p}settings BUTTONS on`\n_Es experimental. ¿No te convence? Envía_ `{p}settings BUTTONS off` _y este aviso desaparece._"
     },
     "hatch": {
