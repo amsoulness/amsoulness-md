@@ -615,8 +615,7 @@
       "NO_FILES": "_Koi file nahi daali gayi_",
       "FAILED": "_PDF conversion fail ho gaya: {}_",
       "NO_ALBUM_IMAGES": "_Album mein koi image nahi hai (videos PDF mein convert nahi ho sakti)_",
-      "ADDING_ALBUM": "_{} album images PDF mein add ho rahi hain..._",
-      "ALBUM_SAVED": "_*{} album images successfully save ho gayi*_\n_*Total images ready. PDF banane ke liye '{p}pdf get' use karo!*_",
+      "MAKING_ALBUM_PDF": "_{} album images se PDF ban rahi hai..._",
       "SAVED": "*_Image successfully save ho gayi_*\n_*Total saved images: {}*_\n*_Saari images save karne ke baad result ke liye '{p}pdf get' use karo. Conversion ke baad images delete ho jayengi!_*",
       "NEED_IMAGE": "_PDF conversion ke liye image pe reply karo!_",
       "NEED_REPLY": "_Image pe reply karo, ya more information ke liye \"{p}pdf help\" use karo._"
@@ -640,6 +639,7 @@
       "RENDER_BETA": "_Beta update ke liye Render deploy shuru ho gaya!_",
       "RENDER": "_Render deploy shuru ho gaya!_",
       "KOYEB": "_Update ke liye hosted platform par jaake deploy dabao._",
+      "NEEDS_REDEPLOY": "_Is update ko naye modules chahiye, jo is host par install nahi ho sakte. Update paane ke liye hosting dashboard se bot ko redeploy karo._",
       "DIRTY": "_Update cancel. Ye files yahan change ki gayi hain, aur update inhe overwrite kar dega:_\n\n{}\n\n_Inhe revert karo, ya update karne ke liye \"{p}update {} force\" use karo._",
       "INSTALL_FAILED": "_Update ho gaya, lekin modules install nahi hue: {}_\n\n_Bot folder mein \"yarn install\" chalao, phir bot restart karo. Bot restart nahi hua hai._",
       "MOVED": "\n\n_Bot ab ye files ship karta hai, isliye aapki copies <name>.bak mein rename kar di gayi:_\n{}",
@@ -711,6 +711,7 @@
       "UNKNOWN": "_Unknown option: {}_"
     },
     "chatbot": {
+      "OWNER_NOTICE": "_⚠️ Chatbot ek chat mein reply nahi kar paya:_\n{}\n\n_Wo chats mein error bhejne ki jagah chup rehta hai. Ye notice zyada se zyada har 6 ghante mein aayega._",
       "NO_KEY_INLINE": "_❌ GEMINI_API_KEY set nahi hai. Ise `{}setvar GEMINI_API_KEY your_api_key` se set karo_",
       "DESC": "Gemini API ke saath AI Chatbot management - text aur image analysis support karta hai",
       "USAGE": ".chatbot - _Help menu dikhao_\n.chatbot on/off - _Current chat mein enable/disable_\n.chatbot on/off groups - _Sabhi groups mein enable/disable_\n.chatbot on/off dms - _Sabhi DMs mein enable/disable_\n.chatbot set \"prompt\" - _System prompt set karo_\n.chatbot clear - _Conversation context clear karo_\n_AI image analysis ke liye images pe reply karo_",
@@ -1478,6 +1479,7 @@
       "ONWA_TOTAL": "_*=== Kul registered numbers ===*_\n{}\n{}"
     },
     "start_message": {
+      "UPDATED": "*_Raganork v{} par update ho gaya!_*",
       "BUTTONS_TIP": "\n\n💡 *Naya: interactive buttons!*\n_Type karne ki jagah menus aur settings mein tap karo. Try karo_ `{p}settings BUTTONS on`\n_Experimental hai. Pasand nahi? Bhejo_ `{p}settings BUTTONS off` _aur ye tip phir nahi dikhega._"
     },
     "hatch": {

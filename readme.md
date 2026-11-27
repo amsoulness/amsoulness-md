@@ -393,3 +393,11 @@ Choose [Koyeb](https://aslns.online/session/deploy/koyeb) or [Heroku](https://as
 Koyeb uses one Free web instance only, subject to capacity and inactivity sleep. Heroku starts one **paid Basic dyno** only after explicit billing confirmation. No database add-ons are purchased. Monitor resources and build logs in your host dashboard; failed deployments do not automatically delete resources.
 
 After launch, the connected WhatsApp account can send `.redeploy`, `.update start` or `.update beta` to request a fresh host build of the latest main branch. These commands confirm build acceptance; completion is shown by your hosting provider. The saved variables are `KOYEB_API_KEY` (Koyeb injects `KOYEB_SERVICE_ID`) or `HEROKU_API_KEY` plus `HEROKU_APP_NAME`.
+
+### Automatic official upstream sync
+
+GitHub Actions checks the original repository approximately every six hours. Compatible bot changes are merged into Amsoulness, tested, and published to this repository automatically. LICENSE, NOTICE, documentation, automation, session-service code and custom-only files are preserved. Overlapping custom edits or failed tests stop publication; review the failed run in [Actions](https://github.com/amsoulness/amsoulness-md/actions/workflows/upstream-sync.yml). The workflow can also be run manually from that page.
+
+Repository sync and a running bot's update setting are separate. On your bot, use `.setvar AUTO_UPDATE=true` to enable automatic stable-version updates from **Amsoulness**, not directly from the original repository. Render needs its saved `RENDER_API_KEY` for a rebuild. Koyeb/Heroku can be rebuilt with `.redeploy`; host-side automatic deployment settings still apply. Conflicts require review rather than overwriting custom features.
+
+Last manually reviewed upstream baseline: **v7.4.6** (`5eb0cf2207faef5144e8bfe60f80a609530b6750`).

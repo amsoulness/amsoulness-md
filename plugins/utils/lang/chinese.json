@@ -615,8 +615,7 @@
       "NO_FILES": "_尚未添加任何文件_",
       "FAILED": "_PDF 转换失败：{}_",
       "NO_ALBUM_IMAGES": "_相册中没有图片（视频无法转换为 PDF）_",
-      "ADDING_ALBUM": "_正在将 {} 张相册图片添加到 PDF..._",
-      "ALBUM_SAVED": "_*已成功保存 {} 张相册图片*_\n_*图片已全部准备就绪。使用 '{p}pdf get' 生成 PDF！*_",
+      "MAKING_ALBUM_PDF": "_正在用 {} 张相册图片生成 PDF..._",
       "SAVED": "*_已成功保存图片_*\n_*已保存图片总数：{}*_\n*_保存所有图片后，使用 '{p}pdf get' 获取结果。转换后图片将被删除！_*",
       "NEED_IMAGE": "_回复一张图片以将其添加到 PDF 转换中！_",
       "NEED_REPLY": "_回复一张图片，或使用 \"{p}pdf help\" 查看更多信息。_"
@@ -640,6 +639,7 @@
       "RENDER_BETA": "_已为测试版更新启动 Render 部署！_",
       "RENDER": "_已启动 Render 部署！_",
       "KOYEB": "_请访问托管平台并点击部署以更新。_",
+      "NEEDS_REDEPLOY": "_此更新需要新的模块，但无法在此主机上安装。请在托管平台的控制台重新部署机器人以获取更新。_",
       "DIRTY": "_更新已取消。以下文件在本地已被修改，更新会覆盖它们：_\n\n{}\n\n_请还原这些文件，或使用 \"{p}update {} force\" 强制更新。_",
       "INSTALL_FAILED": "_已更新，但安装模块失败：{}_\n\n_请在机器人文件夹中运行 \"yarn install\"，然后重启机器人。机器人尚未重启。_",
       "MOVED": "\n\n_机器人现在自带这些文件，因此你的副本已重命名为 <name>.bak：_\n{}",
@@ -711,6 +711,7 @@
       "UNKNOWN": "_未知选项：{}_"
     },
     "chatbot": {
+      "OWNER_NOTICE": "_⚠️ 聊天机器人无法在某个聊天中回复：_\n{}\n\n_它会在聊天中保持沉默，而不是发送错误。此通知最多每 6 小时重复一次。_",
       "NO_KEY_INLINE": "_❌ 未配置 GEMINI_API_KEY。请使用 `{}setvar GEMINI_API_KEY your_api_key` 进行设置_",
       "DESC": "使用 Gemini API 的 AI 聊天机器人管理 - 支持文本和图片分析",
       "USAGE": ".chatbot - _显示帮助菜单_\n.chatbot on/off - _在当前聊天中启用/禁用_\n.chatbot on/off groups - _在所有群组中启用/禁用_\n.chatbot on/off dms - _在所有私聊中启用/禁用_\n.chatbot set \"prompt\" - _设置系统提示词_\n.chatbot clear - _清除对话上下文_\n_回复图片以进行 AI 图片分析_",
@@ -1478,6 +1479,7 @@
       "ONWA_TOTAL": "_*=== 已注册号码总数 ===*_\n{}\n{}"
     },
     "start_message": {
+      "UPDATED": "*_Raganork 已更新到 v{}！_*",
       "BUTTONS_TIP": "\n\n💡 *新功能：交互按钮！*\n_无需输入，点一点就能浏览菜单和设置。发送_ `{p}settings BUTTONS on` _试试_\n_实验性功能。不需要？发送_ `{p}settings BUTTONS off` _此提示将不再显示。_"
     },
     "hatch": {

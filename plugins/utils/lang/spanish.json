@@ -615,8 +615,7 @@
       "NO_FILES": "_No se enviaron archivos_",
       "FAILED": "_Falló la conversión a PDF: {}_",
       "NO_ALBUM_IMAGES": "_No hay imágenes en el álbum (los videos no se pueden convertir a PDF)_",
-      "ADDING_ALBUM": "_Agregando {} imágenes del álbum al PDF..._",
-      "ALBUM_SAVED": "_*Se guardaron {} imágenes del álbum correctamente*_\n_*Total de imágenes listas. ¡Usa '{p}pdf get' para generar el PDF!*_",
+      "MAKING_ALBUM_PDF": "_Creando un PDF con {} imágenes del álbum..._",
       "SAVED": "*_Imagen guardada correctamente_*\n_*Total de imágenes guardadas: {}*_\n*_Después de guardar todas las imágenes, usa '{p}pdf get' para obtener el resultado. ¡Las imágenes se borrarán después de la conversión!_*",
       "NEED_IMAGE": "_¡Responde a una imagen para agregarla a la conversión a PDF!_",
       "NEED_REPLY": "_Responde a una imagen, o usa \"{p}pdf help\" para más información._"
@@ -640,6 +639,7 @@
       "RENDER_BETA": "_¡Se inició el despliegue en Render para la actualización beta!_",
       "RENDER": "_¡Se inició el despliegue en Render!_",
       "KOYEB": "_Visita la plataforma de alojamiento y pulsa desplegar para actualizar._",
+      "NEEDS_REDEPLOY": "_Esta actualización necesita módulos nuevos que no se pueden instalar en este host. Vuelve a desplegar el bot desde el panel de tu alojamiento para obtenerla._",
       "DIRTY": "_Actualización cancelada. Estos archivos se cambiaron aquí, y la actualización los sobrescribiría:_\n\n{}\n\n_Revierte los cambios, o usa \"{p}update {} force\" para actualizar de todos modos._",
       "INSTALL_FAILED": "_Se actualizó, pero falló la instalación de los módulos: {}_\n\n_Ejecuta \"yarn install\" en la carpeta del bot y luego reinicia el bot. No se reinició._",
       "MOVED": "\n\n_El bot ahora incluye estos archivos, así que tus copias se renombraron a <name>.bak:_\n{}",
@@ -711,6 +711,7 @@
       "UNKNOWN": "_Opción desconocida: {}_"
     },
     "chatbot": {
+      "OWNER_NOTICE": "_⚠️ El chatbot no pudo responder en un chat:_\n{}\n\n_Se queda en silencio en los chats en lugar de enviar errores. Este aviso se repite como máximo cada 6 horas._",
       "NO_KEY_INLINE": "_❌ GEMINI_API_KEY no configurada. Configúrala con `{}setvar GEMINI_API_KEY tu_clave_api`_",
       "DESC": "Gestión del chatbot de IA con la API de Gemini: admite análisis de texto e imágenes",
       "USAGE": ".chatbot - _Mostrar el menú de ayuda_\n.chatbot on/off - _Activar/desactivar en el chat actual_\n.chatbot on/off groups - _Activar/desactivar en todos los grupos_\n.chatbot on/off dms - _Activar/desactivar en todos los chats privados_\n.chatbot set \"prompt\" - _Establecer el prompt del sistema_\n.chatbot clear - _Borrar el contexto de la conversación_\n_Responde a imágenes para analizarlas con IA_",
@@ -1478,6 +1479,7 @@
       "ONWA_TOTAL": "_*=== Total de números registrados ===*_\n{}\n{}"
     },
     "start_message": {
+      "UPDATED": "*_¡Raganork actualizado a v{}!_*",
       "BUTTONS_TIP": "\n\n💡 *Nuevo: ¡botones interactivos!*\n_Navega por menús y ajustes con toques, sin escribir. Pruébalos con_ `{p}settings BUTTONS on`\n_Es experimental. ¿No te convence? Envía_ `{p}settings BUTTONS off` _y este aviso desaparece._"
     },
     "hatch": {

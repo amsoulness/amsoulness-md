@@ -1,0 +1,83 @@
+name: Sync official upstream
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      changed: ${{ steps.patch.outputs.changed }}
+      base: ${{ steps.patch.outputs.base }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+      - name: Merge upstream without overwriting custom changes
+        run: node scripts/sync-upstream.cjs
+      - name: Install dependencies
+        run: |
+          npm install --global yarn@1.22.22
+          yarn install --frozen-lockfile
+          npm ci --prefix session-service --ignore-scripts
+      - name: Verify bot and deployment service
+        run: |
+          npm run test:syntax
+          npm test
+          npm test --prefix session-service
+          git diff --exit-code -- LICENSE NOTICE
+          git diff --check
+      - name: Package verified changes
+        id: patch
+        shell: bash
+        run: |
+          echo "base=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          if git diff --quiet; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            git diff --binary > "$RUNNER_TEMP/upstream.patch"
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: steps.patch.outputs.changed == 'true'
+        with:
+          name: verified-upstream-patch
+          path: ${{ runner.temp }}/upstream.patch
+          retention-days: 3
+  publish:
+    needs: prepare
+    if: needs.prepare.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-upstream-patch
+          path: ${{ runner.temp }}/verified-sync
+      - name: Publish only the tested patch
+        env:
+          TESTED_BASE: ${{ needs.prepare.outputs.base }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$TESTED_BASE"
+          git apply --index "$RUNNER_TEMP/verified-sync/upstream.patch"
+          git diff --cached --exit-code -- LICENSE NOTICE
+          git config user.name 'Amsoulness upstream sync'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Sync compatible official upstream updates'
+          git push origin HEAD:main

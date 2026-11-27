@@ -615,8 +615,7 @@
       "NO_FILES": "_Tidak ada file yang dimasukkan_",
       "FAILED": "_Konversi PDF gagal: {}_",
       "NO_ALBUM_IMAGES": "_Tidak ada gambar di album (video tidak bisa dikonversi ke PDF)_",
-      "ADDING_ALBUM": "_Menambahkan {} gambar album ke PDF..._",
-      "ALBUM_SAVED": "_*Berhasil menyimpan {} gambar album*_\n_*Semua gambar siap. Gunakan '{p}pdf get' untuk membuat PDF!*_",
+      "MAKING_ALBUM_PDF": "_Membuat PDF dari {} gambar album..._",
       "SAVED": "*_Berhasil menyimpan gambar_*\n_*Total gambar tersimpan: {}*_\n*_Setelah menyimpan semua gambar, gunakan '{p}pdf get' untuk mendapatkan hasilnya. Gambar akan dihapus setelah konversi!_*",
       "NEED_IMAGE": "_Balas sebuah gambar untuk menambahkannya ke konversi PDF!_",
       "NEED_REPLY": "_Balas sebuah gambar, atau gunakan \"{p}pdf help\" untuk informasi lebih lanjut._"
@@ -640,6 +639,7 @@
       "RENDER_BETA": "_Deploy Render dimulai untuk pembaruan beta!_",
       "RENDER": "_Deploy Render dimulai!_",
       "KOYEB": "_Silakan kunjungi platform hosting dan tekan deploy untuk memperbarui._",
+      "NEEDS_REDEPLOY": "_Pembaruan ini membutuhkan modul baru yang tidak bisa dipasang di host ini. Deploy ulang bot dari dasbor hosting untuk mendapatkannya._",
       "DIRTY": "_Pembaruan dibatalkan. File-file ini diubah di sini, dan pembaruan akan menimpanya:_\n\n{}\n\n_Kembalikan file tersebut, atau gunakan \"{p}update {} force\" untuk tetap memperbarui._",
       "INSTALL_FAILED": "_Diperbarui, tetapi instalasi modul gagal: {}_\n\n_Jalankan \"yarn install\" di folder bot, lalu mulai ulang bot. Bot belum dimulai ulang._",
       "MOVED": "\n\n_Bot ini sekarang menyertakan file-file ini, jadi salinan kamu diganti namanya menjadi <name>.bak:_\n{}",
@@ -711,6 +711,7 @@
       "UNKNOWN": "_Opsi tidak dikenal: {}_"
     },
     "chatbot": {
+      "OWNER_NOTICE": "_⚠️ Chatbot tidak bisa membalas di sebuah chat:_\n{}\n\n_Chatbot akan diam di chat alih-alih mengirim error. Pemberitahuan ini muncul paling sering setiap 6 jam._",
       "NO_KEY_INLINE": "_❌ GEMINI_API_KEY belum diatur. Silakan atur menggunakan `{}setvar GEMINI_API_KEY your_api_key`_",
       "DESC": "Manajemen Chatbot AI dengan API Gemini - mendukung analisis teks dan gambar",
       "USAGE": ".chatbot - _Tampilkan menu bantuan_\n.chatbot on/off - _Aktifkan/nonaktifkan di chat ini_\n.chatbot on/off groups - _Aktifkan/nonaktifkan di semua grup_\n.chatbot on/off dms - _Aktifkan/nonaktifkan di semua DM_\n.chatbot set \"prompt\" - _Atur system prompt_\n.chatbot clear - _Hapus konteks percakapan_\n_Balas gambar untuk analisis gambar AI_",
@@ -1478,6 +1479,7 @@
       "ONWA_TOTAL": "_*=== Total nomor terdaftar ===*_\n{}\n{}"
     },
     "start_message": {
+      "UPDATED": "*_Raganork diperbarui ke v{}!_*",
       "BUTTONS_TIP": "\n\n💡 *Baru: tombol interaktif!*\n_Cukup ketuk menu dan pengaturan, tanpa mengetik. Coba dengan_ `{p}settings BUTTONS on`\n_Masih eksperimental. Tidak suka? Kirim_ `{p}settings BUTTONS off` _dan tips ini tidak muncul lagi._"
     },
     "hatch": {

@@ -615,8 +615,7 @@
       "NO_FILES": "_Nenhum arquivo enviado_",
       "FAILED": "_Falha na conversão para PDF: {}_",
       "NO_ALBUM_IMAGES": "_Nenhuma imagem no álbum (vídeos não podem ser convertidos para PDF)_",
-      "ADDING_ALBUM": "_Adicionando {} imagens do álbum ao PDF..._",
-      "ALBUM_SAVED": "_*{} imagens do álbum salvas com sucesso*_\n_*Total de imagens prontas. Use '{p}pdf get' para gerar o PDF!*_",
+      "MAKING_ALBUM_PDF": "_Criando um PDF com {} imagens do álbum..._",
       "SAVED": "*_Imagem salva com sucesso_*\n_*Total de imagens salvas: {}*_\n*_Depois de salvar todas as imagens, use '{p}pdf get' para obter o resultado. As imagens serão apagadas após a conversão!_*",
       "NEED_IMAGE": "_Responda a uma imagem para adicioná-la à conversão em PDF!_",
       "NEED_REPLY": "_Responda a uma imagem, ou use \"{p}pdf help\" para mais informações._"
@@ -640,6 +639,7 @@
       "RENDER_BETA": "_Deploy no Render iniciado para a atualização beta!_",
       "RENDER": "_Deploy no Render iniciado!_",
       "KOYEB": "_Acesse a plataforma de hospedagem e clique em deploy para atualizar._",
+      "NEEDS_REDEPLOY": "_Esta atualização precisa de novos módulos, que não podem ser instalados nesta hospedagem. Faça o redeploy do bot pelo painel da hospedagem para recebê-la._",
       "DIRTY": "_Atualização cancelada. Estes arquivos foram alterados aqui, e a atualização os sobrescreveria:_\n\n{}\n\n_Reverta-os, ou use \"{p}update {} force\" para atualizar mesmo assim._",
       "INSTALL_FAILED": "_Atualizado, mas a instalação dos módulos falhou: {}_\n\n_Execute \"yarn install\" na pasta do bot e depois reinicie o bot. Ele não foi reiniciado._",
       "MOVED": "\n\n_O bot agora inclui estes arquivos, então suas cópias foram renomeadas para <nome>.bak:_\n{}",
@@ -711,6 +711,7 @@
       "UNKNOWN": "_Opção desconhecida: {}_"
     },
     "chatbot": {
+      "OWNER_NOTICE": "_⚠️ O chatbot não conseguiu responder em um chat:_\n{}\n\n_Ele fica em silêncio nos chats em vez de enviar erros. Este aviso se repete no máximo a cada 6 horas._",
       "NO_KEY_INLINE": "_❌ GEMINI_API_KEY não configurada. Defina usando `{}setvar GEMINI_API_KEY sua_chave_api`_",
       "DESC": "Gerenciamento do chatbot de IA com a API Gemini - suporta análise de texto e imagem",
       "USAGE": ".chatbot - _Mostrar menu de ajuda_\n.chatbot on/off - _Ativar/desativar no chat atual_\n.chatbot on/off groups - _Ativar/desativar em todos os grupos_\n.chatbot on/off dms - _Ativar/desativar em todas as DMs_\n.chatbot set \"prompt\" - _Definir prompt do sistema_\n.chatbot clear - _Limpar contexto da conversa_\n_Responda a imagens para análise de imagem por IA_",
@@ -1478,6 +1479,7 @@
       "ONWA_TOTAL": "_*=== Total de números registrados ===*_\n{}\n{}"
     },
     "start_message": {
+      "UPDATED": "*_Raganork atualizado para v{}!_*",
       "BUTTONS_TIP": "\n\n💡 *Novo: botões interativos!*\n_Navegue pelos menus e configurações tocando, sem digitar. Experimente com_ `{p}settings BUTTONS on`\n_Experimental. Não curtiu? Envie_ `{p}settings BUTTONS off` _e esta dica some._"
     },
     "hatch": {
