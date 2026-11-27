@@ -1,0 +1,1962 @@
+{
+  "converters": {
+    "SEARCHING_FOR_IMAGES": [
+      1,
+      0
+    ],
+    "ONLY_ABLE_TO_DOWNLOAD_IMAGES": [
+      2,
+      0
+    ],
+    "CONVERTING_STICKERS": [
+      1,
+      0
+    ],
+    "CONVERTING_FILES_TO_MP3": [
+      1,
+      0
+    ],
+    "NO_VIDEO_FILES_IN_ALBUM_2": [
+      1,
+      0
+    ],
+    "FILES": [
+      2,
+      0
+    ],
+    "ADDING_BASS_TO_FILES": [
+      1,
+      0
+    ],
+    "CONVERTING_FILES_TO_DOCUMENTS": [
+      1,
+      0
+    ],
+    "DOWNLOADED_FROM": [
+      1,
+      0
+    ],
+    "DOWNLOAD_FAILED_WITH_STATUS": [
+      1,
+      0
+    ],
+    "PLEASE_SPECIFY_ASPECT_RATIO_EXAMPLES": [
+      0,
+      5
+    ],
+    "PLEASE_SPECIFY_COMPRESSION_PERCENTAGE_EXAMPLES": [
+      0,
+      4
+    ],
+    "RESIZING_TO_ASPECT_RATIO": [
+      1,
+      0
+    ],
+    "RESIZED_TO_ASPECT_RATIO_X": [
+      3,
+      0
+    ],
+    "ASPECT_RATIO_CHANGE_TO_COMPLETED": [
+      1,
+      0
+    ],
+    "COMPRESSING_BY": [
+      1,
+      0
+    ],
+    "COMPRESSED_BY": [
+      3,
+      0
+    ],
+    "COMPRESSION_COMPLETED_REDUCTION": [
+      1,
+      0
+    ],
+    "ZAP_SENT_TO_CHAT": [
+      2,
+      0
+    ]
+  },
+  "external_plugin": {
+    "INSTALLED": [
+      1,
+      0
+    ],
+    "PLUGIN_UPDATED": [
+      1,
+      0
+    ],
+    "DELETED": [
+      1,
+      0
+    ],
+    "PROTECTED": [
+      1,
+      0
+    ],
+    "PLUGIN_URL": [
+      2,
+      0
+    ],
+    "STALE_REMOVED": [
+      1,
+      0
+    ]
+  },
+  "group": {
+    "USER": [
+      1,
+      0
+    ],
+    "REMAINING": [
+      1,
+      0
+    ],
+    "REASON": [
+      1,
+      0
+    ],
+    "WARN_RESET": [
+      2,
+      0
+    ],
+    "WARN_OVER": [
+      2,
+      0
+    ],
+    "STOPPED_REMOVED": [
+      2,
+      0
+    ],
+    "DONE_REMOVED": [
+      2,
+      0
+    ],
+    "HOUR_S": [
+      1,
+      0
+    ],
+    "MINUTE_S": [
+      1,
+      0
+    ],
+    "A_KICK_IS_ALREADY_RUNNING": [
+      0,
+      1
+    ],
+    "MEMBERS_STARTING_WITH": [
+      1,
+      0
+    ],
+    "MEMBERS_SKIPPED_PHONE_NUMBER_UNKNOWN": [
+      1,
+      0
+    ],
+    "APPROVING_PARTICIPANTS": [
+      1,
+      0
+    ],
+    "REJECTING_PARTICIPANTS": [
+      1,
+      0
+    ],
+    "INVALID_INPUT_EG_REQUESTS_APPROVE": [
+      0,
+      2
+    ],
+    "GIVE_A_DURATION_LIKE_30M": [
+      0,
+      1
+    ],
+    "MUTED_FOR_I_WILL_UNMUTE": [
+      1,
+      1
+    ],
+    "NEED_JIDS_DIFF_JID1_JID2": [
+      0,
+      1
+    ],
+    "TAG_WHAT_TAG_TEXT_HERE": [
+      0,
+      5
+    ],
+    "USAGE_GETJIDS_ALL_SHOW_ALL": [
+      0,
+      3
+    ],
+    "IN_DM_USE_GSTATUS_GROUP": [
+      0,
+      1
+    ],
+    "TARGET_MUST_BE_A_VALID": [
+      0,
+      1
+    ],
+    "REPLY_TO_A_MESSAGE_FIRST": [
+      0,
+      1
+    ],
+    "TO": [
+      1,
+      0
+    ],
+    "FAILED_TO_POST_GROUP_STATUS": [
+      1,
+      0
+    ],
+    "GROUP_JOIN_REQUESTS_USE_REQUESTS": [
+      0,
+      1
+    ],
+    "NEED_JIDS_COMMON_JID1_JID2": [
+      0,
+      2
+    ],
+    "REMOVING_COMMON_PARTICIPANTS_OF_COUNT": [
+      3,
+      0
+    ],
+    "COMMON_PARTICIPANTS_OF_COUNT": [
+      3,
+      0
+    ],
+    "DIFFERENCE_OF_PARTICIPANTS_COUNT": [
+      1,
+      0
+    ],
+    "PART_CHATS_OF": [
+      5,
+      0
+    ],
+    "GROUP_JID": [
+      3,
+      0
+    ],
+    "PRIVATE_JID": [
+      3,
+      0
+    ],
+    "RECENT_CHAT_JIDS_SHOWING_MOST": [
+      1,
+      0
+    ],
+    "JID": [
+      1,
+      0
+    ],
+    "LAST_MESSAGE": [
+      1,
+      0
+    ],
+    "JID_LAST_MESSAGE": [
+      5,
+      0
+    ],
+    "KICK_COUNTDOWN": [
+      3,
+      1
+    ],
+    "STARTING_IN_5": [
+      0,
+      1
+    ],
+    "CHAT_LINE": [
+      3,
+      0
+    ],
+    "VIA_ADDED_BY": [
+      1,
+      0
+    ],
+    "REQUEST_ITEM": [
+      4,
+      0
+    ],
+    "ADD_RESULT": [
+      2,
+      0
+    ],
+    "ADD_UNKNOWN_STATUS": [
+      1,
+      0
+    ]
+  },
+  "afk": {
+    "LIST_HEADER": [
+      1,
+      0
+    ],
+    "LIST_ITEM": [
+      6,
+      0
+    ],
+    "STATUS_SELF": [
+      4,
+      0
+    ],
+    "REASON_UPDATED": [
+      1,
+      0
+    ],
+    "NOW_AFK": [
+      2,
+      0
+    ],
+    "WELCOME_BACK": [
+      3,
+      0
+    ],
+    "USER_AFK": [
+      5,
+      0
+    ],
+    "OWNER_AFK": [
+      4,
+      0
+    ]
+  },
+  "media": {
+    "VMIX_ADDED_2": [
+      1,
+      0
+    ],
+    "AUDIO_TOO_LONG": [
+      1,
+      0
+    ],
+    "FIND_RESULT": [
+      9,
+      0
+    ],
+    "ROTATE_NEED": [
+      1,
+      0
+    ]
+  },
+  "heroku": {
+    "SET_SUCCESS": [
+      2,
+      0
+    ],
+    "DEL_SUCCESS": [
+      1,
+      0
+    ]
+  },
+  "filters": {
+    "FILTERED": [
+      1,
+      0
+    ]
+  },
+  "greetings": {},
+  "memes": {},
+  "ocr": {
+    "ERROR": [
+      1,
+      0
+    ],
+    "RESULT": [
+      2,
+      0
+    ]
+  },
+  "profile": {},
+  "scrapers": {
+    "IMG": [
+      2,
+      0
+    ]
+  },
+  "sticker": {},
+  "system_stats": {},
+  "tagall": {},
+  "updater": {},
+  "ping": {},
+  "instagram": {},
+  "fancy": {},
+  "restart": {
+    "LOG_CAPTION": [
+      3,
+      0
+    ]
+  },
+  "test": {
+    "REMAINING": [
+      1,
+      0
+    ],
+    "PING_LATENCY": [
+      1,
+      0
+    ]
+  },
+  "owner_tools": {
+    "PLATFORM": [
+      1,
+      0
+    ],
+    "UPTIME": [
+      2,
+      0
+    ],
+    "EVAL_WARN": [
+      2,
+      0
+    ],
+    "EVAL_ERROR": [
+      2,
+      0
+    ]
+  },
+  "autostatus": {
+    "STATUS": [
+      7,
+      0
+    ],
+    "VIEW_SET": [
+      1,
+      0
+    ],
+    "LIKE_ON": [
+      1,
+      0
+    ],
+    "NEED_EMOJI": [
+      1,
+      0
+    ]
+  },
+  "autovv": {
+    "ANDROID_NOTICE": [
+      1,
+      0
+    ],
+    "STATUS": [
+      2,
+      0
+    ],
+    "STATUS_ON": [
+      1,
+      0
+    ],
+    "ON": [
+      1,
+      0
+    ],
+    "INFO": [
+      3,
+      0
+    ]
+  },
+  "call_reject": {
+    "HELP": [
+      3,
+      8
+    ],
+    "ALREADY_WHITELISTED": [
+      1,
+      0
+    ],
+    "WHITELISTED": [
+      1,
+      0
+    ],
+    "ALLOW_NEED_NUMBER": [
+      0,
+      2
+    ],
+    "ALLOW_INVALID_NUMBER": [
+      0,
+      1
+    ],
+    "NOT_WHITELISTED": [
+      1,
+      0
+    ],
+    "REMOVED": [
+      1,
+      0
+    ],
+    "REMOVE_NEED_NUMBER": [
+      0,
+      2
+    ],
+    "REMOVE_INVALID_NUMBER": [
+      0,
+      1
+    ],
+    "LIST": [
+      2,
+      0
+    ],
+    "CLEARED": [
+      1,
+      0
+    ],
+    "MSG_HELP": [
+      1,
+      3
+    ],
+    "MSG_SET": [
+      1,
+      0
+    ],
+    "INVALID": [
+      0,
+      4
+    ]
+  },
+  "pdf": {
+    "HELP": [
+      0,
+      3
+    ],
+    "FAILED": [
+      1,
+      0
+    ],
+    "MAKING_ALBUM_PDF": [
+      1,
+      0
+    ],
+    "SAVED": [
+      1,
+      1
+    ],
+    "NEED_REPLY": [
+      0,
+      1
+    ]
+  },
+  "update": {
+    "STABLE_HEADER": [
+      2,
+      0
+    ],
+    "STABLE_FOOTER": [
+      0,
+      1
+    ],
+    "BETA_HEADER": [
+      1,
+      0
+    ],
+    "BETA_FOOTER": [
+      0,
+      1
+    ],
+    "ONLY_BETA": [
+      0,
+      1
+    ],
+    "DIRTY": [
+      2,
+      1
+    ],
+    "INSTALL_FAILED": [
+      1,
+      0
+    ],
+    "MOVED": [
+      1,
+      0
+    ],
+    "BETA_DONE": [
+      2,
+      0
+    ],
+    "DONE": [
+      1,
+      0
+    ],
+    "INVALID": [
+      0,
+      3
+    ]
+  },
+  "take": {
+    "DEFAULT_AUDIO_DATA": [
+      1,
+      0
+    ],
+    "USING_DEFAULT": [
+      1,
+      0
+    ],
+    "THUMB_FAILED": [
+      1,
+      0
+    ],
+    "UPLOAD_FAILED": [
+      1,
+      0
+    ]
+  },
+  "mention": {
+    "NEED_SUB": [
+      0,
+      4
+    ],
+    "NOT_SET": [
+      0,
+      2
+    ],
+    "TYPE": [
+      1,
+      0
+    ],
+    "CAPTION": [
+      1,
+      0
+    ],
+    "MEDIA_URL": [
+      1,
+      0
+    ],
+    "SET_ON": [
+      1,
+      0
+    ],
+    "SET_MEDIA": [
+      2,
+      0
+    ],
+    "SET_TEXT": [
+      1,
+      0
+    ],
+    "NEED_INPUT": [
+      0,
+      2
+    ],
+    "HELP": [
+      0,
+      8
+    ],
+    "UNKNOWN": [
+      1,
+      4
+    ]
+  },
+  "autodl": {
+    "SPOTIFY_DOWNLOADING": [
+      2,
+      0
+    ],
+    "MENU": [
+      4,
+      5
+    ],
+    "ON_GROUPS": [
+      0,
+      1
+    ],
+    "ON_DMS": [
+      0,
+      1
+    ],
+    "OFF_GROUPS": [
+      0,
+      1
+    ],
+    "OFF_DMS": [
+      0,
+      1
+    ],
+    "OFF_CHAT": [
+      0,
+      1
+    ],
+    "STATUS": [
+      3,
+      0
+    ],
+    "UNKNOWN": [
+      1,
+      0
+    ]
+  },
+  "chatbot": {
+    "OWNER_NOTICE": [
+      1,
+      0
+    ],
+    "NO_KEY_INLINE": [
+      1,
+      0
+    ],
+    "MENU": [
+      7,
+      0
+    ],
+    "MENU_COMMANDS": [
+      0,
+      9
+    ],
+    "MENU_SETUP": [
+      0,
+      2
+    ],
+    "NO_KEY": [
+      0,
+      1
+    ],
+    "ON_GROUPS": [
+      1,
+      1
+    ],
+    "ON_DMS": [
+      1,
+      1
+    ],
+    "ON_CHAT": [
+      2,
+      0
+    ],
+    "OFF_GROUPS": [
+      0,
+      1
+    ],
+    "OFF_DMS": [
+      0,
+      1
+    ],
+    "NEED_PROMPT": [
+      0,
+      1
+    ],
+    "PROMPT_SET": [
+      1,
+      0
+    ],
+    "STATUS_HEAD": [
+      1,
+      0
+    ],
+    "STATUS_VIA": [
+      1,
+      0
+    ],
+    "STATUS_BODY": [
+      6,
+      0
+    ],
+    "UNKNOWN": [
+      1,
+      1
+    ],
+    "AI_NO_KEY": [
+      1,
+      0
+    ],
+    "AI_ERROR": [
+      1,
+      0
+    ],
+    "API_ERROR": [
+      1,
+      0
+    ]
+  },
+  "message_stats": {
+    "MSGS_HEADER": [
+      1,
+      0
+    ],
+    "TEXT": [
+      1,
+      0
+    ],
+    "IMAGE": [
+      1,
+      0
+    ],
+    "VIDEO": [
+      1,
+      0
+    ],
+    "AUDIO": [
+      1,
+      0
+    ],
+    "STICKER": [
+      1,
+      0
+    ],
+    "OTHERS": [
+      1,
+      0
+    ],
+    "MSGS_ITEM": [
+      5,
+      0
+    ],
+    "INACTIVE_HELP": [
+      0,
+      4
+    ],
+    "DATA_GOES_BACK": [
+      1,
+      0
+    ],
+    "NOT_KICKING": [
+      3,
+      1
+    ],
+    "NO_INACTIVE": [
+      1,
+      0
+    ],
+    "INACTIVE_HEADER": [
+      2,
+      0
+    ],
+    "DATA_FROM": [
+      1,
+      0
+    ],
+    "DATA_WARNING": [
+      1,
+      0
+    ],
+    "KICK_WARNING": [
+      1,
+      0
+    ],
+    "AND_MORE": [
+      1,
+      0
+    ],
+    "KICK_PROGRESS": [
+      2,
+      0
+    ],
+    "KICK_DONE": [
+      2,
+      0
+    ],
+    "INACTIVE_ITEM": [
+      5,
+      0
+    ],
+    "KICK_HINT": [
+      2,
+      0
+    ],
+    "NO_USER_DATA": [
+      1,
+      0
+    ],
+    "USERS_HEADER": [
+      2,
+      0
+    ],
+    "USERS_ITEM": [
+      6,
+      0
+    ],
+    "TIP_CHAT": [
+      1,
+      0
+    ],
+    "TIP_GLOBAL": [
+      1,
+      0
+    ]
+  },
+  "schedule": {
+    "MINUTE": [
+      1,
+      0
+    ],
+    "MINUTES": [
+      1,
+      0
+    ],
+    "HOUR": [
+      1,
+      0
+    ],
+    "HOURS": [
+      1,
+      0
+    ],
+    "DAY": [
+      1,
+      0
+    ],
+    "DAYS": [
+      1,
+      0
+    ],
+    "AGO": [
+      1,
+      0
+    ],
+    "IN": [
+      1,
+      0
+    ],
+    "LIST_ITEM": [
+      6,
+      0
+    ],
+    "LIST_FOOTER": [
+      1,
+      0
+    ],
+    "NEED_REPLY": [
+      0,
+      3
+    ],
+    "NEED_INPUT": [
+      0,
+      3
+    ],
+    "SCHEDULED": [
+      3,
+      0
+    ],
+    "TOO_LARGE": [
+      1,
+      0
+    ],
+    "CANCEL_NEED_ID": [
+      1,
+      0
+    ],
+    "CANCELLED": [
+      1,
+      0
+    ]
+  },
+  "welcome": {
+    "STATUS_ITEM": [
+      4,
+      0
+    ],
+    "STATUS_ITEM_UNKNOWN": [
+      2,
+      0
+    ],
+    "HELP": [
+      1,
+      12
+    ],
+    "DESC_WELCOME": [
+      1,
+      0
+    ],
+    "SETUP_WELCOME": [
+      0,
+      8
+    ],
+    "NOT_SET_FIRST_WELCOME": [
+      0,
+      1
+    ],
+    "CURRENT_WELCOME": [
+      2,
+      0
+    ],
+    "TOO_LONG_WELCOME": [
+      1,
+      0
+    ],
+    "SET_WELCOME": [
+      1,
+      1
+    ],
+    "DESC_GOODBYE": [
+      1,
+      0
+    ],
+    "SETUP_GOODBYE": [
+      0,
+      8
+    ],
+    "NOT_SET_FIRST_GOODBYE": [
+      0,
+      1
+    ],
+    "CURRENT_GOODBYE": [
+      2,
+      0
+    ],
+    "TOO_LONG_GOODBYE": [
+      1,
+      0
+    ],
+    "SET_GOODBYE": [
+      1,
+      1
+    ]
+  },
+  "wamsg": {
+    "GROUP": [
+      1,
+      0
+    ],
+    "VV_FAILED": [
+      2,
+      0
+    ],
+    "NO_JID": [
+      1,
+      0
+    ]
+  },
+  "filter": {
+    "OWNER_SCOPE": [
+      1,
+      0
+    ],
+    "MENU": [
+      0,
+      11
+    ],
+    "HELP": [
+      0,
+      9
+    ],
+    "CREATED": [
+      4,
+      0
+    ],
+    "LIST_ITEM": [
+      7,
+      0
+    ],
+    "DEL_NEED": [
+      1,
+      0
+    ],
+    "DELETED": [
+      1,
+      0
+    ],
+    "NOT_FOUND": [
+      1,
+      0
+    ],
+    "TOGGLE_NEED": [
+      1,
+      0
+    ],
+    "ENABLED": [
+      1,
+      0
+    ],
+    "DISABLED": [
+      1,
+      0
+    ],
+    "TEST_NEED": [
+      1,
+      0
+    ],
+    "MATCH": [
+      5,
+      0
+    ],
+    "NO_MATCH": [
+      1,
+      0
+    ]
+  },
+  "warn": {
+    "NO_WARNINGS": [
+      2,
+      0
+    ],
+    "HISTORY_HEADER": [
+      4,
+      0
+    ],
+    "HISTORY_ITEM": [
+      4,
+      0
+    ],
+    "HISTORY_MORE": [
+      1,
+      0
+    ],
+    "LIST_HEADER": [
+      1,
+      0
+    ],
+    "STATUS_REMAINING": [
+      1,
+      0
+    ],
+    "LIST_ITEM": [
+      5,
+      0
+    ],
+    "LIST_LATEST": [
+      1,
+      0
+    ],
+    "LIST_FOOTER": [
+      2,
+      0
+    ],
+    "STATS": [
+      7,
+      0
+    ],
+    "WARN_HELP": [
+      0,
+      7
+    ],
+    "KICKED": [
+      4,
+      0
+    ],
+    "KICK_FAILED": [
+      3,
+      0
+    ],
+    "WARNED": [
+      5,
+      0
+    ],
+    "WARNED_MORE": [
+      1,
+      0
+    ],
+    "NOTHING_TO_REMOVE": [
+      1,
+      0
+    ],
+    "REMOVED": [
+      3,
+      0
+    ],
+    "NOTHING_TO_RESET": [
+      1,
+      0
+    ],
+    "RESET": [
+      2,
+      0
+    ],
+    "LIMIT_INVALID": [
+      2,
+      0
+    ],
+    "LIMIT_SET": [
+      3,
+      0
+    ]
+  },
+  "group_updates": {
+    "STICKCMD_NEED": [
+      1,
+      0
+    ],
+    "STICKED": [
+      1,
+      0
+    ],
+    "UNSTICKED_CMD": [
+      1,
+      0
+    ],
+    "UNSTICKED_CMD_OK": [
+      1,
+      0
+    ],
+    "UNSTICK_NEED": [
+      1,
+      0
+    ],
+    "STICKIFIED": [
+      1,
+      0
+    ],
+    "AUTOMUTE_FORMAT": [
+      0,
+      3
+    ],
+    "AUTOMUTE_BAD_TIME": [
+      0,
+      2
+    ],
+    "AUTOMUTE_SET": [
+      1,
+      0
+    ],
+    "AUTOUNMUTE_FORMAT": [
+      0,
+      3
+    ],
+    "AUTOUNMUTE_BAD_TIME": [
+      0,
+      2
+    ],
+    "AUTOUNMUTE_SET": [
+      1,
+      0
+    ],
+    "MUTE_ITEM": [
+      4,
+      0
+    ],
+    "ANTIFAKE_ALLOWED": [
+      1,
+      0
+    ],
+    "ANTIFAKE_HELP": [
+      0,
+      3
+    ],
+    "PROMOTE_DETECTED": [
+      2,
+      0
+    ],
+    "DEMOTE_DETECTED": [
+      2,
+      0
+    ],
+    "BOT_DEMOTED": [
+      1,
+      0
+    ]
+  },
+  "social": {
+    "DONE_ITEMS": [
+      1,
+      0
+    ],
+    "IG_INFO": [
+      6,
+      0
+    ],
+    "STORIES_FROM": [
+      1,
+      0
+    ],
+    "PIN_DOWNLOADING": [
+      2,
+      0
+    ],
+    "PIN_RESULTS": [
+      1,
+      0
+    ]
+  },
+  "commands": {
+    "INFO_NEED": [
+      1,
+      0
+    ],
+    "INFO_NOT_FOUND": [
+      1,
+      0
+    ],
+    "INFO_COMMAND": [
+      1,
+      0
+    ],
+    "INFO_DESCRIPTION": [
+      1,
+      0
+    ],
+    "INFO_OWNER": [
+      1,
+      0
+    ],
+    "INFO_TYPE": [
+      1,
+      0
+    ],
+    "INFO_USAGE": [
+      1,
+      0
+    ],
+    "INFO_WARNING": [
+      1,
+      0
+    ],
+    "LIST_TOTAL": [
+      1,
+      0
+    ],
+    "LIST_CATEGORY": [
+      1,
+      0
+    ],
+    "LIST_DESC": [
+      1,
+      0
+    ],
+    "LIST_USAGE": [
+      1,
+      0
+    ],
+    "LIST_WARNING": [
+      1,
+      0
+    ],
+    "SETALIVE_SETUP": [
+      0,
+      7
+    ],
+    "ALIVE_CURRENT": [
+      1,
+      1
+    ],
+    "ALIVE_SET": [
+      1,
+      1
+    ],
+    "SETINFO": [
+      0,
+      8
+    ],
+    "SETNAME_NEED": [
+      1,
+      0
+    ],
+    "SETNAME_DONE": [
+      1,
+      0
+    ],
+    "SETOWNER_NEED": [
+      1,
+      0
+    ],
+    "SETOWNER_DONE": [
+      1,
+      0
+    ],
+    "SETIMAGE_NEED": [
+      1,
+      0
+    ],
+    "SETIMAGE_DONE": [
+      1,
+      0
+    ]
+  },
+  "yt": {
+    "TOO_LONG": [
+      2,
+      0
+    ],
+    "TOO_BIG": [
+      2,
+      0
+    ],
+    "QUALITY_HEADER": [
+      2,
+      0
+    ],
+    "DOWNLOADING": [
+      1,
+      0
+    ],
+    "DOWNLOADING_VIDEO": [
+      1,
+      0
+    ],
+    "VIDEO_DOC_CAPTION": [
+      3,
+      0
+    ],
+    "VIDEO_CAPTION": [
+      2,
+      0
+    ]
+  },
+  "youtube": {
+    "SEARCH_FOUND": [
+      2,
+      0
+    ],
+    "SEARCH_ITEM": [
+      6,
+      0
+    ],
+    "RESULTS_FOR": [
+      2,
+      0
+    ],
+    "VIEWS": [
+      1,
+      0
+    ],
+    "NEED_QUERY": [
+      2,
+      0
+    ],
+    "NEED_LINK": [
+      2,
+      0
+    ],
+    "QUALITY_BODY": [
+      1,
+      0
+    ],
+    "NEED_SONG": [
+      2,
+      0
+    ],
+    "DOWNLOADING": [
+      1,
+      0
+    ],
+    "DETAILS": [
+      4,
+      0
+    ],
+    "UPLOADED": [
+      1,
+      0
+    ],
+    "DETAILS_URL": [
+      1,
+      0
+    ],
+    "ALREADY_SIGNED_IN": [
+      0,
+      2
+    ],
+    "LOGIN_STEPS": [
+      3,
+      0
+    ],
+    "LOGIN_FAILED": [
+      1,
+      0
+    ],
+    "NEED_SPOTIFY": [
+      1,
+      0
+    ],
+    "SPOTIFY_DOWNLOADING": [
+      2,
+      0
+    ]
+  },
+  "manage": {
+    "SET": [
+      3,
+      0
+    ],
+    "DELETED": [
+      2,
+      0
+    ],
+    "NOT_SET": [
+      1,
+      0
+    ],
+    "SETVAR_FORMAT": [
+      1,
+      0
+    ],
+    "SUDO_DEPRECATED": [
+      1,
+      0
+    ],
+    "PROTECTED": [
+      2,
+      0
+    ],
+    "SET_SECRET": [
+      2,
+      0
+    ],
+    "SET_FAILED": [
+      2,
+      0
+    ],
+    "GETVAR_NEED": [
+      1,
+      0
+    ],
+    "VARIABLE": [
+      2,
+      0
+    ],
+    "VAR_NOT_FOUND": [
+      1,
+      0
+    ],
+    "DELVAR_NEED": [
+      1,
+      0
+    ],
+    "DEL_FAILED": [
+      2,
+      0
+    ],
+    "SETENV_FORMAT": [
+      1,
+      0
+    ],
+    "SETENV_DONE": [
+      2,
+      0
+    ],
+    "SETENV_FAILED": [
+      2,
+      0
+    ],
+    "ALL_VARS": [
+      1,
+      0
+    ],
+    "ALLVAR_FAILED": [
+      1,
+      0
+    ],
+    "BAD_LANGUAGE": [
+      1,
+      0
+    ],
+    "BUTTONS_WARNING": [
+      0,
+      1
+    ],
+    "MENU_HEADER": [
+      1,
+      0
+    ],
+    "NOW": [
+      1,
+      0
+    ],
+    "CHANGE_WITH": [
+      1,
+      0
+    ],
+    "BUTTONS_ON_TEXT": [
+      1,
+      0
+    ],
+    "SETTING_SET": [
+      3,
+      0
+    ],
+    "INVALID_VALUE": [
+      2,
+      0
+    ],
+    "USE_VIA": [
+      2,
+      0
+    ],
+    "MUST_NUMBER": [
+      1,
+      0
+    ],
+    "UNKNOWN_SETTING": [
+      2,
+      0
+    ],
+    "MODE_TEXT": [
+      2,
+      0
+    ],
+    "MODE_BODY": [
+      1,
+      0
+    ],
+    "ANTIDELETE_USAGE": [
+      0,
+      6
+    ],
+    "MODE_CUSTOM": [
+      1,
+      0
+    ],
+    "ANTIDELETE_STATUS": [
+      3,
+      0
+    ],
+    "ANTIDELETE_CUSTOM": [
+      1,
+      0
+    ],
+    "INVALID_OPTION": [
+      1,
+      0
+    ],
+    "SUDO_ADDED": [
+      1,
+      0
+    ],
+    "SUDO_ERROR": [
+      1,
+      0
+    ],
+    "SUDO_LIST": [
+      1,
+      0
+    ],
+    "SUDO_REMOVED": [
+      1,
+      0
+    ],
+    "DELSUDO_ERROR": [
+      1,
+      0
+    ],
+    "FILTER_TOGGLE_NEED": [
+      1,
+      0
+    ],
+    "FILTER_OWNER_ONLY": [
+      1,
+      0
+    ],
+    "FILTER_NOT_FOUND": [
+      1,
+      0
+    ],
+    "FILTER_ENABLED": [
+      1,
+      0
+    ],
+    "FILTER_DISABLED": [
+      1,
+      0
+    ],
+    "TOGGLE_EXAMPLE": [
+      0,
+      2
+    ],
+    "NOT_COMMAND": [
+      2,
+      0
+    ],
+    "CANT_DISABLE": [
+      2,
+      0
+    ],
+    "TURNED_OFF": [
+      2,
+      2
+    ],
+    "TURNED_ON": [
+      2,
+      0
+    ],
+    "ALIAS_USAGE": [
+      0,
+      5
+    ],
+    "ALIAS_NONE": [
+      0,
+      3
+    ],
+    "ALIAS_LIST": [
+      1,
+      1
+    ],
+    "ALIAS_LINE": [
+      2,
+      2
+    ],
+    "ALIAS_SET": [
+      2,
+      2
+    ],
+    "ALIAS_REMOVED": [
+      1,
+      1
+    ],
+    "ALIAS_NOT_FOUND": [
+      1,
+      1
+    ],
+    "ALIAS_TAKEN": [
+      1,
+      1
+    ]
+  },
+  "group_protect": {
+    "ANTIBOT_MENU_OF_ANTIBOT_IS": [
+      2,
+      1
+    ],
+    "ANTI_SPAM_MENU_OF_ANTISPAM": [
+      2,
+      1
+    ],
+    "PROMOTE_DEMOTE_ALERT_MESSAGE_MENU": [
+      2,
+      1
+    ],
+    "ANTI_DEMOTE_MENU_OF_THIS": [
+      2,
+      1
+    ],
+    "ANTI_PROMOTE_MENU_OF_THIS": [
+      2,
+      1
+    ],
+    "INVALID_MODE_AVAILABLE_MODES_WARN": [
+      0,
+      1
+    ],
+    "CUSTOM_MESSAGE_SET_MESSAGE": [
+      1,
+      0
+    ],
+    "ANTILINK_SYSTEM_HELP_BASIC_COMMANDS": [
+      0,
+      7
+    ],
+    "USE_HELP_FOR_MORE_OPTIONS": [
+      1,
+      0
+    ],
+    "TURNED": [
+      3,
+      0
+    ],
+    "CHOOSE_WHAT_HAPPENS_TO_THE": [
+      1,
+      0
+    ],
+    "ANTI_STATUS_IS_STILL_OFF": [
+      1,
+      0
+    ],
+    "REPLY_TURNED": [
+      1,
+      0
+    ],
+    "REPLY_TEXT_SET_AND_REPLY": [
+      1,
+      0
+    ],
+    "ANTI_STATUS_HELP_ACTS_ON": [
+      9,
+      0
+    ],
+    "ANTI_STATUS_USE_HELP_FOR": [
+      3,
+      0
+    ],
+    "ANTIWORD_MENU_OF_ANTIWORD_IS": [
+      2,
+      3
+    ],
+    "ACTION_USER_KICKED_FOR_EXCEEDING": [
+      3,
+      0
+    ],
+    "WARNINGS_ERROR_FAILED_TO_KICK": [
+      3,
+      0
+    ],
+    "MORE_WARNINGS_BEFORE_KICK": [
+      1,
+      0
+    ],
+    "ACTION_USER_KICKED_FOR_SENDING": [
+      1,
+      0
+    ],
+    "ERROR_FAILED_TO_KICK_USER": [
+      1,
+      0
+    ],
+    "WARNINGS_REMAINING": [
+      5,
+      0
+    ],
+    "WORD_NOT_ALLOWED": [
+      1,
+      0
+    ],
+    "ANTILINK_ENABLED_MODE_TYPE_USE": [
+      2,
+      1
+    ],
+    "SET_CUSTOM_WARNING_MESSAGE_USAGE": [
+      1,
+      1
+    ],
+    "USAGE_ON_OFF_CURRENTLY": [
+      3,
+      0
+    ],
+    "SEND_A_MESSAGE_IN_THE": [
+      2,
+      0
+    ],
+    "SET_THE_REPLY_SENT_AFTER": [
+      3,
+      0
+    ],
+    "ANTILINK_MODE_SET_TO": [
+      2,
+      0
+    ],
+    "ADD_DOMAINS_TO_WHITELIST_USAGE": [
+      1,
+      1
+    ],
+    "ALLOWED_LINKS_UPDATED_WHITELIST_MODE": [
+      1,
+      0
+    ],
+    "ADD_DOMAINS_TO_BLACKLIST_USAGE": [
+      1,
+      1
+    ],
+    "BLOCKED_LINKS_UPDATED_BLACKLIST_MODE": [
+      1,
+      0
+    ],
+    "ANTILINK_STATUS_STATUS_MODE_TYPE": [
+      7,
+      1
+    ],
+    "ANTI_STATUS_TURNED": [
+      4,
+      0
+    ],
+    "ACTION_SET_TO_WILL": [
+      3,
+      0
+    ],
+    "STATUS_SUMMARY": [
+      5,
+      0
+    ]
+  },
+  "utils": {
+    "YEARS_AGO": [
+      1,
+      0
+    ],
+    "MONTHS_AGO": [
+      1,
+      0
+    ],
+    "DAYS_AGO": [
+      1,
+      0
+    ],
+    "HOURS_AGO": [
+      1,
+      0
+    ],
+    "MINUTES_AGO": [
+      1,
+      0
+    ],
+    "SECONDS_AGO": [
+      1,
+      0
+    ],
+    "INTERP_TOO_LONG": [
+      2,
+      0
+    ],
+    "HMS": [
+      3,
+      0
+    ],
+    "ONWA_NOT_REGISTERED": [
+      2,
+      0
+    ],
+    "ONWA_ITEM": [
+      3,
+      0
+    ],
+    "ONWA_DATEWISE": [
+      2,
+      0
+    ],
+    "ONWA_TOTAL": [
+      2,
+      0
+    ]
+  },
+  "start_message": {
+    "UPDATED": [
+      1,
+      0
+    ],
+    "BUTTONS_TIP": [
+      0,
+      2
+    ]
+  },
+  "hatch": {
+    "USAGE_HINT": [
+      0,
+      6
+    ],
+    "QR_CAPTION": [
+      1,
+      0
+    ],
+    "CODE_INTRO": [
+      1,
+      0
+    ],
+    "LINKED": [
+      1,
+      2
+    ],
+    "ALREADY_RUNNING": [
+      1,
+      0
+    ],
+    "TIMEOUT": [
+      0,
+      1
+    ],
+    "FAILED": [
+      0,
+      1
+    ],
+    "PAIR_FAILED": [
+      0,
+      1
+    ],
+    "BUSY": [
+      0,
+      1
+    ],
+    "LIST_ITEM": [
+      4,
+      0
+    ],
+    "LIST_FOOTER": [
+      0,
+      1
+    ],
+    "REMOVE_USAGE": [
+      0,
+      2
+    ],
+    "NO_SUCH_BOT": [
+      0,
+      1
+    ],
+    "REMOVED": [
+      1,
+      0
+    ],
+    "GROUP_CONFIRM": [
+      0,
+      1
+    ],
+    "CANCEL_HINT": [
+      0,
+      1
+    ]
+  }
+}

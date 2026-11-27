@@ -40,6 +40,6 @@ async function checkFocus(client,account){
  if(!account||!/^\d+@s\.whatsapp\.net$/.test(target))return;
  const completed=await getWorkspace().claimFocus(account);if(!completed)return;
  // Persist the claim first: restarts cannot send a completion twice.
- await client.sendMessage(target,{text:`*AMSOULNESS / FOCUS COMPLETE*\n\n${completed.minutes} minutes finished${completed.label?': '+completed.label:'.'}\nTake a short break. Your next step is yours.\n\n.desk — your workspace`});
+ await client.sendMessage(target,{text:`*ASLNS / FOCUS COMPLETE*\n\n${completed.minutes} minutes finished${completed.label?': '+completed.label:'.'}\nTake a short break. Your next step is yours.\n\n.desk — your workspace`});
 }
 module.exports={createWorkspace,getWorkspace,isSelfChat,checkFocus};

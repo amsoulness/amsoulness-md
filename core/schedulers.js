@@ -352,7 +352,7 @@ async function checkUpdates() {
       if (supportsAutoUpdate() && !deploysOnRender() && (await performAutoUpdate())) return;
       const autoUpdateSupported = supportsAutoUpdate() && deploysOnRender();
 
-      let changelog = `*_AMSOULNESS UPDATE AVAILABLE_*\n\nYour current version: *${localVersion}*\nNew version: *${remoteVersion}*\n\n`;
+      let changelog = `*ASLNS / A NEW CHAPTER*\n_AMSOULNESS · RELEASE CHANNEL_\n\nRunning · v${localVersion}\nNext · v${remoteVersion}\n\n`;
 
       let fetchedGitChangelog = false;
       try {
@@ -360,7 +360,7 @@ async function checkUpdates() {
           const commits = await updater.fetchCommits();
 
           if (commits.total > 0) {
-            changelog += `*_CHANGELOG:_*\n\n`;
+            changelog += `*WHAT CHANGED*\n\n`;
             for (let i in commits.all) {
               changelog += `${parseInt(i) + 1}• *${
                 commits.all[i].message
@@ -379,10 +379,10 @@ async function checkUpdates() {
         changelog += `_Unable to fetch changelog (Not a Git repo or error occurred)._ \n`;
       }
 
-      changelog += `\n_Please update your bot to get the latest features and fixes._`;
+      changelog += `\nYour next release is ready.`;
 
       if (autoUpdateSupported) {
-        changelog += `\n\n_⚡ Auto-updating..._`;
+        changelog += `\n\n*AUTO-UPDATE ON*\nRequesting a host rebuild. Reconnection follows a successful deployment.`;
       } else if (platform === "local") {
         const handlerPrefix = (config.HANDLERS || ".").split("")[0];
         changelog += `\n\n_Use the "${handlerPrefix}update start" command to apply the update._`;

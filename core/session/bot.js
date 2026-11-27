@@ -180,6 +180,7 @@ class WhatsAppBot {
       this._teardownSocket();
       this.sock = bindings.makeWASocket(buildSocketOptions(this, version));
       attachSocketFeatures(this.sock, this);
+      require('../presentation').installPresentation(this.sock);
       this.setupEventHandlers();
     } catch (error) {
       logger.error(

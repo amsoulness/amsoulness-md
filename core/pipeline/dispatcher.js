@@ -186,7 +186,7 @@ async function prepare(cmd, env, disabled, pattern) {
 
   return async () => {
     try {
-      await cmd.function(whats, match);
+      await context.run({ ...(context.current() || {}), presentation: { command: nameOf(cmd), category: cmd.use || 'general', raw: !isUserCommand(cmd) } }, () => cmd.function(whats, match));
       if (showReactions(cmd)) await react(env, cmd, "✅");
     } catch (error) {
       await handleError(cmd, env, error);

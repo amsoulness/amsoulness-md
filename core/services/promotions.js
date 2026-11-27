@@ -8,8 +8,8 @@ function promotionSlot(now = new Date()) {
 }
 function promotionMessage(slot) {
   const intro = slot.endsWith('10:00')
-    ? '*Amsoulness / ASLNS*\nBuild something creative today. Explore my website, free creative tools and WhatsApp bot.'
-    : '*Your Amsoulness creative toolkit*\nDiscover browser tools, WhatsApp automation, group moderation, media tools and community plugins.';
+    ? '*ASLNS / TODAY*\nBuild something creative today. Explore my website, free creative tools and WhatsApp bot.'
+    : '*ASLNS / YOUR TOOLKIT*\nDiscover browser tools, WhatsApp automation, group moderation, media tools and community plugins.';
   return `${intro}\n\nWebsite: https://aslns.online\nCreative tools: https://aslns.online/tools\nConnect your bot: https://aslns.online/session\nDeploy: https://aslns.online/session/deploy\nPlugins: https://aslns.online/session/plugins\nGitHub: https://github.com/amsoulness/amsoulness-md\n\nPrivate reminder for your linked account. Turn off with .setvar PROMO_MESSAGES=false`;
 }
 function createPromotionSender({ get, save, now = () => new Date() }) {

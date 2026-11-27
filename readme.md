@@ -423,3 +423,16 @@ An Amsoulness-specific command set for your own linked account, in **Message you
 | `.focus status` / `.focus cancel` | Check or cancel your session |
 
 Tasks, notes and timers are saved per linked account in your bot database. Timer completion is checked approximately every 30 seconds while connected, including after a restart. The completion is claimed before sending to avoid duplicate reminders; delivery can fail if WhatsApp disconnects at that moment. Limits: 100 tasks, 50 notes (2,000 characters each), and one 1–180 minute focus session per account. Data survives redeployment when your database is persistent; it is not a separate end-to-end encrypted notes service.
+
+## Amsoulness 9 — a new conversation design
+
+Amsoulness 9 keeps the full bot toolkit and introduces an independent presentation layer: a violet/cyan motion identity, a compact launch menu, searchable help, category browsing, and consistent bot-authored replies and edited messages. The engine and upstream attribution remain truthful; this is a modified distribution, not a claim that the shared code was written from scratch.
+
+- `.menu` opens the new launch screen.
+- `.list` shows categories; `.list group` opens a category; `.list all` retains the full directory.
+- `.help sticker` explains a command; `.help music` searches names and descriptions.
+- `.about` introduces the bot; `.ping` shows the new Signal card and running release.
+- Text and media captions sent through the bot socket receive the shared design. Rich interactive envelopes retain their native WhatsApp controls.
+- Forwarded messages, status/channel posts, file bytes, reactions, deletes and explicit custom-message flows stay unmodified. Existing custom alive messages remain yours; `.setalive del` restores the new default status card.
+
+The shared UI changes presentation, not command permissions. Private workspace, owner-only configuration, translations, mentions, quoted-message IDs and media processing remain supported.

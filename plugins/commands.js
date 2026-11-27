@@ -1,5 +1,5 @@
 const { sendAnimatedHeader } = require('../core/menu-media');
-const { commandGroups, formatMenu, formatList, paginate } = require('../core/menu-design');
+const { commandGroups, formatMenu, formatList, formatHelp, paginate } = require('../core/menu-design');
 const { commands, Module } = require("../main");
 
 const { VERSION } = require("../config");
@@ -98,25 +98,7 @@ Module(
 
 
 
-    let infoMessage = Lang.INFO_HEADER;
-
-    infoMessage += Lang.INFO_COMMAND.format(commandDetails.name);
-
-    infoMessage += Lang.INFO_DESCRIPTION.format(commandDetails.desc || Lang.NA);
-
-    infoMessage += Lang.INFO_OWNER.format(commandDetails.fromMe ? Lang.YES : Lang.NO);
-
-    if (commandDetails.use) infoMessage += Lang.INFO_TYPE.format(category(commandDetails.use));
-
-    if (commandDetails.usage)
-
-      infoMessage += Lang.INFO_USAGE.format(`${helpPrefix()}${commandDetails.name} ${commandDetails.usage}`);
-
-    if (commandDetails.warn)
-
-      infoMessage += Lang.INFO_WARNING.format(commandDetails.warn);
-
-
+    const infoMessage = formatHelp(commandGroups(commands, commandName, category), helpPrefix(), requested);
 
     await message.sendReply(infoMessage);
 
@@ -140,7 +122,7 @@ Module(
 
     const groups = commandGroups(commands, commandName, category);
     const pages = formatList(groups, helpPrefix(), args[1] || '');
-    await sendAnimatedHeader(message.client, message.jid, '*AMSOULNESS / COMMAND DIRECTORY*\nFind your next shortcut.', config.MENU_ANIMATIONS);
+    await sendAnimatedHeader(message.client, message.jid, '*ASLNS / EXPLORE*\nChoose your next move.', config.MENU_ANIMATIONS);
     for (const page of pages) await message.sendReply(page);
 
   }
@@ -359,7 +341,7 @@ Module(
       user: message.senderName, mode: config.MODE, version: botVersion, uptime,
       ram: `${used} / ${total}`, users: totalUsers });
     if (botImageLink === path.join(__dirname, "utils", "images", "default.png") &&
-        await sendAnimatedHeader(message.client, message.jid, '*AMSOULNESS / ASLNS*\nYour WhatsApp command centre.', config.MENU_ANIMATIONS)) {
+        await sendAnimatedHeader(message.client, message.jid, '*ASLNS / LAUNCH*\nYour WhatsApp, reimagined.', config.MENU_ANIMATIONS)) {
       for (const page of paginate(menu)) await message.sendReply(page);
       return;
     }
@@ -763,3 +745,9 @@ Module(
   },
 
 );
+
+Module({pattern:'help(?:\\s+([\\s\\S]+))?\\s*$',use:'utility',desc:'Search commands by name or purpose.',usage:'.help <command or topic>'},async(message,match)=>{
+ const text=formatHelp(commandGroups(commands,commandName,category),helpPrefix(),match[1]||'');
+ for(const page of paginate(text))await message.sendReply(page);
+});
+Module({pattern:'about\\s*$',use:'utility',desc:'Meet Amsoulness and its full WhatsApp toolkit.'},async message=>message.sendReply(`*ASLNS / THE BOT*\n_AMSOULNESS · MORE THAN A COMMAND LIST_\n\nMedia, groups, automation, games and your private workspace—in one WhatsApp bot.\n\n${helpPrefix()}menu — launch\n${helpPrefix()}help — discover\n${helpPrefix()}desk — your space\n\nv${VERSION} · aslns.online`));

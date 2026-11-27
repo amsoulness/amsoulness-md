@@ -35,15 +35,15 @@ function updateText(n) {
 
 function buildStartMessage(config, n = null) {
   const p = prefixOf(config);
-  return (
-    (n ? `${updateText(n)}\n\n` : `*_Amsoulness started!_*\n\n`) +
-    `_Version:_ *v${version}*\n` +
-    `_Mode:_ *${capitalizeFirstLetter(config.MODE || "private")}*\n` +
-    `_Language:_ *${capitalizeFirstLetter(config.LANGUAGE || "english")}*\n` +
-    `_Handlers:_ *${config.HANDLERS || "none"}*\n\n` +
-    `_Use_ \`${p}settings\` _to view and change all options._` +
-    `\n\n_Plugins:_ https://aslns.online/session/plugins\n_Website:_ https://aslns.online\n_Support:_ https://github.com/amsoulness/amsoulness-md/issues`
-  );
+  return [n ? updateText(n) : '*ASLNS / ONLINE*',
+    '_AMSOULNESS · YOUR WHATSAPP, REIMAGINED_', '',
+    `Running · v${version}`, `Access · ${capitalizeFirstLetter(config.MODE || 'private')}`,
+    `Language · ${capitalizeFirstLetter(config.LANGUAGE || 'english')}`,
+    `Prefix · ${config.HANDLERS || 'none'}`, '', '*START HERE*',
+    `${p}menu — launch your toolkit`, `${p}help — find your next command`,
+    `${p}desk — open your private workspace`, `${p}settings — make it yours`, '',
+    'Website · https://aslns.online', 'Plugins · https://aslns.online/session/plugins',
+    'Support · https://github.com/amsoulness/amsoulness-md/issues'].join('\n');
 }
 
 function buttonsTip(cfg) {
