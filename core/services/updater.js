@@ -106,6 +106,7 @@ function createUpdater(overrides = {}) {
     try {
       const response = await deps.axios.get(`${REMOTE_PACKAGE_URL}?t=${Date.now()}`, {
         headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
+        timeout: 15000,
       });
       return response.data.version;
     } catch (error) {

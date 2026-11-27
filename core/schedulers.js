@@ -33,7 +33,8 @@ function mayHandle(sessionId, row) {
 }
 
 let updateTimer = null;
-let updaterNotified = false;
+let updaterNotified = null;
+let updateCheckRunning = false;
 let isAutoUpdating = false;
 let redeployNotified = false;
 
@@ -333,7 +334,7 @@ async function updateBeforeConnect() {
 }
 
 async function checkUpdates() {
-  if (updaterNotified) return;
+  if (isAutoUpdating) return;
 
   try {
     const localVersion = localPackageJson.version;
@@ -341,8 +342,12 @@ async function checkUpdates() {
 
     if (isNewerVersion(remoteVersion, localVersion)) {
       const platform = detectPlatform();
-      // mark first so a failing socket cannot loop git fetch forever
-      updaterNotified = true;
+      // Announce each version once, but keep retrying failed/disabled updates.
+      if (updaterNotified === remoteVersion) {
+        if (supportsAutoUpdate()) await performAutoUpdate();
+        return;
+      }
+      updaterNotified = remoteVersion;
       // the start message after the restart announces it
       if (supportsAutoUpdate() && !deploysOnRender() && (await performAutoUpdate())) return;
       const autoUpdateSupported = supportsAutoUpdate() && deploysOnRender();
@@ -405,9 +410,20 @@ async function sendOfflinePresence(sessionId) {
   } catch (_) {}
 }
 
+async function scheduledUpdateCheck() {
+  if (updateCheckRunning) return;
+  updateCheckRunning = true;
+  try {
+    return await require('./services/update-context').runUpdateCheck({
+      context, sessions, isRender: () => detectPlatform() === 'render',
+      getKey: () => config.RENDER_API_KEY, check: checkUpdates,
+    });
+  } finally { updateCheckRunning = false; }
+}
+
 function startUpdateChecker() {
   if (updateTimer) return;
-  updateTimer = setInterval(() => context.runUnscoped(checkUpdates), UPDATE_INTERVAL);
+  updateTimer = setInterval(scheduledUpdateCheck, UPDATE_INTERVAL);
   updateTimer.unref?.();
 }
 
@@ -460,6 +476,6 @@ Schedule.settled = () => Promise.all([...builds.values()].map((p) => p.catch(() 
 Schedule.isNewerVersion = isNewerVersion;
 Schedule.performAutoUpdate = performAutoUpdate;
 Schedule.updateBeforeConnect = updateBeforeConnect;
-Schedule.checkUpdates = checkUpdates;
+Schedule.checkUpdates = scheduledUpdateCheck;
 
 module.exports = Schedule;
