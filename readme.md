@@ -385,3 +385,11 @@ The [Render deployment wizard](https://aslns.online/session/deploy/render) confi
 4. The wizard validates the second key's workspace access before creating resources, then installs it as `RENDER_API_KEY`. Neither key is committed to the public deployment repository or returned in status responses. Setup memory is cleared when the job ends; the update key remains on your own service until removed or revoked.
 
 After the bot starts, `.update` checks for changes and shows whether to use `.update start` or `.update beta`. No later `.renderkey` setup is required. Existing deployments are not modified by this website change; use `.renderkey` or Render environment settings for them. The alternative Render Blueprint also prompts for `RENDER_API_KEY` during setup.
+
+### Guided Koyeb and Heroku deployment
+
+Choose [Koyeb](https://aslns.online/session/deploy/koyeb) or [Heroku](https://aslns.online/session/deploy/heroku) in the website host chooser. Both flows ask for two separate API credentials from the same host account/organization, your session, owner number and an existing PostgreSQL URL. The deployment credential is temporary; the update credential is stored privately on your own host, never in GitHub.
+
+Koyeb uses one Free web instance only, subject to capacity and inactivity sleep. Heroku starts one **paid Basic dyno** only after explicit billing confirmation. No database add-ons are purchased. Monitor resources and build logs in your host dashboard; failed deployments do not automatically delete resources.
+
+After launch, the connected WhatsApp account can send `.redeploy`, `.update start` or `.update beta` to request a fresh host build of the latest main branch. These commands confirm build acceptance; completion is shown by your hosting provider. The saved variables are `KOYEB_API_KEY` (Koyeb injects `KOYEB_SERVICE_ID`) or `HEROKU_API_KEY` plus `HEROKU_APP_NAME`.

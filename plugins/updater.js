@@ -30,6 +30,17 @@ Module(
 
   async (message, match) => {
 
+    if (process.env.KOYEB_SERVICE_ID || process.env.HEROKU_APP_NAME) {
+      if (message.fromMe !== true) return message.sendReply('Only the connected account can request a host rebuild.');
+      const action = String(match[1] || '').trim().toLowerCase();
+      if (!['start', 'beta'].includes(action)) return message.sendReply('Send .update start, .update beta or .redeploy to request a fresh host build of the latest Amsoulness source. Follow the build in your host dashboard.');
+      try {
+        const { redeployCloud } = require('../core/services/cloud-api');
+        const host = await redeployCloud();
+        return message.sendReply(`${host} accepted a new build of the latest Amsoulness source. Follow progress in your host dashboard; the bot reconnects after deployment.`);
+      } catch (error) { return message.sendReply(error.message); }
+    }
+
     if (!(await updater.isGitRepo())) {
 
       return await message.sendReply(
