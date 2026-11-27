@@ -1,3 +1,4 @@
+const { formatReply } = require('../core/presentation');
 const { sendAnimatedHeader } = require('../core/menu-media');
 const { commandGroups, formatMenu, formatList, formatHelp, paginate } = require('../core/menu-design');
 const { commands, Module } = require("../main");
@@ -122,7 +123,7 @@ Module(
 
     const groups = commandGroups(commands, commandName, category, language.STRINGS);
     const pages = formatList(groups, helpPrefix(), args[1] || '');
-    await sendAnimatedHeader(message.client, message.jid, '*ASLNS / EXPLORE*\nChoose your next move.', config.MENU_ANIMATIONS);
+    if (pages.length === 1 && pages[0].length <= 1000 && await sendAnimatedHeader(message.client, message.jid, pages[0], config.MENU_ANIMATIONS)) return;
     for (const page of pages) await message.sendReply(page);
 
   }
@@ -135,7 +136,7 @@ async function parseAlive(message, aliveMessage) {
 
   if (!aliveMessage) {
 
-    const defaultAliveMessage = Lang.DEFAULT_ALIVE;
+    const defaultAliveMessage = formatReply(Lang.DEFAULT_ALIVE, { category: 'system' });
 
     return await message.sendReply(defaultAliveMessage);
 
@@ -341,8 +342,7 @@ Module(
       user: message.senderName, mode: config.MODE, version: botVersion, uptime,
       ram: `${used} / ${total}`, users: totalUsers });
     if (botImageLink === path.join(__dirname, "utils", "images", "default.png") &&
-        await sendAnimatedHeader(message.client, message.jid, '*ASLNS / LAUNCH*\nYour WhatsApp, reimagined.', config.MENU_ANIMATIONS)) {
-      for (const page of paginate(menu)) await message.sendReply(page);
+        await sendAnimatedHeader(message.client, message.jid, menu, config.MENU_ANIMATIONS)) {
       return;
     }
 

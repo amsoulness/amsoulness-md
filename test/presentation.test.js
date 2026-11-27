@@ -44,7 +44,7 @@ test('rich apps, forwarded relays, revocations and raw socket options bypass pre
  await sock.sendMessage('123@s.whatsapp.net',{text:'Keep exactly'},{aslnsRaw:true});assert.equal(calls[1][1].text,'Keep exactly');assert.deepEqual(calls[1][2],{});
 });
 test('all bundled locale strings retain their exact content under the shared design',()=>{
- for(const file of fs.readdirSync('plugins/utils/lang').filter(f=>f.endsWith('.json'))){const locale=JSON.parse(fs.readFileSync('plugins/utils/lang/'+file,'utf8')).STRINGS;for(const [section,strings]of Object.entries(locale))for(const [key,value]of Object.entries(strings)){if(typeof value!=='string')continue;const result=formatReply(value,{category:section,command:'example'});assert.ok(result===value||result.endsWith(value),file+':'+section+'.'+key);assert.equal(formatReply(result,{}),result);}}
+ for(const file of fs.readdirSync('plugins/utils/lang').filter(f=>f.endsWith('.json'))){const locale=JSON.parse(fs.readFileSync('plugins/utils/lang/'+file,'utf8')).STRINGS;for(const [section,strings]of Object.entries(locale))for(const [key,value]of Object.entries(strings)){if(typeof value!=='string')continue;const result=formatReply(value,{category:section,command:'example'});assert.ok(result===value||result.endsWith(value)||(/^\*ASLNS \/ /.test(value)&&result.split('\n').filter(line=>line!=='━━━━━━━━━━━━━━').slice(1).join('\n')===value.split('\n').filter(line=>line!=='━━━━━━━━━━━━━━').slice(1).join('\n')),file+':'+section+'.'+key);assert.equal(formatReply(result,{}),result);}}
 });
 
 test('styled native messages survive the actual Baileys protobuf codec',async()=>{
@@ -57,4 +57,8 @@ test('styled native messages survive the actual Baileys protobuf codec',async()=
 
 test('every translated update announcement uses Amsoulness identity',()=>{
  for(const file of fs.readdirSync('plugins/utils/lang').filter(f=>f.endsWith('.json'))){const strings=JSON.parse(fs.readFileSync('plugins/utils/lang/'+file,'utf8')).STRINGS;assert.doesNotMatch(JSON.stringify(strings),/Raganork|raganork\.site/,file);}
+});
+
+test('emoji headings are consistent, idempotent and never inserted into command values',()=>{
+ const text='Run `.todo add Finish homework` or copy ASLNS~example.';const first=formatReply(text,{category:'workspace',command:'todo'});assert.match(first,/🗒️/);assert.ok(first.endsWith(text));assert.equal(formatReply(first,{}),first);const existing=formatReply('*ASLNS / SIGNAL*\nLatency · 10 ms',{});assert.match(existing,/📶/);assert.equal(formatReply(existing,{}),existing);
 });

@@ -3,11 +3,21 @@ const installed=Symbol('aslnsPresentation');
 const RAW=new Set(['say','broadcast','forward','send','testalive','alive']);
 const labels={ai:'AI CORNER',group:'GROUP ROOM',media:'MEDIA LAB',download:'DOWNLOADS',converters:'REMIX LAB',converter:'REMIX LAB',edit:'EDIT SUITE',utility:'QUICK TOOLS',owner:'CONTROL ROOM',settings:'PREFERENCES',workspace:'YOUR DESK',game:'PLAY ROOM',system:'SYSTEM',search:'DISCOVERY',misc:'EXTRAS',whatsapp:'WHATSAPP TOOLS',general:'ASSISTANT'};
 const clean=value=>String(value||'').replace(/[\r\n*_`]/g,' ').trim().slice(0,45);
+const icons={LAUNCH:'🚀',EXPLORE:'🧭',COMMANDS:'🗂️','COMMAND GUIDE':'📖','HOW TO':'📖',DISCOVER:'🔎','ASK THE DIRECTORY':'💡','FIND YOUR WAY':'🧭',SIGNAL:'📶',ONLINE:'🟢','AI CORNER':'🤖','GROUP ROOM':'👥','MEDIA LAB':'🎬',DOWNLOADS:'📥','REMIX LAB':'🎨','EDIT SUITE':'✂️','QUICK TOOLS':'🧰','CONTROL ROOM':'🛠️',PREFERENCES:'⚙️','YOUR DESK':'🗒️','PLAY ROOM':'🎮',SYSTEM:'🖥️',DISCOVERY:'🔎',EXTRAS:'✨','WHATSAPP TOOLS':'💬',ASSISTANT:'✨',NOTIFICATION:'🔔','A NEW CHAPTER':'🆕','NEW CHAPTER':'🆕','RELEASE CHECK':'🔄','BUILD ACCEPTED':'🏗️','UPGRADE COMPLETE':'✅','CHANGES INSTALLED':'✅','UPDATE PAUSED':'⚠️',SAVED:'✅',TASKS:'☑️',NOTES:'📝',FOCUS:'⏱️','FOCUS STARTED':'🎯','FOCUS COMPLETE':'🏁','THE BOT':'💫'};
+const hasEmoji=text=>/\p{Extended_Pictographic}/u.test(text);
+function emojiLabel(title){const value=String(title||'');return hasEmoji(value)?value:value+' '+(icons[value.toUpperCase()]||'✨');}
+function decorateCardHeading(text){
+ const decorated=text.replace(/^\*ASLNS \/ ([^*\n]+)\*/,(_,title)=>'*ASLNS / '+emojiLabel(title)+'*');
+ const lines=decorated.split('\n');
+ if(lines[1]!=='━━━━━━━━━━━━━━')lines.splice(1,0,'━━━━━━━━━━━━━━');
+ return lines.join('\n');
+}
 function card(title,body,kicker='AMSOULNESS / BUILT AROUND YOU'){
- return `*ASLNS / ${clean(title).toUpperCase()}*\n_${kicker}_\n\n${body}`;
+ return `*ASLNS / ${emojiLabel(clean(title).toUpperCase())}*\n━━━━━━━━━━━━━━\n_${kicker}_\n\n${body}`;
 }
 function formatReply(text,meta={}){
- if(typeof text!=='string'||!text.trim()||meta.raw||RAW.has(meta.command)||/^\*ASLNS \/ /.test(text))return text;
+ if(typeof text!=='string'||!text.trim()||meta.raw||RAW.has(meta.command))return text;
+ if(/^\*ASLNS \/ /.test(text))return decorateCardHeading(text);
  const category=labels[meta.category]||clean(meta.category).toUpperCase()||'NOTIFICATION';
  const command=clean(meta.command).toUpperCase();
  return card(category,text,command?`AMSOULNESS  ·  ${command}`:'AMSOULNESS / LIVE');
@@ -81,4 +91,4 @@ function installPresentation(sock){
  };}
  sock[installed]=true;
 }
-module.exports={card,formatReply,stylePayload,styleInteractiveOptions,styleRelayMessage,installPresentation,RAW};
+module.exports={card,formatReply,stylePayload,styleInteractiveOptions,styleRelayMessage,installPresentation,emojiLabel,decorateCardHeading,RAW};

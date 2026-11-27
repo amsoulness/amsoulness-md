@@ -1,3 +1,4 @@
+const { emojiLabel } = require('./presentation');
 const guides = require('./command-guides');
 const clean = value => String(value ?? '').replace(/[\r\n]+/g, ' ').trim();
 function commandGroups(commands, commandName, categoryLabel = s => s, locale = null) {
@@ -14,11 +15,16 @@ function commandGroups(commands, commandName, categoryLabel = s => s, locale = n
   return [...groups.values()].sort((a,b) => a.label.localeCompare(b.label)).map(g => ({ ...g, commands: g.commands.sort((a,b) => a.name.localeCompare(b.name)) }));
 }
 function formatMenu({ groups, prefix, name, owner, user, mode, version, uptime }) {
-  const count=groups.reduce((n,g)=>n+g.commands.length,0);
-  const lines=['*ASLNS / LAUNCH*','_AMSOULNESS · YOUR WHATSAPP, REIMAGINED_','',`Hey ${clean(user)||'there'}. What are we doing today?`,'',`*${clean(name)}* · v${clean(version)}`,`${clean(mode)} mode · ${clean(uptime)} online`,'', '*PICK A DIRECTION*'];
-  for(const g of groups)lines.push(`*${g.label}*  /  ${g.commands.length}`,`${prefix}list ${g.key}`);
-  lines.push('','*QUICK MOVES*',`${prefix}help sticker — find a command`,`${prefix}desk — your private workspace`,`${prefix}settings — make it yours`,'',`${count} commands. One place to begin.`,`Owner · ${clean(owner)}`,'','aslns.online');
-  return lines.join('\n');
+ const count=groups.reduce((n,g)=>n+g.commands.length,0);
+ const icons={ai:'🤖',converters:'🎨',download:'📥',edit:'✂️',game:'🎮',group:'👥',misc:'✨',owner:'🛠️',search:'🔎',settings:'⚙️',system:'🖥️',utility:'🧰',whatsapp:'💬',workspace:'🗒️'};
+ const intro=['*ASLNS / LAUNCH 🚀*','━━━━━━━━━━━━━━',`_AMSOULNESS · v${clean(version)}_`,'',`Hey ${clean(user).slice(0,28)||'there'} 👋`,`${clean(mode)} · ${clean(uptime)} online`,'','*PICK A DIRECTION 🧭*'];
+ const shortcuts=['','──────────────','*QUICK MOVES ⚡*',`${prefix}help <topic> · ${prefix}desk · ${prefix}settings`,'',`🧩 ${count} commands · ${clean(name).slice(0,24)}`,`👤 ${clean(owner).slice(0,24)} · aslns.online`];
+ let categories=groups.map(g=>`${icons[g.key]||'📂'} *${g.label}* · ${prefix}list ${g.key}`);
+ let result=[...intro,...categories,...shortcuts].join('\n');
+ if(result.length>1000){categories=groups.map(g=>`${icons[g.key]||'📂'} ${prefix}list ${g.key}`);result=[...intro,...categories,...shortcuts].join('\n');}
+ if(result.length>1000){categories=categories.slice(0,8);result=[...intro,...categories,`📂 ${prefix}list — all categories`,...shortcuts].join('\n');}
+ if(result.length>1000)result=[...intro,`📂 ${prefix}list — browse all categories`,...shortcuts].join('\n');
+ return result;
 }
 function paginate(text, limit=8000) {
   const pages=[]; let page='';
@@ -37,7 +43,7 @@ function formatList(groups,prefix,query='') {
   const selected=search==='all'?groups:groups.filter(g=>g.key.toLowerCase()===search||g.label.toLowerCase()===search);
   if(!selected.length)return [`*ASLNS / FIND YOUR WAY*\n\nNo category matches “${clean(query)}”.\nAvailable: ${groups.map(g=>g.key).join(', ')}\n\nTry ${prefix}help ${clean(query)} to search commands.`];
   const lines=['*ASLNS / COMMANDS*','_Less searching. More doing._'];
-  for(const g of selected){lines.push('',`*${g.label.toUpperCase()}*`);for(const c of g.commands){lines.push('',`*${prefix}${c.name}*`);if(c.desc)lines.push(String(c.desc));if(c.usage)lines.push(`Try · ${usageOf(c,prefix)}`);if(c.warn)lines.push(`Before you start · ${c.warn}`);lines.push(`_Step-by-step · ${prefix}help ${c.name}_`);}}
+  for(const g of selected){lines.push('',`*${g.label.toUpperCase()}*`);for(const c of g.commands){lines.push('',`*${prefix}${c.name}*`);if(c.desc)lines.push(String(c.desc));if(c.usage)lines.push(`⌨️ Try · ${usageOf(c,prefix)}`);if(c.warn)lines.push(`📌 Before you start · ${c.warn}`);lines.push(`_Step-by-step · ${prefix}help ${c.name}_`);}}
   lines.push('',`${prefix}help <command> — closer look`,`${prefix}menu — back to launch`);
   const pages=paginate(lines.join('\n'));
   return pages.map((page,i)=>pages.length>1?page+`\n\n_${i+1} / ${pages.length}_`:page);
@@ -74,16 +80,16 @@ function formatHelp(groups,prefix,query=''){
   ];
   const examples=guide.examples?.map(substitute)||[];
   const access=guide.self?'Only your linked account in Message yourself.':exact.fromMe?'Owner or authorized sudo users under the current bot access mode.':'Users allowed by the current bot access mode.';
-  const lines=['*ASLNS / COMMAND GUIDE*',`_${exact.category} · ${prefix}${exact.name}_`,'', '*WHAT IT DOES*',exact.desc||'This plugin did not publish a description.','', '*HOW TO USE*',...steps.map((step,i)=>`${i+1}. ${substitute(step)}`),'', '*SYNTAX*',usageOf(exact,prefix)];
-  if(examples.length)lines.push('', '*EXAMPLES*',...examples.map(example=>'`'+example+'`'));
-  if(exact.publishedHelp?.length)lines.push('', '*FROM THE PLUGIN GUIDE*',...exact.publishedHelp.map(text=>substitute(text).replace(/(^|\n)[.!#/$](?=[a-z])/gi,(_,lead)=>lead+prefix)));
-  lines.push('', '*WHERE & ACCESS*',access);
+  const lines=['*ASLNS / COMMAND GUIDE*',`_${exact.category} · ${prefix}${exact.name}_`,'', '*WHAT IT DOES 🎯*',exact.desc||'This plugin did not publish a description.','', '*HOW TO USE 🪄*',...steps.map((step,i)=>`${i+1}. ${substitute(step)}`),'', '*SYNTAX ⌨️*',usageOf(exact,prefix)];
+  if(examples.length)lines.push('', '*EXAMPLES 💡*',...examples.map(example=>'`'+example+'`'));
+  if(exact.publishedHelp?.length)lines.push('', '*FROM THE PLUGIN GUIDE 📚*',...exact.publishedHelp.map(text=>substitute(text).replace(/(^|\n)[.!#/$](?=[a-z])/gi,(_,lead)=>lead+prefix)));
+  lines.push('', '*WHERE & ACCESS 🔐*',access);
   if(guide.group)lines.push('Use inside the target group. Group admin access may also be required.');
-  if(guide.result)lines.push('', '*WHAT TO EXPECT*',substitute(guide.result));
+  if(guide.result)lines.push('', '*WHAT TO EXPECT ✨*',substitute(guide.result));
   const notes=[exact.warn,guide.note].filter(Boolean).map(substitute);
-  if(notes.length)lines.push('', '*BEFORE YOU START*',...notes.map(note=>'• '+note));
+  if(notes.length)lines.push('', '*BEFORE YOU START 📌*',...notes.map(note=>'• '+note));
   lines.push('', `_${prefix}list — browse · ${prefix}menu — launch_`);
-  return lines.join('\n');
+  return lines.join('\n').replace(/\n\n(?=\*(?:WHAT|HOW|SYNTAX|EXAMPLES|FROM|WHERE|BEFORE))/g,'\n\n──────────────\n');
  }
  const found=all.filter(c=>[c.name,c.desc,c.category].join(' ').toLowerCase().includes(word));
  return `*ASLNS / DISCOVER*\n\n${found.length?found.length+' matches for':'No matches for'} “${clean(query)}”\n\n`+(found.length?found.slice(0,15).map(c=>`*${prefix}${c.name}* · ${c.category}\n${String(c.desc||'').slice(0,150)}`).join('\n\n'):`Try a shorter word, or ${prefix}list.`)+(found.length>15?'\n\nShowing the first 15. Use a more specific search.':'');
