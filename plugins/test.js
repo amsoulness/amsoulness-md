@@ -142,7 +142,7 @@ Module(
 
     const ms = (diff[0] * 1e3 + diff[1] / 1e6).toFixed(2);
 
-    await message.edit(Lang.PING_LATENCY.format(ms), message.jid, sent_msg.key);
+    await message.edit(`*Amsoulness · v${require("../package.json").version}*\n${Lang.PING_LATENCY.format(ms)}`, message.jid, sent_msg.key);
 
   }
 
