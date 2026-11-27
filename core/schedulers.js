@@ -440,7 +440,7 @@ const Schedule = async (client, sessionId = client?.user?.id || "default") => {
   presenceTimer.unref?.();
   const promotionTimer = setInterval(() => {
     if (!session?.accountId) return;
-    context.run(session, () => sendPromotion(client, session.accountId))
+    context.run(session, () => Promise.allSettled([sendPromotion(client, session.accountId), require('./services/workspace').checkFocus(client, session.accountId)]))
       .catch(() => console.error('Amsoulness private reminder could not be sent.'));
   }, 30000);
   promotionTimer.unref?.();

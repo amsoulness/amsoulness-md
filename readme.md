@@ -405,3 +405,21 @@ Last manually reviewed upstream baseline: **v7.4.6** (`5eb0cf2207faef5144e8bfe60
 ### Amsoulness release numbering
 
 Amsoulness uses its own version series beginning at **8.0.0**. Compatible automatic upstream syncs increment the Amsoulness patch version (8.0.1, 8.0.2, and so on), including upstream changes without an original version bump. The original version and commit are tracked separately in `.upstream-sync.json`. Bot menus, startup messages and `.ping` show the Amsoulness release number.
+
+## Amsoulness Personal Workspace — v8.1.0
+
+An Amsoulness-specific command set for your own linked account, in **Message yourself**. Incoming users, sudo users from another account and group chats cannot open your workspace.
+
+| Command | What it does |
+| --- | --- |
+| `.desk` | Dashboard with open tasks, saved notes and focus progress |
+| `.todo add Finish my assignment` | Save a task with a stable ID |
+| `.todo list` / `.todo done 1` | View tasks or mark one complete |
+| `.todo reopen 1` / `.todo remove 1` | Reopen or remove a task |
+| `.notes add Useful idea` | Save a note; also accepts replied text |
+| `.notes list` / `.notes show 1` | Browse previews or read a full note |
+| `.notes search idea` / `.notes remove 1` | Search or remove a note |
+| `.focus 25 Study` | Start a 25-minute focus session |
+| `.focus status` / `.focus cancel` | Check or cancel your session |
+
+Tasks, notes and timers are saved per linked account in your bot database. Timer completion is checked approximately every 30 seconds while connected, including after a restart. The completion is claimed before sending to avoid duplicate reminders; delivery can fail if WhatsApp disconnects at that moment. Limits: 100 tasks, 50 notes (2,000 characters each), and one 1–180 minute focus session per account. Data survives redeployment when your database is persistent; it is not a separate end-to-end encrypted notes service.

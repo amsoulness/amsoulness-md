@@ -15,7 +15,7 @@ function commandGroups(commands, commandName, categoryLabel = s => s) {
 function formatMenu({ groups, prefix, name, owner, user, mode, version, uptime, ram, users }) {
   const count = groups.reduce((n,g) => n + g.commands.length, 0);
   const lines = [
-    '*AMSOULNESS / ASLNS*', '_Your WhatsApp command centre._', '',
+    '*AMSOULNESS / ASLNS*', '_Your everyday workspace. Your WhatsApp assistant._', '',
     `Hello, ${clean(user) || 'there'}.`,
     `*${clean(name)}*  ·  v${clean(version)}`,
     `${count} commands  /  ${groups.length} categories`, '',
@@ -24,6 +24,7 @@ function formatMenu({ groups, prefix, name, owner, user, mode, version, uptime, 
     `Uptime  ›  ${clean(uptime)}`, `Free RAM  ›  ${clean(ram)}`,
     `Total users  ›  ${clean(users)}`, '',
     '*02 / QUICK START*',
+    `Private workspace → ${prefix}desk (self-chat)`,
     `Menu directory → ${prefix}list`,
     `Bot settings → ${prefix}settings`,
     `Command help → ${prefix}info <command>`, '',
