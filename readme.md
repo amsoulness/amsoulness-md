@@ -364,3 +364,13 @@ Disable per account with `.setvar PROMO_MESSAGES=false`; enable with `.setvar PR
 - `.mariorun file` / `.beatstudio file` — get the HTML document for browser use.
 
 Commands use the bot's normal public/private permissions and send only to the chat where they were invoked. Interactive HTML uses an experimental WhatsApp rich-response format; support varies by recipient client. If sending fails, the bot sends the HTML document instead. A successful send cannot confirm that the recipient rendered it. These apps are bundled locally; they do not download external scripts or audio.
+
+### Configure Render updates from WhatsApp
+
+After deploying this release, open your linked account's **Message yourself** chat:
+
+- `.renderkey <your Render API key>` verifies access to the running Render service, then saves the key in the account's bot database settings. It is not echoed; deletion of the original message is attempted but not guaranteed.
+- `.renderkey status` reports whether a key is configured without showing its value.
+- `.renderkey remove` removes the key stored for this account. A key configured in Render's environment must be removed in Render separately.
+
+Only messages sent by the linked account in its own self-chat can use this command. Groups and other sudo accounts are rejected. The key survives redeploys when the bot database persists. It is a private database setting, not a Render environment-variable edit. `.update` checks for changes; `.update start` applies a release and `.update beta` applies same-version commits by triggering the existing Render service's deployment. This does not create a new service. You need one manual deployment to install the new command.

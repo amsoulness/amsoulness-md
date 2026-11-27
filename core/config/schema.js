@@ -85,7 +85,7 @@ const entries = {
   DATABASE_URL: { type: "string", scope: "global", external: true },
   SESSION: { type: "string", scope: "global", external: true },
   LOG_LEVEL: { type: "string", default: "warn", scope: "global", external: true },
-  RENDER_API_KEY: { type: "string", default: "", scope: "global", external: true },
+  RENDER_API_KEY: { type: "string", default: "", scope: "session", external: true },
 };
 
 const FALLBACK = Object.freeze({ type: "string", scope: "session", restart: false });
