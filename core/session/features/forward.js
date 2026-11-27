@@ -96,6 +96,7 @@ async function forwardMessage(client, jid, message, options = {}, { legacy = fal
 
   await client.relayMessage(jid, waMessage.message, {
     messageId: waMessage.key.id,
+    aslnsRaw: true,
   });
   return waMessage;
 }

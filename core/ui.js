@@ -2,6 +2,8 @@
 // a tap comes back as the row/button id, which normalize.js turns into command text,
 // so every id here is a real, typeable command.
 const config = require("../config");
+const presentation = require("./presentation");
+const context = require("./context");
 const {
   loadBaileys,
   toBuffer,
@@ -60,6 +62,7 @@ async function prepareHeaderMedia(client, { image, video, document, fileName, mi
 
 // low level: native flow interactiveMessage, relayed with the biz node. throws on failure.
 async function sendInteractive(client, jid, content, { quoted = null, ephemeralExpiration = null } = {}) {
+  content = presentation.styleInteractiveOptions(content, context.current()?.presentation || {});
   const { generateWAMessageFromContent } = await loadBaileys();
   const { title = "", footer = "", header = "", buttons = [], contextInfo = {}, externalAdReply = null } = content;
 
@@ -134,6 +137,7 @@ async function fallback(client, jid, opts, quoted) {
 }
 
 async function send(client, jid, opts, nativeButtons, { quoted = null, force = false } = {}, sender = null) {
+  opts = presentation.styleInteractiveOptions(opts, context.current()?.presentation || {});
   if (!force && !enabled()) return fallback(client, jid, opts, quoted);
   try {
     if (sender) return await sender(client, jid, opts, { quoted });
@@ -156,6 +160,7 @@ async function send(client, jid, opts, nativeButtons, { quoted = null, force = f
 // while listMessage renders (multi-section, 30+ rows) on both iOS and Android.
 // taps come back as listResponseMessage.singleSelectReply.selectedRowId (see normalize.js)
 async function sendLegacyList(client, jid, opts, { quoted = null } = {}) {
+  opts = presentation.styleInteractiveOptions(opts, context.current()?.presentation || {});
   const { generateWAMessageFromContent } = await loadBaileys();
   const sections = [...(opts.sections || [])];
   // a listMessage can't carry extra buttons; quick-reply style extras become a last section

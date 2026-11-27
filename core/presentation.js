@@ -1,7 +1,7 @@
 const context=require('./context');
 const installed=Symbol('aslnsPresentation');
-const RAW=new Set(['say','broadcast','forward','send','filter','welcome','goodbye','greeting','setalive','testalive','alive','take']);
-const labels={group:'GROUP CONTROL',media:'MEDIA',download:'DOWNLOADS',converters:'CONVERT',converter:'CONVERT',utility:'TOOLS',owner:'CONTROL',settings:'PREFERENCES',workspace:'YOUR DESK',game:'PLAY',system:'SYSTEM',whatsapp:'WHATSAPP',general:'ASSISTANT'};
+const RAW=new Set(['say','broadcast','forward','send','testalive','alive']);
+const labels={ai:'AI CORNER',group:'GROUP ROOM',media:'MEDIA LAB',download:'DOWNLOADS',converters:'REMIX LAB',converter:'REMIX LAB',edit:'EDIT SUITE',utility:'QUICK TOOLS',owner:'CONTROL ROOM',settings:'PREFERENCES',workspace:'YOUR DESK',game:'PLAY ROOM',system:'SYSTEM',search:'DISCOVERY',misc:'EXTRAS',whatsapp:'WHATSAPP TOOLS',general:'ASSISTANT'};
 const clean=value=>String(value||'').replace(/[\r\n*_`]/g,' ').trim().slice(0,45);
 function card(title,body,kicker='AMSOULNESS / BUILT AROUND YOU'){
  return `*ASLNS / ${clean(title).toUpperCase()}*\n_${kicker}_\n\n${body}`;
@@ -21,10 +21,64 @@ function stylePayload(jid,payload,meta){
  }
  return next;
 }
+function styleInteractiveOptions(opts,meta={}){
+ if(!opts||meta.raw||RAW.has(meta.command))return opts;
+ const result={...opts};
+ for(const field of ['text','body','title'])if(typeof opts[field]==='string'&&opts[field])result[field]=formatReply(opts[field],meta);
+ if(typeof opts.header==='string')result.header=opts.header.startsWith('ASLNS')?opts.header:'ASLNS · '+opts.header;
+ const footer=String(opts.footer||'').trim();result.footer=/ASLNS|AMSOULNESS/i.test(footer)?footer:(footer?footer+' · ASLNS':'AMSOULNESS / ASLNS');
+ return result;
+}
+// Relay paths bypass sendMessage for native controls, albums and protocol edits.
+// Only authored display fields change; IDs, actions, mentions, quotes and bytes stay intact.
+function styleRelayMessage(message,meta={},depth=0){
+ if(!message||typeof message!=='object'||depth>8||meta.raw||RAW.has(meta.command)||message.contextInfo?.isForwarded||message.botForwardedMessage||message.richResponseMessage)return message;
+ let out=message;
+ const set=(key,value)=>{if(value===message[key])return;if(out===message)out={...message};out[key]=value;};
+ if(typeof message.conversation==='string')set('conversation',formatReply(message.conversation,meta));
+ for(const type of ['extendedTextMessage','imageMessage','videoMessage','documentMessage','buttonsMessage','listMessage']){
+  const node=message[type];if(!node||node.contextInfo?.isForwarded)continue;
+  const fields=type==='extendedTextMessage'?['text']:type==='buttonsMessage'?['contentText']:type==='listMessage'?['description']:['caption'];
+  let next=node;
+  for(const field of fields)if(typeof node[field]==='string'&&node[field]){const value=formatReply(node[field],meta);if(value!==node[field]){if(next===node)next={...node};next[field]=value;}}
+  if(['buttonsMessage','listMessage'].includes(type)){
+   const footer=node.footerText||'';if(!/ASLNS|AMSOULNESS/i.test(footer)){if(next===node)next={...node};next.footerText=footer?footer+' · ASLNS':'AMSOULNESS / ASLNS';}
+  }
+  set(type,next);
+ }
+ const interactive=message.interactiveMessage;
+ if(interactive&&!interactive.contextInfo?.isForwarded){
+  let node={...interactive};
+  if(interactive.body?.text)node.body={...interactive.body,text:formatReply(interactive.body.text,meta)};
+  if(interactive.header?.title&&!interactive.header.title.startsWith('ASLNS'))node.header={...interactive.header,title:'ASLNS · '+interactive.header.title};
+  const footer=interactive.footer?.text||'';
+  if(!/ASLNS|AMSOULNESS/i.test(footer))node.footer={...interactive.footer,text:footer?footer+' · ASLNS':'AMSOULNESS / ASLNS'};
+  set('interactiveMessage',node);
+ }
+ for(const type of ['ephemeralMessage','viewOnceMessage','viewOnceMessageV2','viewOnceMessageV2Extension','documentWithCaptionMessage']){
+  if(!message[type]?.message)continue;
+  const next=styleRelayMessage(message[type].message,meta,depth+1);
+  if(next!==message[type].message)set(type,{...message[type],message:next});
+ }
+ if(message.protocolMessage?.editedMessage){
+  const next=styleRelayMessage(message.protocolMessage.editedMessage,meta,depth+1);
+  if(next!==message.protocolMessage.editedMessage)set('protocolMessage',{...message.protocolMessage,editedMessage:next});
+ }
+ return out;
+}
 function installPresentation(sock){
  if(!sock?.sendMessage||sock[installed])return;
  const send=sock.sendMessage;
- sock.sendMessage=function(jid,payload,options){return send.call(this,jid,stylePayload(jid,payload,context.current()?.presentation||{}),options);};
+ sock.sendMessage=function(jid,payload,options){
+  const {aslnsRaw,...sdkOptions}=options||{};
+  const meta=aslnsRaw?{raw:true}:context.current()?.presentation||{};
+  return send.call(this,jid,stylePayload(jid,payload,meta),aslnsRaw?sdkOptions:options);
+ };
+ if(sock.relayMessage){const relay=sock.relayMessage;sock.relayMessage=function(jid,message,options){
+  const {aslnsRaw,...sdkOptions}=options||{};
+  const raw=aslnsRaw||/@(?:broadcast|newsletter)$/.test(jid||'');
+  return relay.call(this,jid,raw?message:styleRelayMessage(message,context.current()?.presentation||{}),aslnsRaw?sdkOptions:options);
+ };}
  sock[installed]=true;
 }
-module.exports={card,formatReply,stylePayload,installPresentation,RAW};
+module.exports={card,formatReply,stylePayload,styleInteractiveOptions,styleRelayMessage,installPresentation,RAW};
