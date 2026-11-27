@@ -8,7 +8,7 @@
 
 Inspired by and based on [Raganork-MD](https://github.com/souravkl11/raganork-md) by Sourav K. Amsoulness is an independently branded, modified distribution with its own features, presentation and release numbering.
 
-## Amsoulness 9.1 — one conversation design
+## Amsoulness 9.2 — one conversation design
 
 The shared ASLNS presentation system covers bot-authored text, edited messages, media captions, native buttons, lists, plain-text fallbacks, directly relayed message envelopes and automatic replies. Startup messages, updates, preferences, status, reminders and workspace commands use the same identity.
 
@@ -32,6 +32,14 @@ Forwarded content, user-authored custom alive/broadcast text, rich HTML app payl
 | `.desk` | Open your private workspace in Message yourself |
 
 Examples use `.`. Your configured command prefix also works. Help reads the live command registry; permissions and installed plugins determine availability.
+
+## Detailed command guides — 9.2
+
+Use `.help <command>` or `.info <command>` for a structured card: **what it does**, numbered steps, syntax, examples when reviewed, access rules, expected results when documented, and warnings. `.list <category>` links each command to its detailed guide.
+
+The guide combines the live command registry, reviewed everyday examples and matching usage/help text published by the plugin. Unknown or installed plugins still appear; missing argument documentation is stated explicitly, not guessed. Owner/sudo access follows the current mode; private workspace and Render-key commands additionally require the linked account’s self-chat.
+
+Examples: `.help sticker`, `.help todo`, `.help focus`, `.help update`, `.help mute`. Topic searches such as `.help music` still return matching commands. WhatsApp bold uses `*text*`, italics use `_text_`, and examples use inline code, keeping instructions and commands easy to distinguish.
 
 ## Full bot toolkit
 
