@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const { createApp } = require('../server');
 const GH_TOKEN = 'ghp_synthetic_token_for_unit_tests_only';
 const RENDER_KEY = 'rnd_synthetic_key_for_unit_tests_only';
+const UPDATE_KEY = 'rnd_separate_update_key_for_unit_tests_only';
 
 async function setup(t, extra = {}) {
   const calls = [];
@@ -39,7 +40,7 @@ async function setup(t, extra = {}) {
     for (let i = 0; i < 30; i++) { const r = await api('status'); if (['error', 'live'].includes(r.data.phase)) return r.data; await new Promise(resolve => setImmediate(resolve)); }
     throw new Error('Job did not finish');
   }
-  const config = { confirm: true, name: 'synthetic-bot', ownerId: 'tea-test', region: 'singapore', session: 'RGNK~synthetic-test-session', sudo: '10000000000' };
+  const config = { confirm: true, configureUpdates: true, updateApiKey: UPDATE_KEY, name: 'synthetic-bot', ownerId: 'tea-test', region: 'singapore', session: 'RGNK~synthetic-test-session', sudo: '10000000000' };
   return { api, connect, terminal, calls, config, base };
 }
 
@@ -54,9 +55,12 @@ test('complete deployment creates private settings only on Render and clears tok
   const service = calls.find(c => c.url.endsWith('/services'));
   assert.equal(service.body.serviceDetails.plan, 'free'); assert.equal(service.body.serviceDetails.runtime, 'docker');
   assert.equal(service.body.envVars.find(x => x.key === 'SESSION').value, config.session);
+  assert.equal(service.body.envVars.find(x => x.key === 'RENDER_API_KEY').value, UPDATE_KEY);
+  assert.ok(!service.body.envVars.some(x => x.value === RENDER_KEY));
+  assert.ok(!source.includes(UPDATE_KEY));
   assert.equal(service.body.envVars.find(x => x.key === 'DATABASE_URL').value, 'postgresql://synthetic:secret@internal/db');
   const publicStatus = JSON.stringify(state);
-  for (const secret of [GH_TOKEN, RENDER_KEY, config.session, 'postgresql://']) assert.ok(!publicStatus.includes(secret));
+  for (const secret of [GH_TOKEN, RENDER_KEY, UPDATE_KEY, config.session, 'postgresql://']) assert.ok(!publicStatus.includes(secret));
   assert.equal((await api('deploy', config)).status, 400);
 });
 test('confirmation, owner membership and session validation run before mutations', async t => {
@@ -119,4 +123,17 @@ test('OAuth validates browser state and exchanges a one-use ticket without leaki
   const ticket = new URLSearchParams(redirect.hash.slice(1)).get('ticket');
   const connected = await api('ticket', { ticket }); assert.equal(connected.status, 200); assert.equal(connected.data.login, 'synthetic-owner');
   assert.equal((await api('ticket', { ticket })).status, 400);
+});
+
+test('update key is separate, authorized and workspace-checked before creation', async t => {
+  const { api, connect, calls, config } = await setup(t); await connect();
+  for (const change of [{ configureUpdates: false }, { updateApiKey: '' }, { updateApiKey: RENDER_KEY }]) assert.equal((await api('deploy', { ...config, ...change })).status, 400);
+  assert.ok(!calls.some(c => c.url.endsWith('/user/repos')));
+});
+test('a second key from another workspace cannot create resources', async t => {
+  const { api, connect, calls, config } = await setup(t, { fetchImpl: async (url, options) => {
+    if (url.includes('/owners?') && options.headers.Authorization === `Bearer ${UPDATE_KEY}`) return { ok: true, status: 200, json: async () => [{ owner: { id: 'tea-other', name: 'Other workspace' } }] };
+  } }); await connect();
+  assert.equal((await api('deploy', config)).status, 400);
+  assert.ok(!calls.some(c => c.url.endsWith('/user/repos')));
 });

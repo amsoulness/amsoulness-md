@@ -374,3 +374,14 @@ After deploying this release, open your linked account's **Message yourself** ch
 - `.renderkey remove` removes the key stored for this account. A key configured in Render's environment must be removed in Render separately.
 
 Only messages sent by the linked account in its own self-chat can use this command. Groups and other sudo accounts are rejected. The key survives redeploys when the bot database persists. It is a private database setting, not a Render environment-variable edit. `.update` checks for changes; `.update start` applies a release and `.update beta` applies same-version commits by triggering the existing Render service's deployment. This does not create a new service. You need one manual deployment to install the new command.
+
+### Two Render keys during guided setup
+
+The [Render deployment wizard](https://aslns.online/session/deploy/render) configures updates during the first deployment:
+
+1. Create **Amsoulness Deploy** and **Amsoulness Updates** as two separate Render API keys in your account settings, with access to the selected workspace and the permissions their tasks require.
+2. Use the deployment key to connect Render and create the resources.
+3. Enter the separate update key in the configuration form and approve storing it privately on your new Render bot service.
+4. The wizard validates the second key's workspace access before creating resources, then installs it as `RENDER_API_KEY`. Neither key is committed to the public deployment repository or returned in status responses. Setup memory is cleared when the job ends; the update key remains on your own service until removed or revoked.
+
+After the bot starts, `.update` checks for changes and shows whether to use `.update start` or `.update beta`. No later `.renderkey` setup is required. Existing deployments are not modified by this website change; use `.renderkey` or Render environment settings for them. The alternative Render Blueprint also prompts for `RENDER_API_KEY` during setup.

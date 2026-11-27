@@ -19,7 +19,7 @@ class PublicError extends Error { constructor(message, status = 400) { super(mes
 
 function createRenderDeployer({ fetchImpl = fetch, sleep = ms => new Promise(r => setTimeout(r, ms)), databaseAttempts = 120, deployAttempts = 300, clock = Date.now } = {}) {
   const connections = new Map(), states = new Map(), tickets = new Map(), limits = new Map();
-  const wipe = r => { r.githubToken = null; r.renderKey = null; r.session = null; r.databaseUrl = null; };
+  const wipe = r => { r.githubToken = null; r.renderKey = null; r.updateKey = null; r.session = null; r.databaseUrl = null; };
   function remove(id) { const r = connections.get(id); if (r) { r.abort.abort(); wipe(r); connections.delete(id); } }
   const sweep = setInterval(() => {
     for (const [id, r] of connections) if (clock() > r.expiresAt) remove(id);
@@ -84,7 +84,7 @@ function createRenderDeployer({ fetchImpl = fetch, sleep = ms => new Promise(r =
       update(r, 'service', 'Creating the bot service and applying private environment settings');
       const created = await request(RENDER, '/services', r.renderKey, 'POST', {
         type: 'web_service', name: data.name, ownerId: data.ownerId, repo: r.repoUrl, branch, autoDeployTrigger: 'off',
-        envVars: [{ key: 'SESSION', value: data.session }, { key: 'SUDO', value: data.sudo }, { key: 'DATABASE_URL', value: databaseUrl }, { key: 'BOT_NAME', value: 'Amsoulness' }, { key: 'AUTO_UPDATE', value: 'false' }, { key: 'PORT', value: '3000' }, { key: 'TZ', value: 'Asia/Kolkata' }],
+        envVars: [{ key: 'SESSION', value: data.session }, { key: 'SUDO', value: data.sudo }, { key: 'DATABASE_URL', value: databaseUrl }, { key: 'BOT_NAME', value: 'Amsoulness' }, { key: 'RENDER_API_KEY', value: r.updateKey }, { key: 'AUTO_UPDATE', value: 'false' }, { key: 'PORT', value: '3000' }, { key: 'TZ', value: 'Asia/Kolkata' }],
         serviceDetails: { runtime: 'docker', plan: 'free', region: data.region, healthCheckPath: '/health', envSpecificDetails: { dockerfilePath: './Dockerfile', dockerContext: '.' } },
       }, r.abort.signal);
       data.session = null; data.existingDatabaseUrl = null; databaseUrl = null;
@@ -178,8 +178,15 @@ function createRenderDeployer({ fetchImpl = fetch, sleep = ms => new Promise(r =
         if (data.session.startsWith('ASLNS~')) { try { decodeSession(data.session); } catch { throw new PublicError('The Amsoulness session is invalid. Generate a new one.'); } }
         if (!/^\d{7,15}$/.test(data.sudo || '')) throw new PublicError('Enter your owner phone number with country code.');
         if (data.existingDatabaseUrl && (typeof data.existingDatabaseUrl !== 'string' || data.existingDatabaseUrl.length > 4000 || !/^postgres(?:ql)?:\/\//.test(data.existingDatabaseUrl))) throw new PublicError('Enter a valid PostgreSQL connection URL.');
+        if (data.configureUpdates !== true) throw new PublicError('Authorize saving the separate update key on your Render bot service.');
+        if (typeof data.updateApiKey !== 'string' || !/^rnd_[A-Za-z0-9_-]{16,200}$/.test(data.updateApiKey)) throw new PublicError('Enter the second Render API key for bot updates.');
+        if (data.updateApiKey === r.renderKey) throw new PublicError('Use two separate Render API keys: one for deployment and one for bot updates.');
+        const updateOwners = await request(RENDER, '/owners?limit=100', data.updateApiKey, 'GET', undefined, r.abort.signal);
+        if (!(Array.isArray(updateOwners) && updateOwners.some(x => x.owner?.id === data.ownerId))) throw new PublicError('The update key must have access to the selected Render workspace.');
+        if (r.abort.signal.aborted || r.expiresAt < clock()) throw new PublicError('This deployment connection expired. Start again.', 410);
         if (r.running) { send(202, safe(r)); return true; }
         if (r.phase !== 'configured') throw new PublicError('This deployment was already submitted. Inspect its status before starting again.');
+        r.updateKey = data.updateApiKey; delete data.updateApiKey;
         r.running = true; r.expiresAt = clock() + 30 * 60000; update(r, 'queued', 'Deployment approved');
         void deploy(r, data);
         send(202, safe(r)); return true;

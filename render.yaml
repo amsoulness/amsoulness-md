@@ -12,6 +12,8 @@ services:
     envVars:
       - key: SESSION
         sync: false
+      - key: RENDER_API_KEY
+        sync: false
       - key: SUDO
         sync: false
       - key: BOT_NAME
