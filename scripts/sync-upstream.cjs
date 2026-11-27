@@ -25,6 +25,11 @@ function branded(text){
  .replaceAll('https://raw.githubusercontent.com/souravkl11/raganork-md/main/package.json','https://raw.githubusercontent.com/amsoulness/amsoulness-md/main/package.json')
  .replaceAll('Raganork updated to','Amsoulness updated to').replaceAll('Raganork started!','Amsoulness started!');
 }
+function nextVersion(version){
+ if(!/^\d+\.\d+\.\d+$/.test(version))throw new Error('Amsoulness needs a valid release version.');
+ const [major,minor,patch]=version.split('.').map(Number);
+ return `${major}.${minor}.${patch+1}`;
+}
 function run(){
  const git=(args,options={})=>execFileSync('git',args,{encoding:'utf8',maxBuffer:32*1024*1024,...options});
  if(git(['status','--porcelain']).trim())throw new Error('Run upstream sync only in a clean checkout.');
@@ -54,7 +59,7 @@ function run(){
        if(file==='package.json'){
          // Identity and local test scripts belong to this distribution.
          for(const key of ['name','description','author','contributors','scripts']){base[key]=ours[key];theirs[key]=ours[key];}
-         base.version=ours.version;
+         base.version=ours.version;theirs.version=ours.version;
        }
        output=JSON.stringify(mergeJSON(base,ours,theirs),null,2)+'\n';
      }else{
@@ -66,6 +71,15 @@ function run(){
    }catch{conflicts.push(file);}
  }
  if(conflicts.length)throw new Error('Sync stopped; no files changed. Review upstream conflicts in: '+conflicts.join(', '));
+ // Every compatible code sync creates a new Amsoulness release, even when
+ // upstream has not bumped its version. Never downgrade to upstream numbering.
+ if(updates.size){
+   const local=JSON.parse(read('HEAD','package.json'));
+   const pkg=JSON.parse(updates.get('package.json')||read('HEAD','package.json'));
+   pkg.version=nextVersion(local.version);
+   updates.set('package.json',Buffer.from(JSON.stringify(pkg,null,2)+'\n'));
+ }
+ state.upstreamVersion=JSON.parse(read(latest,'package.json')).version;
  for(const [file,value]of updates){
    const previous=read('HEAD',file)?.toString()||'';
    if(value&&!value.includes(0)&&(value.toString().match(/Raganork|raganork\.site/g)||[]).length>(previous.match(/Raganork|raganork\.site/g)||[]).length)throw new Error('New upstream branding requires review: '+file);
@@ -78,4 +92,4 @@ function run(){
  }finally{fs.rmSync(temp,{recursive:true,force:true});}
 }
 if(require.main===module){try{run();}catch(error){console.error(error.message);process.exitCode=1;}}
-module.exports={mergeJSON,eligible,branded};
+module.exports={mergeJSON,eligible,branded,nextVersion};

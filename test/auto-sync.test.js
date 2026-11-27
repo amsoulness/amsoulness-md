@@ -5,3 +5,5 @@ test('conflicting custom settings stop automatic sync',()=>{assert.throws(()=>me
 test('upstream deletions preserve custom keys and delete unchanged keys',()=>{assert.deepEqual(mergeJSON({a:1,b:2},{a:1,b:3,c:4},{}),{b:3,c:4});});
 test('LICENSE, notices, docs, automation and custom deployment code stay outside the sync scope',()=>{for(const name of ['LICENSE','NOTICE','readme.md','.github/workflows/upstream-sync.yml','session-service/server.js','plugins/LICENSE'])assert.equal(eligible(name),false,name);assert.equal(eligible('core/pipeline/dispatcher.js'),true);assert.equal(eligible('plugins/pdf.js'),true);});
 test('new updater URLs and startup announcements use Amsoulness',()=>{assert.equal(branded('Raganork started! https://github.com/souravkl11/raganork-md.git'),'Amsoulness started! https://github.com/amsoulness/amsoulness-md.git');});
+
+test('Amsoulness releases advance independently of upstream numbering',()=>{const {nextVersion}=require('../scripts/sync-upstream.cjs');assert.equal(nextVersion('8.0.0'),'8.0.1');assert.equal(nextVersion('8.0.9'),'8.0.10');assert.throws(()=>nextVersion('bad'),/valid release/);});

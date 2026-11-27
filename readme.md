@@ -401,3 +401,7 @@ GitHub Actions checks the original repository approximately every six hours. Com
 Repository sync and a running bot's update setting are separate. On your bot, use `.setvar AUTO_UPDATE=true` to enable automatic stable-version updates from **Amsoulness**, not directly from the original repository. Render needs its saved `RENDER_API_KEY` for a rebuild. Koyeb/Heroku can be rebuilt with `.redeploy`; host-side automatic deployment settings still apply. Conflicts require review rather than overwriting custom features.
 
 Last manually reviewed upstream baseline: **v7.4.6** (`5eb0cf2207faef5144e8bfe60f80a609530b6750`).
+
+### Amsoulness release numbering
+
+Amsoulness uses its own version series beginning at **8.0.0**. Compatible automatic upstream syncs increment the Amsoulness patch version (8.0.1, 8.0.2, and so on), including upstream changes without an original version bump. The original version and commit are tracked separately in `.upstream-sync.json`. Bot menus, startup messages and `.ping` show the Amsoulness release number.
