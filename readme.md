@@ -33,9 +33,9 @@ Forwarded content, user-authored custom alive/broadcast text, rich HTML app payl
 
 Examples use `.`. Your configured command prefix also works. Help reads the live command registry; permissions and installed plugins determine availability.
 
-## Unified menu and emoji design — 9.2.1
+## Unified menu and emoji design — 9.2.2
 
-The looping menu animation and its compact navigation caption are delivered as **one message**. With animation disabled, the still-image menu also stays together. Large command directories remain paginated text; a short category chooser can use a single animated card. Shared headings, categories and guide sections use consistent emojis and lightweight divider lines, while copyable commands, credentials, links and user-authored content stay intact.
+The looping menu animation and its compact navigation caption are delivered as **one message**. With animation disabled, the still-image menu also stays together. Large command directories remain paginated text; a short category chooser can use a single animated card. Bot-authored cards share the launch menu’s title, emoji, bold divider, italic subtitle and compact Amsoulness footer. Shared headings, categories and guide sections use consistent emojis and lightweight divider lines, while copyable commands, credentials, links and user-authored content stay intact.
 
 ## Detailed command guides — 9.2
 

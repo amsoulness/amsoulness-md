@@ -6,21 +6,31 @@ const clean=value=>String(value||'').replace(/[\r\n*_`]/g,' ').trim().slice(0,45
 const icons={LAUNCH:'🚀',EXPLORE:'🧭',COMMANDS:'🗂️','COMMAND GUIDE':'📖','HOW TO':'📖',DISCOVER:'🔎','ASK THE DIRECTORY':'💡','FIND YOUR WAY':'🧭',SIGNAL:'📶',ONLINE:'🟢','AI CORNER':'🤖','GROUP ROOM':'👥','MEDIA LAB':'🎬',DOWNLOADS:'📥','REMIX LAB':'🎨','EDIT SUITE':'✂️','QUICK TOOLS':'🧰','CONTROL ROOM':'🛠️',PREFERENCES:'⚙️','YOUR DESK':'🗒️','PLAY ROOM':'🎮',SYSTEM:'🖥️',DISCOVERY:'🔎',EXTRAS:'✨','WHATSAPP TOOLS':'💬',ASSISTANT:'✨',NOTIFICATION:'🔔','A NEW CHAPTER':'🆕','NEW CHAPTER':'🆕','RELEASE CHECK':'🔄','BUILD ACCEPTED':'🏗️','UPGRADE COMPLETE':'✅','CHANGES INSTALLED':'✅','UPDATE PAUSED':'⚠️',SAVED:'✅',TASKS:'☑️',NOTES:'📝',FOCUS:'⏱️','FOCUS STARTED':'🎯','FOCUS COMPLETE':'🏁','THE BOT':'💫'};
 const hasEmoji=text=>/\p{Extended_Pictographic}/u.test(text);
 function emojiLabel(title){const value=String(title||'');return hasEmoji(value)?value:value+' '+(icons[value.toUpperCase()]||'✨');}
+const footer='──────────────\n👤 Amsoulness · aslns.online';
+function finishCard(text){
+ // The caption-sized launch layout already supplies its own navigation/footer.
+ if(/^\*ASLNS \/ LAUNCH/.test(text)||text.endsWith(footer))return text;
+ if(text.length+footer.length+2>64000)return text;
+ return text+'\n\n'+footer;
+}
 function decorateCardHeading(text){
  const decorated=text.replace(/^\*ASLNS \/ ([^*\n]+)\*/,(_,title)=>'*ASLNS / '+emojiLabel(title)+'*');
  const lines=decorated.split('\n');
  if(lines[1]!=='━━━━━━━━━━━━━━')lines.splice(1,0,'━━━━━━━━━━━━━━');
- return lines.join('\n');
+ let subtitle=2;
+ while(lines[subtitle]==='')lines.splice(subtitle,1);
+ if(!/^_[^\n]+_$/.test(lines[subtitle]||''))lines.splice(subtitle,0,'_AMSOULNESS · YOUR WHATSAPP, REIMAGINED_','');
+ return finishCard(lines.join('\n'));
 }
-function card(title,body,kicker='AMSOULNESS / BUILT AROUND YOU'){
- return `*ASLNS / ${emojiLabel(clean(title).toUpperCase())}*\n━━━━━━━━━━━━━━\n_${kicker}_\n\n${body}`;
+function card(title,body,kicker='AMSOULNESS · YOUR WHATSAPP, REIMAGINED'){
+ return finishCard(`*ASLNS / ${emojiLabel(clean(title).toUpperCase())}*\n━━━━━━━━━━━━━━\n_${kicker}_\n\n${body}`);
 }
 function formatReply(text,meta={}){
  if(typeof text!=='string'||!text.trim()||meta.raw||RAW.has(meta.command))return text;
  if(/^\*ASLNS \/ /.test(text))return decorateCardHeading(text);
  const category=labels[meta.category]||clean(meta.category).toUpperCase()||'NOTIFICATION';
  const command=clean(meta.command).toUpperCase();
- return card(category,text,command?`AMSOULNESS  ·  ${command}`:'AMSOULNESS / LIVE');
+ return card(category,text,command?`AMSOULNESS · ${command}`:'AMSOULNESS · YOUR WHATSAPP, REIMAGINED');
 }
 function stylePayload(jid,payload,meta){
  if(!payload||typeof payload!=='object'||Buffer.isBuffer(payload)||!jid||/@(?:broadcast|newsletter)$/.test(jid)||payload.forward||payload.contextInfo?.isForwarded||payload.delete||payload.react)return payload;

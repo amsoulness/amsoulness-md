@@ -11,7 +11,7 @@ test('forwarded content, custom text, statuses, reactions, deletes and documents
  const custom={text:'A custom greeting'};assert.equal(stylePayload('chat@g.us',custom,{raw:true}),custom);assert.equal(stylePayload('status@broadcast',custom,{}),custom);assert.equal(stylePayload('123@newsletter',custom,{}),custom);assert.equal(formatReply('My alive message',{command:'alive'}),'My alive message');
 });
 test('formatting is idempotent, keeps code and placeholders intact, and leaves message bodies untruncated',()=>{
- const body='Result\n```\n{"key":"value"}\n```\n@123';const first=formatReply(body,{command:'tool',category:'utility'});assert.ok(first.endsWith(body));assert.equal(formatReply(first,{}),first);const long={text:'x'.repeat(64000)};assert.equal(stylePayload('chat@g.us',long,{}),long);
+ const body='Result\n```\n{"key":"value"}\n```\n@123';const first=formatReply(body,{command:'tool',category:'utility'});assert.ok(first.includes(body));assert.equal(formatReply(first,{}),first);const long={text:'x'.repeat(64000)};assert.equal(stylePayload('chat@g.us',long,{}),long);
 });
 test('redesigned English templates preserve formatter placeholder contracts',()=>{
  const expected=JSON.parse(fs.readFileSync('test/fixtures/locale-placeholders.json','utf8'));const current=JSON.parse(fs.readFileSync('plugins/utils/lang/english.json','utf8')).STRINGS;
@@ -44,7 +44,7 @@ test('rich apps, forwarded relays, revocations and raw socket options bypass pre
  await sock.sendMessage('123@s.whatsapp.net',{text:'Keep exactly'},{aslnsRaw:true});assert.equal(calls[1][1].text,'Keep exactly');assert.deepEqual(calls[1][2],{});
 });
 test('all bundled locale strings retain their exact content under the shared design',()=>{
- for(const file of fs.readdirSync('plugins/utils/lang').filter(f=>f.endsWith('.json'))){const locale=JSON.parse(fs.readFileSync('plugins/utils/lang/'+file,'utf8')).STRINGS;for(const [section,strings]of Object.entries(locale))for(const [key,value]of Object.entries(strings)){if(typeof value!=='string')continue;const result=formatReply(value,{category:section,command:'example'});assert.ok(result===value||result.endsWith(value)||(/^\*ASLNS \/ /.test(value)&&result.split('\n').filter(line=>line!=='━━━━━━━━━━━━━━').slice(1).join('\n')===value.split('\n').filter(line=>line!=='━━━━━━━━━━━━━━').slice(1).join('\n')),file+':'+section+'.'+key);assert.equal(formatReply(result,{}),result);}}
+ for(const file of fs.readdirSync('plugins/utils/lang').filter(f=>f.endsWith('.json'))){const locale=JSON.parse(fs.readFileSync('plugins/utils/lang/'+file,'utf8')).STRINGS;for(const [section,strings]of Object.entries(locale))for(const [key,value]of Object.entries(strings)){if(typeof value!=='string')continue;const result=formatReply(value,{category:section,command:'example'});assert.ok(result===value||result.includes(value)||(/^\*ASLNS \/ /.test(value)&&value.split('\n').slice(1).filter(Boolean).every(line=>result.includes(line))),file+':'+section+'.'+key);assert.equal(formatReply(result,{}),result);}}
 });
 
 test('styled native messages survive the actual Baileys protobuf codec',async()=>{
@@ -60,5 +60,12 @@ test('every translated update announcement uses Amsoulness identity',()=>{
 });
 
 test('emoji headings are consistent, idempotent and never inserted into command values',()=>{
- const text='Run `.todo add Finish homework` or copy ASLNS~example.';const first=formatReply(text,{category:'workspace',command:'todo'});assert.match(first,/🗒️/);assert.ok(first.endsWith(text));assert.equal(formatReply(first,{}),first);const existing=formatReply('*ASLNS / SIGNAL*\nLatency · 10 ms',{});assert.match(existing,/📶/);assert.equal(formatReply(existing,{}),existing);
+ const text='Run `.todo add Finish homework` or copy ASLNS~example.';const first=formatReply(text,{category:'workspace',command:'todo'});assert.match(first,/🗒️/);assert.ok(first.includes(text));assert.equal(formatReply(first,{}),first);const existing=formatReply('*ASLNS / SIGNAL*\nLatency · 10 ms',{});assert.match(existing,/📶/);assert.equal(formatReply(existing,{}),existing);
+});
+
+test('every standard card has one border, an italic subtitle and one compact footer',()=>{
+ for(const input of ['Operation finished.','*ASLNS / TASKS*\n\nOne pending task.','*ASLNS / ONLINE*\n_AMSOULNESS · READY_\n\nConnected.']){
+  const text=formatReply(input,{category:'system',command:'status'});const lines=text.split('\n');
+  assert.match(lines[0],/^\*ASLNS \/ /);assert.equal(lines[1],'━━━━━━━━━━━━━━');assert.match(lines[2],/^_.+_$/);assert.ok(text.endsWith('──────────────\n👤 Amsoulness · aslns.online'));assert.equal(text.split('━━━━━━━━━━━━━━').length,2);assert.equal(formatReply(text,{}),text);
+ }
 });

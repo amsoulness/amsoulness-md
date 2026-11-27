@@ -1,6 +1,6 @@
 {
   "name": "amsoulness",
-  "version": "9.2.1",
+  "version": "9.2.2",
   "description": "Amsoulness (ASLNS) multi-session WhatsApp assistant",
   "main": "index.js",
   "type": "commonjs",
